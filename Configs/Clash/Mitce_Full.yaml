@@ -35,7 +35,7 @@
 # 手动切换地区：支持
 # 自动切换地区：支持
 #
-# 更新时间：2024/03/16 13:40
+# 更新时间：2024/03/16 15:58
 
 ######### 全局配置 #########
 
@@ -77,14 +77,18 @@ dns:
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
   nameserver:
-    - tcp://119.29.29.29
-    - tls://119.29.29.29
+    - 223.5.5.5
+    - 119.29.29.29
     - tcp://223.5.5.5
+    - tcp://119.29.29.29
     - tls://223.5.5.5
+    - tls://119.29.29.29
   fallback:
+    - 1.1.1.1
+    - 8.8.8.8
     - tcp://1.1.1.1
-    - tls://1.1.1.1
     - tcp://8.8.8.8
+    - tls://1.1.1.1
     - tls://8.8.8.8
 
 ######### 锚点配置 #########
@@ -515,6 +519,11 @@ rule-providers:
     path: ./ruleset/direct-private-domain.yaml
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt"
 
+  direct-applications-classical:
+    <<: *classical
+    path: ./ruleset/direct-applications-classical.yaml
+    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Applications_Classical.yaml"
+
   direct-replenish-domain:
     <<: *domain
     path: ./ruleset/direct-replenish-domain.yaml
@@ -528,6 +537,7 @@ rule-providers:
 
 rules:
   # 直连
+  - RULE-SET,direct-applications-classical,直连
   - RULE-SET,direct-private-domain,直连
 
   # 拦截
