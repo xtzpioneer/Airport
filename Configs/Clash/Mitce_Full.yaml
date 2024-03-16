@@ -538,7 +538,6 @@ rule-providers:
 rules:
   # 直连
   - RULE-SET,direct-applications-classical,直连
-  - RULE-SET,direct-private-domain,直连
 
   # 拦截
   - RULE-SET,ad-reject-domain,广告拦截
@@ -584,9 +583,9 @@ rules:
   - RULE-SET,direct-private-domain,直连
   - RULE-SET,direct-domain,直连
   - RULE-SET,direct-cncidr-ip,直连
-  - RULE-SET,direct-lancidr-ip,直连
   - RULE-SET,direct-replenish-domain,直连
-  - GEOIP,LAN,直连
+  - RULE-SET,direct-lancidr-ip,直连,no-resolve
+  - GEOIP,LAN,直连,no-resolve
   - GEOIP,CN,直连
 
   # 兜底
