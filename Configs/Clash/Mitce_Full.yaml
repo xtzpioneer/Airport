@@ -72,21 +72,21 @@ tun:
 
 dns:
   enable: true
-  listen: :1053
+  listen: 0.0.0.0:53
   ipv6: false
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
   nameserver:
     - tcp://119.29.29.29
-    - tcp://223.5.5.5
     - tls://119.29.29.29
+    - tcp://223.5.5.5
     - tls://223.5.5.5
   fallback:
     - tcp://1.1.1.1
-    - tcp://8.8.8.8
     - tls://1.1.1.1
+    - tcp://8.8.8.8
     - tls://8.8.8.8
-    
+
 ######### 锚点配置 #########
 
 # 策略组
