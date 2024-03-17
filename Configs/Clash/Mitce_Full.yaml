@@ -35,7 +35,7 @@
 # 手动切换地区：支持
 # 自动切换地区：支持
 #
-# 更新时间：2024/03/16 15:58
+# 更新时间：2024/03/16 23:18
 
 ######### 全局配置 #########
 
@@ -44,8 +44,9 @@ allow-lan: true
 mixed-port: 7890
 unified-delay: false
 tcp-concurrent: true
-external-controller: 127.0.0.1:9090
+external-controller: 0.0.0.0:9090
 external-ui: ui
+external-ui-name: xd
 external-ui-url: "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip"
 secret: "123456"
 
@@ -54,6 +55,9 @@ geox-url:
   geoip: "https://mirror.ghproxy.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat"
   geosite: "https://mirror.ghproxy.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
   mmdb: "https://mirror.ghproxy.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country-lite.mmdb"
+
+geo-auto-update: false
+geo-update-interval: 24
 
 find-process-mode: strict
 global-client-fingerprint: chrome
@@ -70,7 +74,22 @@ tun:
   auto-route: true
   auto-detect-interface: true
 
+sniffer:
+  enable: true
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+  skip-domain:
+    - "Mijia Cloud"
+    - "+.apple.com"
+
 dns:
+  cache-algorithm: arc
   enable: true
   listen: 0.0.0.0:53
   ipv6: false
@@ -79,15 +98,14 @@ dns:
   nameserver:
     - 223.5.5.5
     - 119.29.29.29
-    - tcp://223.5.5.5
-    - tcp://119.29.29.29
-    - tls://223.5.5.5
-    - tls://119.29.29.29
-  fallback:
     - 1.1.1.1
     - 8.8.8.8
+    - tcp://223.5.5.5
+    - tcp://119.29.29.29
     - tcp://1.1.1.1
     - tcp://8.8.8.8
+    - tls://223.5.5.5
+    - tls://119.29.29.29
     - tls://1.1.1.1
     - tls://8.8.8.8
 
