@@ -35,7 +35,7 @@
 # 手动切换地区：支持
 # 自动切换地区：支持
 #
-# 更新时间：2024/03/16 23:18
+# 更新时间：2024/03/17 16:50
 
 ######### 全局配置 #########
 
@@ -95,19 +95,32 @@ dns:
   ipv6: false
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
-  nameserver:
+  default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
     - 1.1.1.1
     - 8.8.8.8
+  nameserver:
     - tcp://223.5.5.5
     - tcp://119.29.29.29
     - tcp://1.1.1.1
     - tcp://8.8.8.8
+    - udp://223.5.5.5
+    - udp://119.29.29.29
+    - udp://1.1.1.1
+    - udp://8.8.8.8
     - tls://223.5.5.5
     - tls://119.29.29.29
     - tls://1.1.1.1
     - tls://8.8.8.8
+  proxy-server-nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+    - https://cloudflare-dns.com/dns-query
+    - https://dns.google/dns-query
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
 
 ######### 锚点配置 #########
 
