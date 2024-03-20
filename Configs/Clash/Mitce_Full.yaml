@@ -637,8 +637,8 @@ rules:
   - RULE-SET,direct-domain,直连
   - RULE-SET,direct-cncidr-ip,直连
   - RULE-SET,direct-replenish-domain,直连
-  - RULE-SET,direct-lancidr-ip,直连,no-resolve
-  - GEOIP,LAN,直连,no-resolve
+  - RULE-SET,direct-lancidr-ip,直连
+  - GEOIP,LAN,直连
   - GEOIP,CN,直连
 
   # 兜底
