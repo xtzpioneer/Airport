@@ -35,7 +35,7 @@
 # 手动切换地区：支持
 # 自动切换地区：支持
 #
-# 更新时间：2024/03/19 13:32
+# 更新时间：2024/03/20 11:43
 
 ######### 全局配置 #########
 
@@ -93,8 +93,6 @@ dns:
   enable: true
   listen: 0.0.0.0:1053
   ipv6: true
-  enhanced-mode: fake-ip
-  fake-ip-range: 198.18.0.1/16
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
@@ -134,6 +132,9 @@ dns:
     - https://doh.pub/dns-query
     - https://cloudflare-dns.com/dns-query
     - https://dns.google/dns-query
+  use-hosts: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
   fallback-filter:
     geoip: true
     geoip-code: CN
