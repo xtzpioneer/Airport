@@ -35,7 +35,7 @@
 # 手动切换地区：支持
 # 自动切换地区：支持
 #
-# 更新时间：2024/03/20 11:43
+# 更新时间：2024/03/20 17:38
 
 ######### 全局配置 #########
 
@@ -277,7 +277,7 @@ proxy-providers:
 ######### 定义代理组配置 #########
 
 proxy-groups:
-  # 选择
+  # 节点选择
   - name: 节点选择
     icon: "https://gitee.com/xtzPioneer/Qure/raw/master/IconSet/Color/Proxy.png"
     <<: *pr
@@ -292,7 +292,7 @@ proxy-groups:
     type: select
     <<: *re
 
-  # 回退
+  # 回退/转移
   - name: "故障转移"
     icon: "https://gitee.com/xtzPioneer/Qure/raw/master/IconSet/Color/Available_1.png"
     type: fallback
@@ -589,10 +589,10 @@ rule-providers:
 # 注意：规则顺序直接影响规则判定，将会导致分流效果不佳。
 
 rules:
-  # 直连
+  # 直连应用
   - RULE-SET,direct-applications-classical,直连
 
-  # 拦截
+  # 广告拦截
   - RULE-SET,ad-reject-domain,广告拦截
 
   # 苹果服务
