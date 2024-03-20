@@ -93,16 +93,8 @@ dns:
   enable: true
   listen: 0.0.0.0:1053
   ipv6: true
-  default-nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
-    - 1.1.1.1
-    - 8.8.8.8
-    - "[2400:3200::1]"
-    - "[2402:4e00::]"
-    - "[2606:4700:4700::1111]"
-    - "[2001:4860:4860::8888]"
-  nameserver:
+  use-hosts: true
+  fallback:
     - tcp://223.5.5.5
     - tcp://119.29.29.29
     - tcp://1.1.1.1
@@ -132,7 +124,6 @@ dns:
     - https://doh.pub/dns-query
     - https://cloudflare-dns.com/dns-query
     - https://dns.google/dns-query
-  use-hosts: true
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
   fallback-filter:
