@@ -35,7 +35,7 @@
 # 手动切换地区：支持
 # 自动切换地区：支持
 #
-# 更新时间：2024/03/22 23:24
+# 更新时间：2024/04/29 19:30
 
 ######### 全局配置 #########
 
@@ -499,134 +499,140 @@ rule-providers:
   # 苹果服务
   apple-service-classical:
     <<: *classical
-    path: ./ruleset/apple-service-classical.yaml
+    path: ./rule-providers/apple-service-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple.yaml"
 
   apple-service-domain:
     <<: *domain
-    path: ./ruleset/apple-service-domain.yaml
+    path: ./rule-providers/apple-service-domain.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple_Domain.yaml"
 
   apple-system-ota-classical:
     <<: *classical
-    path: ./ruleset/apple-system-ota-classical.yaml
+    path: ./rule-providers/apple-system-ota-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SystemOTA/SystemOTA.yaml"
 
   # 微软服务
   microsoft-service-classical:
     <<: *classical
-    path: ./ruleset/microsoft-service-classical.yaml
+    path: ./rule-providers/microsoft-service-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Microsoft/Microsoft.yaml"
 
   microsoft-github-classical:
     <<: *classical
-    path: ./ruleset/microsoft-github-classical.yaml
+    path: ./rule-providers/microsoft-github-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.yaml"
 
   # 谷歌服务
   google-service-classical:
     <<: *classical
-    path: ./ruleset/google-service-classical.yaml
+    path: ./rule-providers/google-service-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.yaml"
 
   google-youtube-classical:
     <<: *classical
-    path: ./ruleset/google-youtube-classical.yaml
+    path: ./rule-providers/google-youtube-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.yaml"
 
   google-youtube-music-classical:
     <<: *classical
-    path: ./ruleset/google-youtube-music-classical.yaml
+    path: ./rule-providers/google-youtube-music-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTubeMusic/YouTubeMusic.yaml"
 
   # 电报消息
   telegram-classical:
     <<: *classical
-    path: ./ruleset/telegram-classical.yaml
+    path: ./rule-providers/telegram-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml"
 
   # Discord
   discord-classical:
     <<: *classical
-    path: ./ruleset/discord-classical.yaml
+    path: ./rule-providers/discord-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Discord/Discord.yaml"
 
   # 奈飞视频
   netflix-classical:
     <<: *classical
-    path: ./ruleset/netflix-classical.yaml
+    path: ./rule-providers/netflix-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix_Classical.yaml"
 
   # AI/人工智能
   open-ai-classical:
     <<: *classical
-    path: ./ruleset/open-ai-classical.yaml
+    path: ./rule-providers/open-ai-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml"
 
   # 国际抖音
   tiktok-classical:
     <<: *classical
-    path: ./ruleset/tiktok-classical.yaml
+    path: ./rule-providers/tiktok-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok.yaml"
 
   # 国际媒体
   globe-media-domain:
     <<: *domain
-    path: ./ruleset/globe-media-domain.yaml
+    path: ./rule-providers/globe-media-domain.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia_Domain.yaml"
 
   globe-media-classical:
     <<: *classical
-    path: ./ruleset/globe-media-classical.yaml
+    path: ./rule-providers/globe-media-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia_Classical.yaml"
 
   # 国际互联
   globe-classical:
     <<: *classical
-    path: ./ruleset/globe-classical.yaml
+    path: ./rule-providers/globe-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Global/Global.yaml"
 
   globe-domain:
     <<: *domain
-    path: ./ruleset/globe-domain.yaml
+    path: ./rule-providers/globe-domain.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Global/Global_Domain.yaml"
 
   # 广告拦截
   ad-reject-domain:
     <<: *domain
-    path: ./ruleset/ad-reject-domain.yaml
+    path: ./rule-providers/ad-reject-domain.yaml
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt"
 
   # 直连
   direct-domain:
     <<: *domain
-    path: ./ruleset/direct-domain.yaml
+    path: ./rule-providers/direct-domain.yaml
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/direct.txt"
 
   direct-cncidr-ip:
     <<: *ip
-    path: ./ruleset/direct-cncidr-ip.yaml
+    path: ./rule-providers/direct-cncidr-ip.yaml
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt"
 
   direct-lancidr-ip:
     <<: *ip
-    path: ./ruleset/direct-lancidr-ip.yaml
+    path: ./rule-providers/direct-lancidr-ip.yaml
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/lancidr.txt"
 
   direct-private-domain:
     <<: *domain
-    path: ./ruleset/direct-private-domain.yaml
+    path: ./rule-providers/direct-private-domain.yaml
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt"
 
   direct-applications-classical:
     <<: *classical
-    path: ./ruleset/direct-applications-classical.yaml
+    path: ./rule-providers/direct-applications-classical.yaml
     url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Applications_Classical.yaml"
 
   direct-replenish-domain:
     <<: *domain
-    path: ./ruleset/direct-replenish-domain.yaml
+    path: ./rule-providers/direct-replenish-domain.yaml
     url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Replenish_Domain.yaml"
+
+  # 云计算
+  direct-cloud-classical:
+    <<: *classical
+    path: ./rule-providers/direct-cloud-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cloud/CloudCN/CloudCN.yaml"
 
 ######### 分流规则配置 #########
 
@@ -684,6 +690,7 @@ rules:
   - RULE-SET,direct-cncidr-ip,直连
   - RULE-SET,direct-replenish-domain,直连
   - RULE-SET,direct-lancidr-ip,直连
+  - RULE-SET,direct-cloud-classical,直连
   - GEOIP,LAN,直连
   - GEOIP,CN,直连
 
