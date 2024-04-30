@@ -1,0 +1,10 @@
+payload:
+  - DOMAIN,dns.alidns.com
+  - DOMAIN,doh.pub
+  - DOMAIN,doh.360.cn
+  - IP-CIDR,223.5.5.5/32
+  - IP-CIDR,119.29.29.29/32
+  - IP-CIDR,180.76.76.76/32
+  - IP-CIDR6,2400:3200::1/128
+  - IP-CIDR6,2402:4e00::/128
+  - IP-CIDR6,2400:da00::6666/128
