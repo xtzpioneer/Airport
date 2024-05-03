@@ -35,7 +35,7 @@
 # 手动切换地区：支持
 # 自动切换地区：支持
 #
-# 更新时间：2024/04/29 19:30
+# 更新时间：2024/04/30 22:40
 
 ######### 全局配置 #########
 
@@ -396,6 +396,11 @@ proxy-groups:
     icon: "https://gitee.com/xtzPioneer/Qure/raw/master/IconSet/Color/Netflix.png"
     <<: *globe
 
+  # Emby视频
+  - name: "Emby 视频"
+    icon: "https://gitee.com/xtzPioneer/Qure/raw/master/IconSet/Color/Emby.png"
+    <<: *de
+
   # AI/人工智能
   - name: "OpenAI"
     icon: "https://gitee.com/xtzPioneer/Qure/raw/master/IconSet/Color/Bot.png"
@@ -415,6 +420,11 @@ proxy-groups:
   - name: "国际互联"
     icon: "https://gitee.com/xtzPioneer/Qure/raw/master/IconSet/Color/Global.png"
     <<: *globe
+
+  # 游戏服务
+  - name: "游戏服务"
+    icon: "https://gitee.com/xtzPioneer/Qure/raw/master/IconSet/Color/Game.png"
+    <<: *de
 
   # 地域/区域
   - name: 香港节点
@@ -557,6 +567,12 @@ rule-providers:
     path: ./rule-providers/netflix-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix_Classical.yaml"
 
+  # Emby视频
+  emby-classical:
+    <<: *classical
+    path: ./rule-providers/emby-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Emby/Emby.yaml"
+
   # AI/人工智能
   open-ai-classical:
     <<: *classical
@@ -590,6 +606,23 @@ rule-providers:
     <<: *domain
     path: ./rule-providers/globe-domain.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Global/Global_Domain.yaml"
+
+  # 游戏服务
+  game-classical:
+    <<: *classical
+    path: ./rule-providers/game-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Game/Game.yaml"
+
+  # 国际云计算
+  globe-cloud-classical:
+    <<: *classical
+    path: ./rule-providers/globe-cloud-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cloud/CloudGlobal/CloudGlobal.yaml"
+
+  globe-cloud-ip:
+    <<: *ip
+    path: ./rule-providers/globe-cloud-ip.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cloud/CloudGlobal/CloudGlobal_IP.yaml"
 
   # 广告拦截
   ad-reject-domain:
@@ -628,7 +661,6 @@ rule-providers:
     path: ./rule-providers/direct-replenish-domain.yaml
     url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Replenish_Domain.yaml"
 
-  # 云计算
   direct-cloud-classical:
     <<: *classical
     path: ./rule-providers/direct-cloud-classical.yaml
@@ -670,6 +702,9 @@ rules:
   # 奈飞视频
   - RULE-SET,netflix-classical,奈飞视频
 
+  # Emby视频
+  - RULE-SET,emby-classical,Emby 视频
+
   # AI/人工智能
   - RULE-SET,open-ai-classical,OpenAI
 
@@ -684,6 +719,13 @@ rules:
   - RULE-SET,globe-domain,国际互联
   - RULE-SET,globe-classical,国际互联
 
+  # 国际云计算
+  - RULE-SET,globe-cloud-classical,国际互联
+  - RULE-SET,globe-cloud-ip,国际互联
+
+  # 游戏服务
+  - RULE-SET,game-classical,游戏服务
+
   # 直连
   - RULE-SET,direct-private-domain,直连
   - RULE-SET,direct-domain,直连
@@ -691,6 +733,8 @@ rules:
   - RULE-SET,direct-replenish-domain,直连
   - RULE-SET,direct-lancidr-ip,直连
   - RULE-SET,direct-cloud-classical,直连
+
+  # GEO
   - GEOIP,LAN,直连
   - GEOIP,CN,直连
 
