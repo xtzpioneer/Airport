@@ -281,12 +281,12 @@ p: &p
   interval: 86400
   health-check:
     enable: true
-    url: "http://www.gstatic.com/generate_204"
+    url: "http://www.apple.com/library/test/success.html"
     interval: 600
     tolerance: 50
 
 uta: &uta
-  url: "http://www.gstatic.com/generate_204"
+  url: "http://www.apple.com/library/test/success.html"
   interval: 300
   tolerance: 50
   include-all-providers: true
@@ -495,7 +495,7 @@ proxy-groups:
   - name: 自动切换
     icon: "https://gitee.com/xtzPioneer/Qure/raw/master/IconSet/Color/Auto.png"
     type: url-test
-    url: "http://www.gstatic.com/generate_204"
+    url: "http://www.apple.com/library/test/success.html"
     interval: 300
     tolerance: 50
     <<: *re
