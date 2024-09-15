@@ -37,7 +37,7 @@
 # 手动切换地区：支持
 # 自动切换地区：支持
 #
-# 更新时间：2024/09/08 10:47
+# 更新时间：2024/09/15 17:40
 
 ######### 全局配置 #########
 
@@ -763,7 +763,7 @@ rules:
 
   # 国际云计算
   - RULE-SET,globe-cloud-classical,国际互联
-  - RULE-SET,globe-cloud-ip,国际互联
+  - RULE-SET,globe-cloud-ip,国际互联,no-resolve
 
   # 游戏服务
   - RULE-SET,game-classical,游戏服务
@@ -771,14 +771,14 @@ rules:
   # 直连
   - RULE-SET,direct-private-domain,直连
   - RULE-SET,direct-domain,直连
-  - RULE-SET,direct-cncidr-ip,直连
+  - RULE-SET,direct-cncidr-ip,直连,no-resolve
   - RULE-SET,direct-replenish-domain,直连
-  - RULE-SET,direct-lancidr-ip,直连
+  - RULE-SET,direct-lancidr-ip,直连,no-resolve
   - RULE-SET,direct-cloud-classical,直连
 
   # GEO
-  - GEOIP,LAN,直连
-  - GEOIP,CN,直连
+  - GEOIP,LAN,直连,no-resolve
+  - GEOIP,CN,直连,no-resolve
 
   # 兜底
   - MATCH,漏网之鱼
