@@ -777,8 +777,8 @@ rules:
   - RULE-SET,direct-cloud-classical,直连
 
   # GEO
-  - GEOIP,LAN,直连,no-resolve
-  - GEOIP,CN,直连,no-resolve
+  - GEOIP,LAN,直连
+  - GEOIP,CN,直连
 
   # 兜底
   - MATCH,漏网之鱼
