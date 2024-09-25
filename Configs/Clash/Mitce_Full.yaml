@@ -37,7 +37,7 @@
 # 手动切换地区：支持
 # 自动切换地区：支持
 #
-# 更新时间：2024/09/15 17:40
+# 更新时间：2024/09/25 02:00
 
 ######### 全局配置 #########
 
@@ -97,10 +97,10 @@ dns:
   cache-algorithm: arc
   default-nameserver:
     - 223.5.5.5
-    - 1.1.1.1
     - 119.29.29.29
-    - 8.8.8.8
     - 180.76.76.76
+    - 8.8.8.8
+    - 1.1.1.1
     - 208.67.222.222
   nameserver:
     - tcp://223.5.5.5
@@ -112,6 +112,9 @@ dns:
     - tcp://180.76.76.76
     - udp://180.76.76.76
     - tls://180.76.76.76
+    - tcp://1.1.1.1
+    - udp://1.1.1.1
+    - tls://1.1.1.1
     - "tcp://[2400:3200::1]"
     - "udp://[2400:3200::1]"
     - "tls://[2400:3200::1]"
@@ -121,61 +124,28 @@ dns:
     - "tcp://[2400:da00::6666]"
     - "udp://[2400:da00::6666]"
     - "tls://[2400:da00::6666]"
-    - tcp://1.1.1.1
-    - udp://1.1.1.1
-    - tls://1.1.1.1
-    - tcp://8.8.8.8
-    - udp://8.8.8.8
-    - tls://8.8.8.8
-    - tcp://208.67.222.222
-    - udp://208.67.222.222
-    - tls://208.67.222.222
     - "tcp://[2606:4700:4700::1111]"
     - "udp://[2606:4700:4700::1111]"
     - "tls://[2606:4700:4700::1111]"
-    - "tcp://[2001:4860:4860::8888]"
-    - "udp://[2001:4860:4860::8888]"
-    - "tls://[2001:4860:4860::8888]"
-    - "tcp://[2620:0:ccc::2]"
-    - "udp://[2620:0:ccc::2]"
-    - "tls://[2620:0:ccc::2]"
   fallback:
-    - tcp://1.1.1.1
-    - udp://1.1.1.1
-    - tls://1.1.1.1
     - tcp://8.8.8.8
     - udp://8.8.8.8
     - tls://8.8.8.8
     - tcp://208.67.222.222
     - udp://208.67.222.222
     - tls://208.67.222.222
-    - "tcp://[2606:4700:4700::1111]"
-    - "udp://[2606:4700:4700::1111]"
-    - "tls://[2606:4700:4700::1111]"
+    - tcp://1.1.1.1
+    - udp://1.1.1.1
+    - tls://1.1.1.1
     - "tcp://[2001:4860:4860::8888]"
     - "udp://[2001:4860:4860::8888]"
     - "tls://[2001:4860:4860::8888]"
     - "tcp://[2620:0:ccc::2]"
     - "udp://[2620:0:ccc::2]"
     - "tls://[2620:0:ccc::2]"
-    - tcp://223.5.5.5
-    - udp://223.5.5.5
-    - tls://223.5.5.5
-    - tcp://119.29.29.29
-    - udp://119.29.29.29
-    - tls://119.29.29.29
-    - tcp://180.76.76.76
-    - udp://180.76.76.76
-    - tls://180.76.76.76
-    - "tcp://[2400:3200::1]"
-    - "udp://[2400:3200::1]"
-    - "tls://[2400:3200::1]"
-    - "tcp://[2402:4e00::]"
-    - "udp://[2402:4e00::]"
-    - "tls://[2402:4e00::]"
-    - "tcp://[2400:da00::6666]"
-    - "udp://[2400:da00::6666]"
-    - "tls://[2400:da00::6666]"
+    - "tcp://[2606:4700:4700::1111]"
+    - "udp://[2606:4700:4700::1111]"
+    - "tls://[2606:4700:4700::1111]"
   proxy-server-nameserver:
     - https://dns.alidns.com/dns-query
     - https://cloudflare-dns.com/dns-query
@@ -211,6 +181,10 @@ pr: &pr
     - 韩国节点
     - 新加坡节点
     - 美国节点
+    - 德国节点
+    - 澳大利亚节点
+    - 英国节点
+    - 印度节点
 
 re: &re
   proxies:
@@ -220,6 +194,10 @@ re: &re
     - 韩国节点
     - 新加坡节点
     - 美国节点
+    - 德国节点
+    - 澳大利亚节点
+    - 英国节点
+    - 印度节点
 
 de: &de
   type: select
@@ -237,6 +215,10 @@ de: &de
     - 韩国节点
     - 新加坡节点
     - 美国节点
+    - 德国节点
+    - 澳大利亚节点
+    - 英国节点
+    - 印度节点
     - 直连
 
 cn: &cn
@@ -256,6 +238,10 @@ cn: &cn
     - 韩国节点
     - 新加坡节点
     - 美国节点
+    - 德国节点
+    - 澳大利亚节点
+    - 英国节点
+    - 印度节点
 
 globe: &globe
   type: select
@@ -273,6 +259,10 @@ globe: &globe
     - 韩国节点
     - 新加坡节点
     - 美国节点
+    - 德国节点
+    - 澳大利亚节点
+    - 英国节点
+    - 印度节点
 
 # 订阅更新和延迟测试
 
@@ -386,6 +376,10 @@ proxy-groups:
     icon: "https://gitee.com/xtzPioneer/Qure/raw/master/IconSet/Color/GitHub.png"
     <<: *globe
 
+  - name: "OneDrive"
+    icon: "https://gitee.com/xtzPioneer/Qure/raw/master/IconSet/Color/OneDrive.png"
+    <<: *cn
+
   # 谷歌服务
   - name: "谷歌服务"
     icon: "https://gitee.com/xtzPioneer/Qure/raw/master/IconSet/Color/Google_Search.png"
@@ -481,6 +475,30 @@ proxy-groups:
     include-all-providers: true
     filter: "美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|(?i)US|(?i)United States|🇺🇲"
 
+  - name: 德国节点
+    icon: "https://gitee.com/xtzPioneer/Qure/raw/master/IconSet/Color/Germany.png"
+    type: select
+    filter: "德国|德意志|柏林|慕尼黑|法兰克福|汉堡|杜塞尔多夫|[^-]德|(?i)DE|(?i)Germany|🇩🇪"
+    include-all-providers: true
+
+  - name: 澳大利亚节点
+    icon: "https://gitee.com/xtzPioneer/Qure/raw/master/IconSet/Color/Australia.png"
+    type: select
+    filter: "悉尼|墨尔本|布里斯班|珀斯|阿德莱德|霍巴特|堪培拉|达尔文|(?i)AU|(?i)Australia|(?i)澳大利亚|🇦🇺"
+    include-all-providers: true
+
+  - name: 英国节点
+    icon: "https://gitee.com/xtzPioneer/Qure/raw/master/IconSet/Color/United_Kingdom.png"
+    type: select
+    filter: "伦敦|曼彻斯特|伯明翰|利物浦|爱丁堡|格拉斯哥|布里斯托|纽卡斯尔|威尔士|英格兰|苏格兰|(?i)UK|(?i)GB|(?i)United Kingdom|(?i)英国|🇬🇧"
+    include-all-providers: true
+
+  - name: 印度节点
+    icon: "https://gitee.com/xtzPioneer/Qure/raw/master/IconSet/Color/India.png"
+    type: select
+    filter: "新德里|孟买|班加罗尔|海得拉巴|艾哈迈达巴德|钦奈|卡尔各答|浦那|(?i)IN|(?i)India|(?i)印度|🇮🇳"
+    include-all-providers: true
+
   # 兜底
   - name: "漏网之鱼"
     icon: "https://gitee.com/xtzPioneer/Qure/raw/master/IconSet/Color/Final.png"
@@ -570,6 +588,11 @@ rule-providers:
     <<: *classical
     path: ./rule-providers/microsoft-github-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.yaml"
+
+  microsoft-onedrive-classical:
+    <<: *classical
+    path: ./rule-providers/microsoft-onedrive-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/OneDrive/OneDrive.yaml"
 
   # 谷歌服务
   google-service-classical:
@@ -727,6 +750,7 @@ rules:
   - RULE-SET,apple-service-classical,苹果服务
 
   # 微软服务
+  - RULE-SET,microsoft-onedrive-classical,OneDrive
   - RULE-SET,microsoft-service-classical,微软服务
   - RULE-SET,microsoft-github-classical,GitHub
 
