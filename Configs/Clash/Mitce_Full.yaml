@@ -422,6 +422,11 @@ proxy-groups:
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/TikTok.png"
     <<: *globe
 
+  # Spotify 音乐
+  - name: "Spotify 音乐"
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Spotify.png"
+    <<: *globe
+
   # 国际媒体
   - name: "国际媒体"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/ForeignMedia.png"
@@ -545,7 +550,7 @@ rule-providers:
   apple-service-classical:
     <<: *classical
     path: ./rule-providers/apple-service-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Apple/Apple_Classical_No_Resolve.yaml"
 
   apple-service-domain:
     <<: *domain
@@ -555,95 +560,101 @@ rule-providers:
   apple-system-ota-classical:
     <<: *classical
     path: ./rule-providers/apple-system-ota-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SystemOTA/SystemOTA.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/SystemOTA/SystemOTA_No_Resolve.yaml"
 
   apple-music-classical:
     <<: *classical
     path: ./rule-providers/apple-music-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AppleMusic/AppleMusic.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/AppleMusic/AppleMusic_No_Resolve.yaml"
 
   apple-icloud-classical:
     <<: *classical
     path: ./rule-providers/apple-icloud-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/iCloud/iCloud.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/iCloud/iCloud_No_Resolve.yaml"
 
   apple-app-store-classical:
     <<: *classical
     path: ./rule-providers/apple-app-store-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AppStore/AppStore.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/AppStore/AppStore_No_Resolve.yaml"
 
   apple-mail-classical:
     <<: *classical
     path: ./rule-providers/apple-mail-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AppleMail/AppleMail.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/AppleMail/AppleMail_No_Resolve.yaml"
 
   # 微软服务
   microsoft-service-classical:
     <<: *classical
     path: ./rule-providers/microsoft-service-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Microsoft/Microsoft.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Microsoft/Microsoft_No_Resolve.yaml"
 
   microsoft-github-classical:
     <<: *classical
     path: ./rule-providers/microsoft-github-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/GitHub/GitHub_No_Resolve.yaml"
 
   microsoft-onedrive-classical:
     <<: *classical
     path: ./rule-providers/microsoft-onedrive-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/OneDrive/OneDrive.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/OneDrive/OneDrive_No_Resolve.yaml"
 
   # 谷歌服务
   google-service-classical:
     <<: *classical
     path: ./rule-providers/google-service-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Google/Google_No_Resolve.yaml"
 
   google-youtube-classical:
     <<: *classical
     path: ./rule-providers/google-youtube-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/YouTube/YouTube_No_Resolve.yaml"
 
   google-youtube-music-classical:
     <<: *classical
     path: ./rule-providers/google-youtube-music-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTubeMusic/YouTubeMusic.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/YouTubeMusic/YouTubeMusic_No_Resolve.yaml"
 
   # 电报消息
   telegram-classical:
     <<: *classical
     path: ./rule-providers/telegram-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram_No_Resolve.yaml"
 
   # Discord
   discord-classical:
     <<: *classical
     path: ./rule-providers/discord-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Discord/Discord.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Discord/Discord_No_Resolve.yaml"
 
   # 奈飞视频
   netflix-classical:
     <<: *classical
     path: ./rule-providers/netflix-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix_Classical.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Netflix/Netflix_Classical_No_Resolve.yaml"
 
   # Emby视频
   emby-classical:
     <<: *classical
     path: ./rule-providers/emby-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Emby/Emby.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Emby/Emby_No_Resolve.yaml"
 
   # AI/人工智能
   open-ai-classical:
     <<: *classical
     path: ./rule-providers/open-ai-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI_No_Resolve.yaml"
 
   # 国际抖音
   tiktok-classical:
     <<: *classical
     path: ./rule-providers/tiktok-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok_No_Resolve.yaml"
+
+  # Spotify 音乐
+  spotify-classical:
+    <<: *classical
+    path: ./rule-providers/spotify-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Spotify/Spotify_No_Resolve.yaml"
 
   # 国际媒体
   globe-media-domain:
@@ -654,13 +665,13 @@ rule-providers:
   globe-media-classical:
     <<: *classical
     path: ./rule-providers/globe-media-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia_Classical.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/GlobalMedia/GlobalMedia_Classical_No_Resolve.yaml"
 
   # 国际互联
   globe-classical:
     <<: *classical
     path: ./rule-providers/globe-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Global/Global.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Global/Global_Classical_No_Resolve.yaml"
 
   globe-domain:
     <<: *domain
@@ -671,13 +682,13 @@ rule-providers:
   game-classical:
     <<: *classical
     path: ./rule-providers/game-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Game/Game.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Game/Game_No_Resolve.yaml"
 
   # 国际云计算
   globe-cloud-classical:
     <<: *classical
     path: ./rule-providers/globe-cloud-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cloud/CloudGlobal/CloudGlobal.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cloud/CloudGlobal/CloudGlobal_No_Resolve.yaml"
 
   globe-cloud-ip:
     <<: *ip
@@ -724,7 +735,7 @@ rule-providers:
   direct-cloud-classical:
     <<: *classical
     path: ./rule-providers/direct-cloud-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cloud/CloudCN/CloudCN.yaml"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cloud/CloudCN/CloudCN_No_Resolve.yaml"
 
 ######### 分流规则配置 #########
 
@@ -752,7 +763,6 @@ rules:
   - RULE-SET,microsoft-onedrive-classical,OneDrive
   - RULE-SET,microsoft-github-classical,GitHub
   - RULE-SET,microsoft-service-classical,微软服务
-  
   # 谷歌服务
   - RULE-SET,google-youtube-classical,YouTube 视频
   - RULE-SET,google-youtube-music-classical,YouTube 音乐
@@ -775,6 +785,9 @@ rules:
 
   # 国际抖音
   - RULE-SET,tiktok-classical,国际抖音
+
+  # Spotify 音乐
+  - RULE-SET,spotify-classical,Spotify 音乐
 
   # 国际媒体
   - RULE-SET,globe-media-domain,国际媒体
