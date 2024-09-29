@@ -37,7 +37,7 @@
 # 手动切换地区：支持
 # 自动切换地区：支持
 #
-# 更新时间：2024/09/25 02:00
+# 更新时间：2024/09/29 23:00
 
 ######### 全局配置 #########
 
@@ -750,9 +750,9 @@ rules:
 
   # 微软服务
   - RULE-SET,microsoft-onedrive-classical,OneDrive
-  - RULE-SET,microsoft-service-classical,微软服务
   - RULE-SET,microsoft-github-classical,GitHub
-
+  - RULE-SET,microsoft-service-classical,微软服务
+  
   # 谷歌服务
   - RULE-SET,google-youtube-classical,YouTube 视频
   - RULE-SET,google-youtube-music-classical,YouTube 音乐
@@ -785,8 +785,8 @@ rules:
   - RULE-SET,globe-classical,国际互联
 
   # 国际云计算
-  - RULE-SET,globe-cloud-classical,国际互联
   - RULE-SET,globe-cloud-ip,国际互联
+  - RULE-SET,globe-cloud-classical,国际互联
 
   # 游戏服务
   - RULE-SET,game-classical,游戏服务
@@ -795,12 +795,12 @@ rules:
   - RULE-SET,direct-private-domain,直连
   - RULE-SET,direct-domain,直连
   - RULE-SET,direct-cncidr-ip,直连
-  - RULE-SET,direct-replenish-domain,直连
   - RULE-SET,direct-lancidr-ip,直连
   - RULE-SET,direct-cloud-classical,直连
+  - RULE-SET,direct-replenish-domain,直连
 
   # GEO
-  - GEOIP,LAN,直连
+  - GEOIP,lan,直连
   - GEOIP,CN,直连
 
   # 兜底
