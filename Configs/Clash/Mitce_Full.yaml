@@ -34,8 +34,8 @@
 # 国际抖音分流：支持
 #
 # 区分地区：支持
-# 手动切换地区：支持
-# 自动切换地区：支持
+# 手动选择地区地区：支持
+# 自动选择地区地区：支持
 #
 # 更新时间：2024/10/06
 
@@ -60,7 +60,7 @@ allow-lan: true
 bind-address: "*"
 # http,socks 入口的验证用户名，密码
 authentication:
-  - "admin:password"
+  # - "admin:password"
 # 设置跳过验证的 IP 段
 skip-auth-prefixes:
   - 127.0.0.1/8
@@ -249,7 +249,7 @@ dns:
   # 如果为true，将会按照rules的规则匹配链接方式（走代理或直连），如果有特别指定则任然以指定值为准
   # 仅当proxy-server-nameserver非空时可以开启此选项, 强烈不建议和prefer-h3一起使用
   # 此外，这三者配置中的dns服务器如果出现域名会采用default-nameserver配置项解析，也请确保正确配置default-nameserver
-  respect-rules: true
+  respect-rules: false
   # 用于解析 nameserver，fallback 以及其他 DNS 服务器配置的，DNS 服务域名
   # 只能使用纯 IP 地址，可使用加密 DNS
   default-nameserver:
@@ -348,10 +348,14 @@ proxie-select: &proxie-select
   proxies:
     - 自动选择
     - 手动选择
-    - 自动切换
-    - 手动切换
+    - 自动选择地区
+    - 手动选择地区
     - 故障转移
-    - 负载均衡
+    - 地区故障转移
+    - 负载均衡散列
+    - 负载均衡轮询
+    - 地区负载均衡散列
+    - 地区负载均衡轮询
     - 香港节点
     - 台湾节点
     - 日本节点
@@ -384,10 +388,14 @@ default-select: &default-select
     - 节点选择
     - 自动选择
     - 手动选择
-    - 自动切换
-    - 手动切换
+    - 自动选择地区
+    - 手动选择地区
     - 故障转移
-    - 负载均衡
+    - 地区故障转移
+    - 负载均衡散列
+    - 负载均衡轮询
+    - 地区负载均衡散列
+    - 地区负载均衡轮询
     - 香港节点
     - 台湾节点
     - 日本节点
@@ -408,10 +416,14 @@ cns-elect: &cns-elect
     - 节点选择
     - 自动选择
     - 手动选择
-    - 自动切换
-    - 手动切换
+    - 自动选择地区
+    - 手动选择地区
     - 故障转移
-    - 负载均衡
+    - 地区故障转移
+    - 负载均衡散列
+    - 负载均衡轮询
+    - 地区负载均衡散列
+    - 地区负载均衡轮询
     - 香港节点
     - 台湾节点
     - 日本节点
@@ -430,10 +442,14 @@ globe-select: &globe-select
     - 节点选择
     - 自动选择
     - 手动选择
-    - 自动切换
-    - 手动切换
+    - 自动选择地区
+    - 手动选择地区
     - 故障转移
-    - 负载均衡
+    - 地区故障转移
+    - 负载均衡散列
+    - 负载均衡轮询
+    - 地区负载均衡散列
+    - 地区负载均衡轮询
     - 香港节点
     - 台湾节点
     - 日本节点
@@ -454,19 +470,19 @@ p: &p
   health-check:
     enable: true
     url: "http://www.apple.com/library/test/success.html"
-    interval: 300
+    interval: 600
     tolerance: 50
 
 # 自动选择 测试连通性以及延迟
 url-test: &url-test
   type: url-test
-  interval: 50
-  tolerance: 25
+  interval: 300
+  tolerance: 50
   lazy: true
   url: "http://www.apple.com/library/test/success.html"
   disable-udp: false
-  timeout: 2000
-  max-failed-times: 3
+  timeout: 3000
+  max-failed-times: 5
   hidden: false
   include-all-providers: true
 
@@ -477,23 +493,33 @@ fallabck: &fallabck
   lazy: true
   url: "http://www.apple.com/library/test/success.html"
   disable-udp: false
-  timeout: 2000
-  max-failed-times: 3
+  timeout: 3000
+  max-failed-times: 5
   hidden: false
-  include-all-providers: true
 
-# 负载均衡 测试连通性以及延迟
-load-balance: &load-balance
+# 负载均衡-散列 测试连通性以及延迟
+load-balance-ch: &load-balance-ch
   type: load-balance
   interval: 50
   lazy: true
   url: "http://www.apple.com/library/test/success.html"
   disable-udp: false
   strategy: consistent-hashing
-  timeout: 2000
-  max-failed-times: 3
+  timeout: 3000
+  max-failed-times: 5
   hidden: true
-  include-all-providers: true
+
+# 负载均衡-轮询 测试连通性以及延迟
+load-balance-rr: &load-balance-rr
+  type: load-balance
+  interval: 50
+  lazy: true
+  url: "http://www.apple.com/library/test/success.html"
+  disable-udp: false
+  strategy: round-robin
+  timeout: 3000
+  max-failed-times: 5
+  hidden: true
 
 # MARK: 规则行为锚点
 
@@ -550,15 +576,22 @@ proxy-groups:
     type: select
     include-all-providers: true
 
-  - name: 手动切换
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Static_1.png"
+  - name: 手动选择地区
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Static.png"
     type: select
     <<: *region-select
 
-  # 回退/转移
+  # 回退/转移/故障转移
   - name: "故障转移"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available_1.png"
+    include-all-providers: true
     <<: *fallabck
+
+  - name: "地区故障转移"
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available_1.png"
+    <<:
+      - *fallabck
+      - *region-select
 
   # 广告拦截
   - name: "广告拦截"
@@ -671,7 +704,7 @@ proxy-groups:
   - name: 香港节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png"
     type: select
-    proxies: [香港自动选择]
+    proxies: [香港自动选择, 香港负载均衡散列, 香港负载均衡轮询]
     include-all-providers: true
     filter: *filter-hk
 
@@ -680,10 +713,22 @@ proxy-groups:
     <<: *url-test
     filter: *filter-hk
 
+  - name: 香港负载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-hk
+
+  - name: 香港负载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-hk
+
   - name: 台湾节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
     type: select
-    proxies: [台湾自动选择]
+    proxies: [台湾自动选择, 台湾负载均衡散列, 台湾负载均衡轮询]
     include-all-providers: true
     filter: *filter-tw
 
@@ -692,10 +737,22 @@ proxy-groups:
     <<: *url-test
     filter: *filter-tw
 
+  - name: 台湾负载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-tw
+
+  - name: 台湾负载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-tw
+
   - name: 日本节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png"
     type: select
-    proxies: [日本自动选择]
+    proxies: [日本自动选择, 日本负载均衡散列, 日本负载均衡轮询]
     include-all-providers: true
     filter: *filter-jp
 
@@ -704,10 +761,22 @@ proxy-groups:
     <<: *url-test
     filter: *filter-jp
 
+  - name: 日本负载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-jp
+
+  - name: 日本负载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-jp
+
   - name: 新加坡节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png"
     type: select
-    proxies: [新加坡自动选择]
+    proxies: [新加坡自动选择, 新加坡载均衡散列, 新加坡载均衡轮询]
     include-all-providers: true
     filter: *filter-sg
 
@@ -716,10 +785,22 @@ proxy-groups:
     <<: *url-test
     filter: *filter-sg
 
+  - name: 新加坡载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-sg
+
+  - name: 新加坡载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-sg
+
   - name: 韩国节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png"
     type: select
-    proxies: [韩国自动选择]
+    proxies: [韩国自动选择, 韩国载均衡散列, 韩国载均衡轮询]
     include-all-providers: true
     filter: *filter-kr
 
@@ -728,10 +809,22 @@ proxy-groups:
     <<: *url-test
     filter: *filter-kr
 
+  - name: 韩国载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-kr
+
+  - name: 韩国载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-kr
+
   - name: 美国节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png"
     type: select
-    proxies: [美国自动选择]
+    proxies: [美国自动选择, 美国载均衡散列, 美国载均衡轮询]
     include-all-providers: true
     filter: *filter-us
 
@@ -740,10 +833,22 @@ proxy-groups:
     <<: *url-test
     filter: *filter-us
 
+  - name: 美国载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-us
+
+  - name: 美国载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-us
+
   - name: 德国节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png"
     type: select
-    proxies: [德国自动选择]
+    proxies: [德国自动选择, 德国载均衡散列, 德国载均衡轮询]
     filter: *filter-de
     include-all-providers: true
 
@@ -752,10 +857,22 @@ proxy-groups:
     <<: *url-test
     filter: *filter-de
 
+  - name: 德国载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-de
+
+  - name: 德国载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-de
+
   - name: 澳大利亚节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png"
     type: select
-    proxies: [澳大利亚自动选择]
+    proxies: [澳大利亚自动选择, 澳大利亚载均衡散列, 澳大利亚载均衡轮询]
     filter: *filter-au
     include-all-providers: true
 
@@ -764,10 +881,22 @@ proxy-groups:
     <<: *url-test
     filter: *filter-au
 
+  - name: 澳大利亚载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-au
+
+  - name: 澳大利亚载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-au
+
   - name: 英国节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png"
     type: select
-    proxies: [英国自动选择]
+    proxies: [英国自动选择, 英国载均衡散列, 英国载均衡轮询]
     filter: *filter-gb
     include-all-providers: true
 
@@ -776,16 +905,40 @@ proxy-groups:
     <<: *url-test
     filter: *filter-gb
 
+  - name: 英国载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-gb
+
+  - name: 英国载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-gb
+
   - name: 印度节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png"
     type: select
-    proxies: [印度自动选择]
+    proxies: [印度自动选择, 印度载均衡散列, 印度载均衡轮询]
     filter: *filter-in
     include-all-providers: true
 
   - name: 印度自动选择
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png"
     <<: *url-test
+    filter: *filter-in
+
+  - name: 印度载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-in
+
+  - name: 印度载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png"
+    include-all-providers: true
+    <<: *load-balance-rr
     filter: *filter-in
 
   # 兜底
@@ -795,25 +948,43 @@ proxy-groups:
 
   # 自动化
   - name: 自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Rocket.png"
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Auto.png"
     <<: *url-test
 
-  - name: 自动切换
+  - name: 自动选择地区
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Auto.png"
     type: url-test
-    interval: 50
-    tolerance: 25
+    interval: 300
+    tolerance: 50
     lazy: true
     url: "http://www.apple.com/library/test/success.html"
     disable-udp: false
-    timeout: 2000
-    max-failed-times: 3
+    timeout: 3000
+    max-failed-times: 5
     hidden: false
     <<: *region-select
 
-  - name: "负载均衡"
+  - name: "负载均衡散列"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available.png"
-    <<: *load-balance
+    include-all-providers: true
+    <<: *load-balance-ch
+
+  - name: "负载均衡轮询"
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+
+  - name: "地区负载均衡散列"
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available.png"
+    <<:
+      - *load-balance-ch
+      - *region-select
+
+  - name: "地区负载均衡轮询"
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available.png"
+    <<:
+      - *load-balance-rr
+      - *region-select
 
   # 动作
   - name: "直连"
@@ -1090,7 +1261,7 @@ rules:
   - RULE-SET,globe-classical,国际互联
 
   # 国际云计算
-  - RULE-SET,globe-cloud-ip,国际互联,no-resolve
+  - RULE-SET,globe-cloud-ip,国际互联
   - RULE-SET,globe-cloud-classical,国际互联
 
   # 游戏服务
@@ -1099,8 +1270,8 @@ rules:
   # 直连
   - RULE-SET,direct-private-domain,直连
   - RULE-SET,direct-domain,直连
-  - RULE-SET,direct-cncidr-ip,直连,no-resolve
-  - RULE-SET,direct-lancidr-ip,直连,no-resolve
+  - RULE-SET,direct-cncidr-ip,直连
+  - RULE-SET,direct-lancidr-ip,直连
   - RULE-SET,direct-cloud-classical,直连
   - RULE-SET,direct-replenish-domain,直连
 
