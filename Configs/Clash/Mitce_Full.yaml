@@ -37,47 +37,178 @@
 # 手动切换地区：支持
 # 自动切换地区：支持
 #
-# 更新时间：2024/09/29 23:00
+# 更新时间：2024/10/06
 
-######### 全局配置 #########
+# MARK: 端口配置
+#
+# HTTP(S) 代理服务器端口
+port: 7890
+# SOCKS5 代理端口
+socks-port: 7891
+# HTTP(S) 和 SOCKS 代理混合端口
+mixed-port: 7892
+# 透明代理端口，用于 Linux 和 MacOS
+redir-port: 7893
+# 适用于 Linux 的透明代理服务器端口（TProxy TCP 和 TProxy UDP）
+tproxy-port: 7894
 
-ipv6: true
+# MARK: 局域网配置
+#
+# 允许局域网连接
 allow-lan: true
-mixed-port: 7890
-unified-delay: false
-tcp-concurrent: true
-external-controller: 0.0.0.0:9090
+# 绑定 IP 地址，仅作用于 allow-lan 为 true，'*'表示所有地址
+bind-address: "*"
+# http,socks 入口的验证用户名，密码
+authentication:
+  - "admin:password"
+# 设置跳过验证的 IP 段
+skip-auth-prefixes:
+  - 127.0.0.1/8
+  - ::1/128
+# 允许连接的 IP 地址段，仅作用于 allow-lan 为 true, 默认值为 0.0.0.0/0 和::/0
+lan-allowed-ips:
+  - 0.0.0.0/0
+  - ::/0
+# 禁止连接的 IP 地址段，黑名单优先级高于白名单，默认值为空
+lan-disallowed-ips:
+
+# MARK: 进程匹配模式配置
+#
+#  - always, 开启，强制匹配所有进程
+#  - strict, 默认，由 mihomo 判断是否开启
+#  - off, 不匹配进程，推荐在路由器上使用此模式
+find-process-mode: strict
+
+# MARK: 运行模式配置
+#
+# rule 规则匹配
+# global 全局代理 (需要在 GLOBAL 策略组选择代理/策略)
+# direct 全局直连
+# 此项拥有默认值，默认为rule模式
+mode: rule
+
+# MARK: GEOIP数据模式配置
+#
+# Geodata Url
+geox-url:
+  geoip: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat"
+  geosite: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
+  mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country-lite.mmdb"
+  asn: https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb
+# 更改 geoip 使用文件，mmdb 或者 dat，可选 true/false,true为 dat，此项有默认值 false
+geodata-mode: false
+# 是否自动更新 geodata
+geo-auto-update: true
+# 更新间隔，单位：小时
+geo-update-interval: 24
+# 可选的加载模式如下
+# standard：标准加载器
+# memconservative：专为内存受限 (小内存) 设备优化的加载器 (默认值)
+geodata-loader: standard
+
+# MARK: 自定全局 UA
+#
+# 自定义外部资源下载时使用的的 UA，默认为 clash.meta
+global-ua: clash.meta
+
+# MARK: 日志配置
+#
+# 日志等级 silent/error/warning/info/debug
+log-level: info
+
+# MARK: IPV6配置
+#
+# 开启 IPv6 总开关，关闭阻断所有 IPv6 链接和屏蔽 DNS 请求 AAAA 记录
+# 是否允许内核接受 IPv6 流量
+# 可选值 true/false,默认为 true
+ipv6: true
+# 支持UDP 可选值 true/false,默认为 false
+udp: true
+
+# MARK: ETag支持
+#
+# 外部资源下载的 ETag 支持，默认为 true
+etag-support: true
+
+# MARK: WEB UI配置
+#
+# 目录，使用 http://{{external-controller}}/ui 访问
 external-ui: ui
-external-ui-name: xd
+external-ui-name: metacubexd
 external-ui-url: "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip"
+# API 监听地址
+external-controller: 0.0.0.0:9090
+# API HTTPS 监听地址，需要配置 tls 部分配置文件
+external-controller-tls: 0.0.0.0:9443
+# API 的访问密钥
 secret: ""
 
-geodata-mode: true
-geox-url:
-  geoip: "https://mirror.ghproxy.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat"
-  geosite: "https://mirror.ghproxy.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
-  mmdb: "https://mirror.ghproxy.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country-lite.mmdb"
+# MARK: TCP 并发配置
+#
+# TCP 并发连接所有 IP, 将使用最快握手的 TCP
+tcp-concurrent: true
 
-geo-auto-update: false
-geo-update-interval: 24
+# MARK: 延迟配置
+#
+# 开启统一延迟时，会计算 RTT，以消除连接握手等带来的不同类型节点的延迟差异
+# 可选值 true/false
+unified-delay: true
 
-find-process-mode: strict
+# MARK: TLS 指纹配置
+#
+# 全局 TLS 指纹，优先低于 proxy 内的 client-fingerprint
+# 可选： "chrome","firefox","safari","ios","random","none" options.
 global-client-fingerprint: chrome
 
+# MARK: TCP Keep Alive 配置
+#
+# 修改此项以减少移动设备耗电问题
+# TCP Keep Alive 包的间隔，单位为秒
+keep-alive-interval: 15
+# TCP Keep Alive 的最大空闲时间
+keep-alive-idle: 600
+# 禁用 TCP Keep Alive，在 Amdroid 默认为 true
+disable-keep-alive: false
+
+# MARK: 持久化配置
+#
+# 缓存信息
 profile:
+  # 存储 select 选择记录
+  # 储存 API 对策略组的选择，以供下次启动时使用
   store-selected: true
+  # 持久化 fake-ip
+  # 储存 fakeip 映射表，域名再次发生连接时，使用原有映射地址
   store-fake-ip: true
 
+# MARK: TUN配置
+#
+# 虚拟网卡
 tun:
-  enable: true
-  stack: mixed
+  # 是否开启
+  enable: false
+  # gvisor/mixed
+  stack: system
+  # 需要劫持的 DNS
   dns-hijack:
-    - "any:53"
-  auto-route: true
+    - 0.0.0.0:53
+  # 自动识别出口网卡
   auto-detect-interface: true
+  # 配置路由表
+  auto-route: true
+  # 最大传输单元
+  mtu: 1500
+  # 自动配置 iptables 以重定向 TCP 连接。仅支持 Linux。带有 auto-redirect 的 auto-route 现在可以在路由器上按预期工作，无需干预。
+  auto-redirect: true
 
+# MARK: 域名嗅探配置
+#
+# 域名嗅探
 sniffer:
   enable: true
+  force-dns-mapping: true
+  parse-pure-ip: true
+  override-destination: true
   sniff:
     HTTP:
       ports: [80, 8080-8880]
@@ -86,15 +217,41 @@ sniffer:
       ports: [443, 8443]
     QUIC:
       ports: [443, 8443]
+  force-domain:
+    - "+.v2ex.com"
   skip-domain:
     - "Mijia Cloud"
-    - "+.apple.com"
+    - "+.push.apple.com"
 
+# MARK: DNS配置
+#
+# DNS
 dns:
-  enable: true
-  listen: 0.0.0.0:53
-  ipv6: true
   cache-algorithm: arc
+  # 关闭将使用系统 DNS
+  enable: true
+  # 是否开启 DoH 支持 HTTP/3，将并发尝试
+  prefer-h3: true
+  # 开启 DNS 服务器监听
+  listen: 0.0.0.0:53
+  # false 将返回 AAAA 的空结果
+  ipv6: true
+  # 单位：ms，内部双栈并发时，向上游查询 AAAA 时，等待 AAAA 的时间，默认 100ms
+  ipv6-timeout: 300
+  # 可选 blacklist/whitelist，默认blacklist``，whitelist 即只有匹配成功才返回 fake-ip
+  fake-ip-filter-mode: blacklist
+  # 使用系统DNS
+  use-system-hosts: false
+  # 使用自定义DNS
+  use-hosts: false
+  # 配置后面的nameserver、fallback和nameserver-policy向dns服务器的连接过程是否遵守遵守rules规则
+  # 如果为false（默认值）则这三部分的dns服务器在未特别指定的情况下会直连
+  # 如果为true，将会按照rules的规则匹配链接方式（走代理或直连），如果有特别指定则任然以指定值为准
+  # 仅当proxy-server-nameserver非空时可以开启此选项, 强烈不建议和prefer-h3一起使用
+  # 此外，这三者配置中的dns服务器如果出现域名会采用default-nameserver配置项解析，也请确保正确配置default-nameserver
+  respect-rules: true
+  # 用于解析 nameserver，fallback 以及其他 DNS 服务器配置的，DNS 服务域名
+  # 只能使用纯 IP 地址，可使用加密 DNS
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
@@ -102,50 +259,30 @@ dns:
     - 8.8.8.8
     - 1.1.1.1
     - 208.67.222.222
+    - system
   nameserver:
-    - tcp://223.5.5.5
-    - udp://223.5.5.5
-    - tls://223.5.5.5
-    - tcp://119.29.29.29
-    - udp://119.29.29.29
-    - tls://119.29.29.29
-    - tcp://180.76.76.76
-    - udp://180.76.76.76
-    - tls://180.76.76.76
-    - tcp://1.1.1.1
-    - udp://1.1.1.1
-    - tls://1.1.1.1
-    - "tcp://[2400:3200::1]"
-    - "udp://[2400:3200::1]"
-    - "tls://[2400:3200::1]"
-    - "tcp://[2402:4e00::]"
-    - "udp://[2402:4e00::]"
-    - "tls://[2402:4e00::]"
-    - "tcp://[2400:da00::6666]"
-    - "udp://[2400:da00::6666]"
-    - "tls://[2400:da00::6666]"
-    - "tcp://[2606:4700:4700::1111]"
-    - "udp://[2606:4700:4700::1111]"
-    - "tls://[2606:4700:4700::1111]"
+    - 223.5.5.5
+    - 119.29.29.29
+    - 180.76.76.76
+    - 1.1.1.1
+    - "[2400:3200::1]"
+    - "[2402:4e00::]"
+    - "[2400:da00::6666]"
+    - "[2606:4700:4700::1111]"
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+    - https://doh.360.cn/dns-query
+    - https://cloudflare-dns.com/dns-query
   fallback:
-    - tcp://8.8.8.8
-    - udp://8.8.8.8
-    - tls://8.8.8.8
-    - tcp://208.67.222.222
-    - udp://208.67.222.222
-    - tls://208.67.222.222
-    - tcp://1.1.1.1
-    - udp://1.1.1.1
-    - tls://1.1.1.1
-    - "tcp://[2001:4860:4860::8888]"
-    - "udp://[2001:4860:4860::8888]"
-    - "tls://[2001:4860:4860::8888]"
-    - "tcp://[2620:0:ccc::2]"
-    - "udp://[2620:0:ccc::2]"
-    - "tls://[2620:0:ccc::2]"
-    - "tcp://[2606:4700:4700::1111]"
-    - "udp://[2606:4700:4700::1111]"
-    - "tls://[2606:4700:4700::1111]"
+    - 8.8.8.8
+    - 208.67.222.222
+    - 1.1.1.1
+    - "[2001:4860:4860::8888]"
+    - "[2620:0:ccc::2]"
+    - "[2606:4700:4700::1111]"
+    - https://dns.google/dns-query
+    - https://doh.opendns.com/dns-query
+    - https://cloudflare-dns.com/dns-query
   proxy-server-nameserver:
     - https://dns.alidns.com/dns-query
     - https://cloudflare-dns.com/dns-query
@@ -153,20 +290,60 @@ dns:
     - https://dns.google/dns-query
     - https://doh.360.cn/dns-query
     - https://doh.opendns.com/dns-query
+  # 可选值 fake-ip/redir-host，默认redir-host
   enhanced-mode: fake-ip
+  # fake-ip 池设置
   fake-ip-range: 198.18.0.1/16
+  # fakeip 过滤，以下地址不会下发 fakeip 映射用于连接
+  # 值支持域名通配以及引入域名集合
   fake-ip-filter:
-    - "+.lan"
-    - "+.local"
+    # LAN
+    - "*.lan"
+    - "*.local"
+    - "*.localhost"
+    # NTP服务
+    - time.*.com
+    - time.*.gov
+    - time.*.edu.cn
+    - time.*.apple.com
+    - time-ios.apple.com
+    - time1.*.com
+    - time2.*.com
+    - time3.*.com
+    - time4.*.com
+    - time5.*.com
+    - time6.*.com
+    - time7.*.com
+    - ntp.*.com
+    - ntp1.*.com
+    - ntp2.*.com
+    - ntp3.*.com
+    - ntp4.*.com
+    - ntp5.*.com
+    - ntp6.*.com
+    - ntp7.*.com
+    - "*.time.edu.cn"
+    - "*.ntp.org.cn"
+    - "+.pool.ntp.org"
+    - time1.cloud.tencent.com
+    - cn.ntp.org.cn
+    - ntp.ntsc.ac.cn
+    - cn.pool.ntp.org
+    # STUN
+    - stun.*.*
+    - stun.*.*.*
+    - "+.stun.*.*"
+    - "+.stun.*.*.*"
+    - "+.stun.*.*.*.*"
+    - "+.stun.*.*.*.*.*"
   fallback-filter:
     geoip: true
     geoip-code: CN
 
-######### 锚点配置 #########
+# MARK: 策略组锚点
 
-# 策略组
-
-pr: &pr
+# 节点选择（默认节点：自动选择）
+proxie-select: &proxie-select
   type: select
   proxies:
     - 自动选择
@@ -186,7 +363,8 @@ pr: &pr
     - 英国节点
     - 印度节点
 
-re: &re
+# 区域选择 (默认节点：香港)
+region-select: &region-select
   proxies:
     - 香港节点
     - 台湾节点
@@ -199,7 +377,8 @@ re: &re
     - 英国节点
     - 印度节点
 
-de: &de
+# 默认选择 (默认节点：节点选择)
+default-select: &default-select
   type: select
   proxies:
     - 节点选择
@@ -221,7 +400,8 @@ de: &de
     - 印度节点
     - 直连
 
-cn: &cn
+# 国内选择（默认节点：直连）
+cns-elect: &cns-elect
   type: select
   proxies:
     - 直连
@@ -243,7 +423,8 @@ cn: &cn
     - 英国节点
     - 印度节点
 
-globe: &globe
+# 全球选择（默认节点：节点选择）
+globe-select: &globe-select
   type: select
   proxies:
     - 节点选择
@@ -264,24 +445,57 @@ globe: &globe
     - 英国节点
     - 印度节点
 
-# 订阅更新和延迟测试
+# MARK: 订阅更新和延迟测试锚点
 
+# 节点集合 测试连通性以及延迟
 p: &p
   type: http
   interval: 86400
   health-check:
     enable: true
     url: "http://www.apple.com/library/test/success.html"
-    interval: 600
+    interval: 300
     tolerance: 50
 
-uta: &uta
+# 自动选择 测试连通性以及延迟
+url-test: &url-test
+  type: url-test
+  interval: 50
+  tolerance: 25
+  lazy: true
   url: "http://www.apple.com/library/test/success.html"
-  interval: 300
-  tolerance: 50
+  disable-udp: false
+  timeout: 2000
+  max-failed-times: 3
+  hidden: false
   include-all-providers: true
 
-# 规则行为
+# 回退/转移/故障转移 测试连通性以及延迟
+fallabck: &fallabck
+  type: fallback
+  interval: 50
+  lazy: true
+  url: "http://www.apple.com/library/test/success.html"
+  disable-udp: false
+  timeout: 2000
+  max-failed-times: 3
+  hidden: false
+  include-all-providers: true
+
+# 负载均衡 测试连通性以及延迟
+load-balance: &load-balance
+  type: load-balance
+  interval: 50
+  lazy: true
+  url: "http://www.apple.com/library/test/success.html"
+  disable-udp: false
+  strategy: consistent-hashing
+  timeout: 2000
+  max-failed-times: 3
+  hidden: true
+  include-all-providers: true
+
+# MARK: 规则行为锚点
 
 rule-anchor:
   ip: &ip
@@ -299,25 +513,37 @@ rule-anchor:
     interval: 86400
     behavior: classical
 
-######### 远程订阅配置 #########
+# MARK: 远程订阅配置
 
 # 1. url 里填写自己的订阅链接，多个订阅链接时名称不能重复。
 # 2. url 中可以填写 Base64 订阅链接字符串。
 # 3. 请使用 Clash 类型订阅链接填入引号""内使用。
 # 4. 或可使用通用订阅链接通过 Sub-Store 进行订阅转换(用于 Stash)。
-
 proxy-providers:
   Mitce:
     <<: *p
     path: ./proxy-providers/Mitce.yaml
 
-######### 定义代理组配置 #########
+# MARK: 过滤条件锚点
+
+filter-hk: &filter-hk "香港|深港|沪港|京港|港|(?i)HK|(?i)Hong Kong|🇭🇰"
+filter-tw: &filter-tw "台湾|台北|台中|台|新北|彰化|(?i)Taiwan|(?i)TW|🇨🇳"
+filter-jp: &filter-jp "日本|川日|东京|大阪|泉日|埼玉|沪日|深日|京日|苏日|沪日|上日|广日|[^-]日|(?i)JP|(?i)Japan|(?i)Tokyo|🇯🇵"
+filter-sg: &filter-sg "新加坡|狮城|沪新|京新|深新|杭新|广新|(?i)SG|(?i)Singapore|🇸🇬"
+filter-kr: &filter-kr "韩国|首尔|韩|韓|春川|KR|Korea|korea|KOR|🇰🇷"
+filter-us: &filter-us "美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|(?i)USA|America|america|(?i)US|(?i)United States|🇺🇲"
+filter-de: &filter-de "德国|德意志|柏林|慕尼黑|法兰克福|汉堡|杜塞尔多夫|[^-]德|(?i)DE|(?i)Germany|🇩🇪"
+filter-au: &filter-au "悉尼|墨尔本|布里斯班|珀斯|阿德莱德|霍巴特|堪培拉|达尔文|(?i)AU|(?i)Australia|(?i)澳大利亚|🇦🇺"
+filter-gb: &filter-gb "伦敦|曼彻斯特|伯明翰|利物浦|爱丁堡|格拉斯哥|布里斯托|纽卡斯尔|威尔士|英格兰|苏格兰|(?i)UK|(?i)GB|(?i)United Kingdom|(?i)英国|🇬🇧"
+filter-in: &filter-in "新德里|孟买|班加罗尔|海得拉巴|艾哈迈达巴德|钦奈|卡尔各答|浦那|(?i)IN|(?i)India|(?i)印度|🇮🇳"
+
+# MARK: 定义代理组配置
 
 proxy-groups:
   # 节点选择
   - name: 节点选择
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Proxy.png"
-    <<: *pr
+    <<: *proxie-select
 
   - name: 手动选择
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Static.png"
@@ -327,13 +553,12 @@ proxy-groups:
   - name: 手动切换
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Static_1.png"
     type: select
-    <<: *re
+    <<: *region-select
 
   # 回退/转移
   - name: "故障转移"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available_1.png"
-    type: fallback
-    <<: *uta
+    <<: *fallabck
 
   # 广告拦截
   - name: "广告拦截"
@@ -344,206 +569,273 @@ proxy-groups:
   # 苹果服务
   - name: "苹果服务"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple.png"
-    <<: *cn
+    <<: *cns-elect
 
   - name: "苹果系统更新"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_Update.png"
-    <<: *cn
+    <<: *cns-elect
 
   - name: "苹果音乐"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_Music.png"
-    <<: *cn
+    <<: *cns-elect
 
   - name: "iCloud"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/iCloud.png"
-    <<: *cn
+    <<: *cns-elect
 
   - name: "App Store"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/App_Store.png"
-    <<: *cn
+    <<: *cns-elect
 
   - name: "苹果邮件"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Mail.png"
-    <<: *cn
+    <<: *cns-elect
 
   # 微软服务
   - name: "微软服务"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Microsoft.png"
-    <<: *cn
+    <<: *cns-elect
 
   - name: "GitHub"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/GitHub.png"
-    <<: *globe
+    <<: *globe-select
 
   - name: "OneDrive"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/OneDrive.png"
-    <<: *cn
+    <<: *cns-elect
 
   # 谷歌服务
   - name: "谷歌服务"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Google_Search.png"
-    <<: *globe
+    <<: *globe-select
 
   - name: "YouTube 视频"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/YouTube.png"
-    <<: *globe
+    <<: *globe-select
 
   - name: "YouTube 音乐"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/YouTube_Music.png"
-    <<: *globe
+    <<: *globe-select
 
   # 电报消息
   - name: "电报消息"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Telegram_X.png"
-    <<: *globe
+    <<: *globe-select
 
   # Discord
   - name: "Discord"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Discord.png"
-    <<: *globe
+    <<: *globe-select
 
   # 奈飞视频
   - name: "奈飞视频"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Netflix.png"
-    <<: *globe
+    <<: *globe-select
 
   # Emby视频
   - name: "Emby 视频"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Emby.png"
-    <<: *de
+    <<: *default-select
 
   # AI/人工智能
   - name: "OpenAI"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Bot.png"
-    <<: *globe
+    <<: *globe-select
 
   # 国际抖音
   - name: "国际抖音"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/TikTok.png"
-    <<: *globe
+    <<: *globe-select
 
   # Spotify 音乐
   - name: "Spotify 音乐"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Spotify.png"
-    <<: *globe
+    <<: *globe-select
 
   # 国际媒体
   - name: "国际媒体"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/ForeignMedia.png"
-    <<: *globe
+    <<: *globe-select
 
   # 国际互联
   - name: "国际互联"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Global.png"
-    <<: *globe
+    <<: *globe-select
 
   # 游戏服务
   - name: "游戏服务"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Game.png"
-    <<: *de
+    <<: *default-select
 
   # 地域/区域
   - name: 香港节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png"
     type: select
+    proxies: [香港自动选择]
     include-all-providers: true
-    filter: "香港|深港|沪港|京港|港|(?i)HK|(?i)Hong Kong|🇭🇰"
+    filter: *filter-hk
+
+  - name: 香港自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png"
+    <<: *url-test
+    filter: *filter-hk
 
   - name: 台湾节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
     type: select
+    proxies: [台湾自动选择]
     include-all-providers: true
-    filter: "台湾|台北|台中|台|新北|彰化|(?i)Taiwan|(?i)TW|🇨🇳"
+    filter: *filter-tw
+
+  - name: 台湾自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
+    <<: *url-test
+    filter: *filter-tw
 
   - name: 日本节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png"
     type: select
+    proxies: [日本自动选择]
     include-all-providers: true
-    filter: "日本|川日|东京|大阪|泉日|埼玉|沪日|深日|京日|苏日|沪日|上日|广日|[^-]日|(?i)JP|(?i)Japan|(?i)Tokyo|🇯🇵"
+    filter: *filter-jp
+
+  - name: 日本自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png"
+    <<: *url-test
+    filter: *filter-jp
 
   - name: 新加坡节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png"
     type: select
+    proxies: [新加坡自动选择]
     include-all-providers: true
-    filter: "新加坡|狮城|沪新|京新|深新|杭新|广新|(?i)SG|(?i)Singapore|🇸🇬"
+    filter: *filter-sg
+
+  - name: 新加坡自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png"
+    <<: *url-test
+    filter: *filter-sg
 
   - name: 韩国节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png"
     type: select
+    proxies: [韩国自动选择]
     include-all-providers: true
-    filter: "韩国|首尔|韩|韓|春川|KR|Korea|korea|KOR|🇰🇷"
+    filter: *filter-kr
+
+  - name: 韩国自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png"
+    <<: *url-test
+    filter: *filter-kr
 
   - name: 美国节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png"
     type: select
+    proxies: [美国自动选择]
     include-all-providers: true
-    filter: "美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|(?i)USA|America|america|(?i)US|(?i)United States|🇺🇲"
+    filter: *filter-us
+
+  - name: 美国自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png"
+    <<: *url-test
+    filter: *filter-us
 
   - name: 德国节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png"
     type: select
-    filter: "德国|德意志|柏林|慕尼黑|法兰克福|汉堡|杜塞尔多夫|[^-]德|(?i)DE|(?i)Germany|🇩🇪"
+    proxies: [德国自动选择]
+    filter: *filter-de
     include-all-providers: true
+
+  - name: 德国自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png"
+    <<: *url-test
+    filter: *filter-de
 
   - name: 澳大利亚节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png"
     type: select
-    filter: "悉尼|墨尔本|布里斯班|珀斯|阿德莱德|霍巴特|堪培拉|达尔文|(?i)AU|(?i)Australia|(?i)澳大利亚|🇦🇺"
+    proxies: [澳大利亚自动选择]
+    filter: *filter-au
     include-all-providers: true
+
+  - name: 澳大利亚自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png"
+    <<: *url-test
+    filter: *filter-au
 
   - name: 英国节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png"
     type: select
-    filter: "伦敦|曼彻斯特|伯明翰|利物浦|爱丁堡|格拉斯哥|布里斯托|纽卡斯尔|威尔士|英格兰|苏格兰|(?i)UK|(?i)GB|(?i)United Kingdom|(?i)英国|🇬🇧"
+    proxies: [英国自动选择]
+    filter: *filter-gb
     include-all-providers: true
+
+  - name: 英国自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png"
+    <<: *url-test
+    filter: *filter-gb
 
   - name: 印度节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png"
     type: select
-    filter: "新德里|孟买|班加罗尔|海得拉巴|艾哈迈达巴德|钦奈|卡尔各答|浦那|(?i)IN|(?i)India|(?i)印度|🇮🇳"
+    proxies: [印度自动选择]
+    filter: *filter-in
     include-all-providers: true
+
+  - name: 印度自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png"
+    <<: *url-test
+    filter: *filter-in
 
   # 兜底
   - name: "漏网之鱼"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Final.png"
-    <<: *de
+    <<: *default-select
 
   # 自动化
   - name: 自动选择
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Rocket.png"
-    type: url-test
-    <<: *uta
+    <<: *url-test
 
   - name: 自动切换
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Auto.png"
     type: url-test
+    interval: 50
+    tolerance: 25
+    lazy: true
     url: "http://www.apple.com/library/test/success.html"
-    interval: 300
-    tolerance: 50
-    <<: *re
+    disable-udp: false
+    timeout: 2000
+    max-failed-times: 3
+    hidden: false
+    <<: *region-select
 
   - name: "负载均衡"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available.png"
-    type: load-balance
-    <<: *uta
+    <<: *load-balance
 
   # 动作
   - name: "直连"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Direct.png"
     type: select
+    udp: true
+    hidden: true
     proxies: [DIRECT]
 
   - name: "拒绝"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Reject.png"
     type: select
+    hidden: true
     proxies: [REJECT]
 
   - name: "绕过"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Bypass.png"
     type: select
+    hidden: true
     proxies: [PASS]
 
-######### 规则集配置 #########
+# MARK: 规则集配置
 
 rule-providers:
   # 苹果服务
@@ -737,7 +1029,7 @@ rule-providers:
     path: ./rule-providers/direct-cloud-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cloud/CloudCN/CloudCN_No_Resolve.yaml"
 
-######### 分流规则配置 #########
+# MARK: 分流规则配置
 
 # 注意：规则顺序直接影响规则判定，将会导致分流效果不佳。
 # 注意：规则顺序直接影响规则判定，将会导致分流效果不佳。
@@ -798,7 +1090,7 @@ rules:
   - RULE-SET,globe-classical,国际互联
 
   # 国际云计算
-  - RULE-SET,globe-cloud-ip,国际互联
+  - RULE-SET,globe-cloud-ip,国际互联,no-resolve
   - RULE-SET,globe-cloud-classical,国际互联
 
   # 游戏服务
@@ -807,13 +1099,13 @@ rules:
   # 直连
   - RULE-SET,direct-private-domain,直连
   - RULE-SET,direct-domain,直连
-  - RULE-SET,direct-cncidr-ip,直连
-  - RULE-SET,direct-lancidr-ip,直连
+  - RULE-SET,direct-cncidr-ip,直连,no-resolve
+  - RULE-SET,direct-lancidr-ip,直连,no-resolve
   - RULE-SET,direct-cloud-classical,直连
   - RULE-SET,direct-replenish-domain,直连
 
   # GEO
-  - GEOIP,lan,直连
+  - GEOIP,LAN,直连
   - GEOIP,CN,直连
 
   # 兜底
