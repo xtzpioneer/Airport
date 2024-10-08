@@ -601,6 +601,7 @@ proxy-providers:
   Mitce:
     <<: *p
     path: ./proxy-providers/Mitce.yaml
+    url: ""
     # override 覆写节点内容，以下为支持的字段
     # override.additional-prefix 为节点名称添加固定前缀
     # override.additional-suffix 为节点名称添加固定后缀
