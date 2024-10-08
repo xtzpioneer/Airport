@@ -37,7 +37,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2024/10/06
+# 更新时间：2024/10/08
 
 # MARK: 端口配置
 #
@@ -60,7 +60,7 @@ allow-lan: true
 bind-address: "*"
 # http,socks 入口的验证用户名，密码
 authentication:
-  # - "admin:password"
+  # - "admin:12345678"
 # 设置跳过验证的 IP 段
 skip-auth-prefixes:
   - 127.0.0.1/8
@@ -187,28 +187,49 @@ profile:
 tun:
   # 是否开启
   enable: false
-  # gvisor/mixed
-  stack: system
-  # 需要劫持的 DNS
+  # tun 模式堆栈，如无使用问题，建议使用 mixed栈，默认 gvisor
+  # 可用值： system/gvisor/mixed
+  # system 使用系统协议栈，可以提供更稳定/全面的 tun 体验，且占用相对其他堆栈更低
+  # gvisor 通过在用户空间中实现网络协议栈，可以提供更高的安全性和隔离性，同时可以避免操作系统内核和用户空间之间的切换，从而在特定情况下具有更好的网络处理性能
+  # mixed 混合堆栈，tcp 使用 system栈，udp 使用 gvisor栈，使用体验可能相对更好
+  stack: gvisor
+  # dns 劫持，将匹配到的连接导入内部 dns 模块
   dns-hijack:
     - 0.0.0.0:53
-  # 自动识别出口网卡
+  # 自动选择流量出口接口，多出口网卡同时连接的设备建议手动指定出口网卡
   auto-detect-interface: true
-  # 配置路由表
+  # 自动设置全局路由，可以自动将全局流量路由进入 tun 网卡。
   auto-route: true
   # 最大传输单元
   mtu: 1500
   # 自动配置 iptables 以重定向 TCP 连接。仅支持 Linux。带有 auto-redirect 的 auto-route 现在可以在路由器上按预期工作，无需干预。
   auto-redirect: true
+  # 是否启用严格的路由
+  # 启用 auto-route 时执行严格的路由规则
+  # 在 Linux 中:
+  # 让不支持的网络无法到达
+  # 将所有连接路由到 tun
+  # 它可以防止地址泄漏，并使 DNS 劫持在 Android 上工作。
+  # 在 Windows 中:
+  # 添加防火墙规则以阻止 Windows 的 普通多宿主 DNS 解析行为 造成的 DNS 泄露
+  # 它可能会使某些应用程序（如 VirtualBox）在某些情况下无法正常工作。
+  strict-route: false
 
 # MARK: 域名嗅探配置
 #
 # 域名嗅探
 sniffer:
+  # 是否启用 sniffer
   enable: true
+  # 对 redir-host 类型识别的流量进行强制嗅探
   force-dns-mapping: true
+  # 对所有未获取到域名的流量进行强制嗅探
   parse-pure-ip: true
+  # 是否使用嗅探结果作为实际访问，默认为 true
   override-destination: true
+  # 需要嗅探的协议设置，仅支持 HTTP/TLS/QUIC
+  # ports: 端口范围
+  # override-destination: 覆盖全局override-destination设置
   sniff:
     HTTP:
       ports: [80, 8080-8880]
@@ -217,11 +238,24 @@ sniffer:
       ports: [443, 8443]
     QUIC:
       ports: [443, 8443]
+  # 强制进行嗅探的域名列表，使用域名通配
   force-domain:
     - "+.v2ex.com"
+  # 跳过嗅探的域名列表，使用域名通配
   skip-domain:
+    - "rule-set:direct-domain,direct-private-domain"
     - "Mijia Cloud"
     - "+.push.apple.com"
+    - "+.wechat.com"
+    - "+.qpic.cn"
+    - "+.qq.com"
+    - "+.wechatapp.com"
+  # 跳过嗅探的来源 IP 段列表
+  skip-src-address:
+    # - 192.168.0.3/32
+  # 跳过嗅探的目标 IP 段列表
+  skip-dst-address:
+    # - 192.168.0.3/32
 
 # MARK: DNS配置
 #
@@ -231,7 +265,7 @@ dns:
   # 关闭将使用系统 DNS
   enable: true
   # 是否开启 DoH 支持 HTTP/3，将并发尝试
-  prefer-h3: true
+  prefer-h3: false
   # 开启 DNS 服务器监听
   listen: 0.0.0.0:53
   # false 将返回 AAAA 的空结果
@@ -259,7 +293,14 @@ dns:
     - 8.8.8.8
     - 1.1.1.1
     - 208.67.222.222
+    - "[2400:3200::1]"
+    - "[2402:4e00::]"
+    - "[2400:da00::6666]"
+    - "[2001:4860:4860::8888]"
+    - "[2606:4700:4700::1111]"
+    - "[2620:0:ccc::2]"
     - system
+  # 默认的域名解析服务器
   nameserver:
     - 223.5.5.5
     - 119.29.29.29
@@ -273,6 +314,8 @@ dns:
     - https://doh.pub/dns-query
     - https://doh.360.cn/dns-query
     - https://cloudflare-dns.com/dns-query
+  # 后备域名解析服务器，一般情况下使用境外 DNS, 保证结果可信
+  # 配置 fallback后默认启用 fallback-filter,geoip-code为 cn
   fallback:
     - 8.8.8.8
     - 208.67.222.222
@@ -283,6 +326,8 @@ dns:
     - https://dns.google/dns-query
     - https://doh.opendns.com/dns-query
     - https://cloudflare-dns.com/dns-query
+  # 代理节点域名解析服务器，仅用于解析代理节点的域名，
+  # 如果不填则遵循nameserver-policy、nameserver和fallback的配置
   proxy-server-nameserver:
     - https://dns.alidns.com/dns-query
     - https://cloudflare-dns.com/dns-query
@@ -297,6 +342,8 @@ dns:
   # fakeip 过滤，以下地址不会下发 fakeip 映射用于连接
   # 值支持域名通配以及引入域名集合
   fake-ip-filter:
+    # 国内
+    - "rule-set:direct-domain,direct-private-domain"
     # LAN
     - "*.lan"
     - "*.local"
@@ -336,8 +383,13 @@ dns:
     - "+.stun.*.*.*"
     - "+.stun.*.*.*.*"
     - "+.stun.*.*.*.*.*"
+  # 后备域名解析服务器筛选，满足条件的将使用 fallback结果或只使用 fallback解析
   fallback-filter:
+    # 是否启用 geoip 判断
     geoip: true
+    # 可选值为 国家缩写，默认值为 CN
+    # 除了 geoip-code 配置的国家 IP, 其他的 IP 结果会被视为污染
+    # geoip-code 配置的国家的结果会直接采用，否则将采用 fallback结果
     geoip-code: CN
 
 # MARK: 策略组锚点
@@ -481,7 +533,7 @@ url-test: &url-test
   lazy: true
   url: "http://www.apple.com/library/test/success.html"
   disable-udp: false
-  timeout: 3000
+  timeout: 5000
   max-failed-times: 5
   hidden: false
   include-all-providers: true
@@ -493,7 +545,7 @@ fallabck: &fallabck
   lazy: true
   url: "http://www.apple.com/library/test/success.html"
   disable-udp: false
-  timeout: 3000
+  timeout: 5000
   max-failed-times: 5
   hidden: false
 
@@ -505,7 +557,7 @@ load-balance-ch: &load-balance-ch
   url: "http://www.apple.com/library/test/success.html"
   disable-udp: false
   strategy: consistent-hashing
-  timeout: 3000
+  timeout: 5000
   max-failed-times: 5
   hidden: true
 
@@ -517,7 +569,7 @@ load-balance-rr: &load-balance-rr
   url: "http://www.apple.com/library/test/success.html"
   disable-udp: false
   strategy: round-robin
-  timeout: 3000
+  timeout: 5000
   max-failed-times: 5
   hidden: true
 
@@ -549,8 +601,14 @@ proxy-providers:
   Mitce:
     <<: *p
     path: ./proxy-providers/Mitce.yaml
+    # override 覆写节点内容，以下为支持的字段
+    # override.additional-prefix 为节点名称添加固定前缀
+    # override.additional-suffix 为节点名称添加固定后缀
+    # override.proxy-name 对节点名称内容进行替换，支持正则表达式，pattern 为替换内容，target 为替换目标
+    override:
+      # additional-prefix: "[A]"
 
-# MARK: 过滤条件锚点
+# MARK: 筛选条件锚点
 
 filter-hk: &filter-hk "香港|深港|沪港|京港|港|(?i)HK|(?i)Hong Kong|🇭🇰"
 filter-tw: &filter-tw "台湾|台北|台中|台|新北|彰化|(?i)Taiwan|(?i)TW|🇨🇳"
@@ -700,7 +758,7 @@ proxy-groups:
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Game.png"
     <<: *default-select
 
-  # 地域/区域
+  # 地域/区域/地区
   - name: 香港节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png"
     type: select
@@ -959,7 +1017,7 @@ proxy-groups:
     lazy: true
     url: "http://www.apple.com/library/test/success.html"
     disable-udp: false
-    timeout: 3000
+    timeout: 5000
     max-failed-times: 5
     hidden: false
     <<: *region-select
@@ -1208,9 +1266,6 @@ rule-providers:
 
 rules:
   # 直连应用
-  - RULE-SET,direct-applications-classical,直连
-
-  # 广告拦截
   - RULE-SET,ad-reject-domain,广告拦截
 
   # 苹果服务
@@ -1261,7 +1316,7 @@ rules:
   - RULE-SET,globe-classical,国际互联
 
   # 国际云计算
-  - RULE-SET,globe-cloud-ip,国际互联
+  - RULE-SET,globe-cloud-ip,国际互联,no-resolve
   - RULE-SET,globe-cloud-classical,国际互联
 
   # 游戏服务
@@ -1270,8 +1325,8 @@ rules:
   # 直连
   - RULE-SET,direct-private-domain,直连
   - RULE-SET,direct-domain,直连
-  - RULE-SET,direct-cncidr-ip,直连
-  - RULE-SET,direct-lancidr-ip,直连
+  - RULE-SET,direct-cncidr-ip,直连,no-resolve
+  - RULE-SET,direct-lancidr-ip,直连,no-resolve
   - RULE-SET,direct-cloud-classical,直连
   - RULE-SET,direct-replenish-domain,直连
 
