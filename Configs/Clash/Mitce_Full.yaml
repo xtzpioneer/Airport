@@ -37,7 +37,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2024/10/08
+# 更新时间：2024/10/16
 
 # MARK: 端口配置
 #
@@ -122,8 +122,6 @@ log-level: info
 # 是否允许内核接受 IPv6 流量
 # 可选值 true/false,默认为 true
 ipv6: true
-# 支持UDP 可选值 true/false,默认为 false
-udp: true
 
 # MARK: ETag支持
 #
@@ -255,7 +253,6 @@ sniffer:
 #
 # DNS
 dns:
-  cache-algorithm: arc
   # 关闭将使用系统 DNS
   enable: true
   # 是否开启 DoH 支持 HTTP/3，将并发尝试
@@ -268,10 +265,10 @@ dns:
   ipv6-timeout: 300
   # 可选 blacklist/whitelist，默认blacklist``，whitelist 即只有匹配成功才返回 fake-ip
   fake-ip-filter-mode: blacklist
-  # 使用系统DNS
-  use-system-hosts: false
-  # 使用自定义DNS
-  use-hosts: false
+  # 是否查询系统 hosts，默认 true
+  use-system-hosts: true
+  # 是否回应配置中的 hosts，默认 true
+  use-hosts: true
   # 配置后面的nameserver、fallback和nameserver-policy向dns服务器的连接过程是否遵守遵守rules规则
   # 如果为false（默认值）则这三部分的dns服务器在未特别指定的情况下会直连
   # 如果为true，将会按照rules的规则匹配链接方式（走代理或直连），如果有特别指定则任然以指定值为准
@@ -284,46 +281,73 @@ dns:
     - 223.5.5.5
     - 119.29.29.29
     - 180.76.76.76
-    - 8.8.8.8
     - 1.1.1.1
+    - 8.8.8.8
     - 208.67.222.222
     - "[2400:3200::1]"
     - "[2402:4e00::]"
     - "[2400:da00::6666]"
-    - "[2001:4860:4860::8888]"
     - "[2606:4700:4700::1111]"
+    - "[2001:4860:4860::8888]"
     - "[2620:0:ccc::2]"
     - system
   # 用于direct出口域名解析的 DNS 服务器，如果不填则遵循nameserver-policy、nameserver和fallback的配置
   direct-nameserver:
     - system
+  # 是否遵循nameserver-policy，默认为不遵守，仅当direct-nameserver不为空时生效
+  direct-nameserver-follow-policy: false
   # 默认的域名解析服务器
   nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+    - https://doh.360.cn/dns-query
     - 223.5.5.5
     - 119.29.29.29
     - 180.76.76.76
-    - 1.1.1.1
     - "[2400:3200::1]"
     - "[2402:4e00::]"
     - "[2400:da00::6666]"
-    - "[2606:4700:4700::1111]"
-  # 后备域名解析服务器，一般情况下使用境外 DNS, 保证结果可信
-  # 配置 fallback后默认启用 fallback-filter,geoip-code为 cn
-  fallback:
+    - https://dns.google/dns-query
+    - https://cloudflare-dns.com/dns-query
+    - https://doh.opendns.com/dns-query
     - 8.8.8.8
     - 1.1.1.1
     - 208.67.222.222
     - "[2606:4700:4700::1111]"
     - "[2001:4860:4860::8888]"
     - "[2620:0:ccc::2]"
+    - https://dns.google/dns-query
+    - https://cloudflare-dns.com/dns-query
+    - https://doh.opendns.com/dns-query
+  # 后备域名解析服务器，一般情况下使用境外 DNS, 保证结果可信
+  # 配置 fallback后默认启用 fallback-filter,geoip-code为 cn
+  fallback:
+    - https://dns.google/dns-query
+    - https://cloudflare-dns.com/dns-query
+    - https://doh.opendns.com/dns-query
+    - 8.8.8.8
+    - 1.1.1.1
+    - 208.67.222.222
+    - "[2606:4700:4700::1111]"
+    - "[2001:4860:4860::8888]"
+    - "[2620:0:ccc::2]"
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+    - https://doh.360.cn/dns-query
+    - 223.5.5.5
+    - 119.29.29.29
+    - 180.76.76.76
+    - "[2400:3200::1]"
+    - "[2402:4e00::]"
+    - "[2400:da00::6666]"
   # 代理节点域名解析服务器，仅用于解析代理节点的域名，
   # 如果不填则遵循nameserver-policy、nameserver和fallback的配置
   proxy-server-nameserver:
     - https://dns.alidns.com/dns-query
-    - https://cloudflare-dns.com/dns-query
     - https://doh.pub/dns-query
-    - https://dns.google/dns-query
     - https://doh.360.cn/dns-query
+    - https://cloudflare-dns.com/dns-query
+    - https://dns.google/dns-query
     - https://doh.opendns.com/dns-query
   # 可选值 fake-ip/redir-host，默认redir-host
   enhanced-mode: fake-ip
@@ -379,6 +403,10 @@ dns:
     # 除了 geoip-code 配置的国家 IP, 其他的 IP 结果会被视为污染
     # geoip-code 配置的国家的结果会直接采用，否则将采用 fallback结果
     geoip-code: CN
+    # 可选值为对于的 geosite 内包含的集合
+    # geosite 列表的内容被视为已污染，匹配到 geosite 的域名，将只使用 fallback解析，不去使用 nameserver
+    geosite:
+      - geolocation-!cn
 
 # MARK: 策略组锚点
 
