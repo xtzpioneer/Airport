@@ -37,7 +37,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2024/10/16
+# 更新时间：2024/10/17
 
 # MARK: 端口配置
 #
@@ -274,7 +274,7 @@ dns:
   # 如果为true，将会按照rules的规则匹配链接方式（走代理或直连），如果有特别指定则任然以指定值为准
   # 仅当proxy-server-nameserver非空时可以开启此选项, 强烈不建议和prefer-h3一起使用
   # 此外，这三者配置中的dns服务器如果出现域名会采用default-nameserver配置项解析，也请确保正确配置default-nameserver
-  respect-rules: false
+  respect-rules: true
   # 用于解析 nameserver，fallback 以及其他 DNS 服务器配置的，DNS 服务域名
   # 只能使用纯 IP 地址，可使用加密 DNS
   default-nameserver:
@@ -307,18 +307,6 @@ dns:
     - "[2400:3200::1]"
     - "[2402:4e00::]"
     - "[2400:da00::6666]"
-    - https://dns.google/dns-query
-    - https://cloudflare-dns.com/dns-query
-    - https://doh.opendns.com/dns-query
-    - 8.8.8.8
-    - 1.1.1.1
-    - 208.67.222.222
-    - "[2606:4700:4700::1111]"
-    - "[2001:4860:4860::8888]"
-    - "[2620:0:ccc::2]"
-    - https://dns.google/dns-query
-    - https://cloudflare-dns.com/dns-query
-    - https://doh.opendns.com/dns-query
   # 后备域名解析服务器，一般情况下使用境外 DNS, 保证结果可信
   # 配置 fallback后默认启用 fallback-filter,geoip-code为 cn
   fallback:
@@ -331,15 +319,6 @@ dns:
     - "[2606:4700:4700::1111]"
     - "[2001:4860:4860::8888]"
     - "[2620:0:ccc::2]"
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-    - https://doh.360.cn/dns-query
-    - 223.5.5.5
-    - 119.29.29.29
-    - 180.76.76.76
-    - "[2400:3200::1]"
-    - "[2402:4e00::]"
-    - "[2400:da00::6666]"
   # 代理节点域名解析服务器，仅用于解析代理节点的域名，
   # 如果不填则遵循nameserver-policy、nameserver和fallback的配置
   proxy-server-nameserver:
@@ -617,6 +596,7 @@ proxy-providers:
   Mitce:
     <<: *p
     path: ./proxy-providers/Mitce.yaml
+    url: ""
     # override 覆写节点内容，以下为支持的字段
     # override.additional-prefix 为节点名称添加固定前缀
     # override.additional-suffix 为节点名称添加固定后缀
