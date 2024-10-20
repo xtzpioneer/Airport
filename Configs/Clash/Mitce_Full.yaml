@@ -343,6 +343,7 @@ dns:
     - "*.lan"
     - "*.local"
     - "*.localhost"
+    - "*.localdomain"
     # NTP服务
     - time.*.com
     - time.*.gov
