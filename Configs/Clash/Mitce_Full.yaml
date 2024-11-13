@@ -41,7 +41,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2024/10/20
+# 更新时间：2024/11/13
 
 # MARK: 端口配置
 #
@@ -75,6 +75,7 @@ lan-allowed-ips:
   - ::/0
 # 禁止连接的 IP 地址段，黑名单优先级高于白名单，默认值为空
 lan-disallowed-ips:
+  # - 192.168.x.x/32
 
 # MARK: 进程匹配模式配置
 #
@@ -140,8 +141,18 @@ external-ui-name: metacubexd
 external-ui-url: "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip"
 # API 监听地址
 external-controller: 0.0.0.0:9090
+# API CORS 标头配置
+external-controller-cors:
+  allow-origins:
+    - "*"
+  allow-private-network: true
+# 从Unix socket访问api接口不会验证secret， 如果开启请自行保证安全问题
+external-controller-unix: mihomo.sock
 # API HTTPS 监听地址，需要配置 tls 部分配置文件
 external-controller-tls: 0.0.0.0:9443
+# 在 RESTful API 端口上开启 DOH 服务器
+# 该URL不会验证secret， 如果开启请自行保证安全问题
+external-doh-server: /dns-query
 # API 的访问密钥
 secret: ""
 
@@ -156,11 +167,23 @@ tcp-concurrent: true
 # 可选值 true/false
 unified-delay: true
 
+# MARK: TLS
+#
+# 目前仅用于 API 的 https
+tls:
+  certificate: string # 证书 PEM 格式，或者 证书的路径
+  private-key: string # 证书对应的私钥 PEM 格式，或者私钥路径
+
 # MARK: TLS 指纹配置
 #
 # 全局 TLS 指纹，优先低于 proxy 内的 client-fingerprint
 # 可选： "chrome","firefox","safari","ios","random","none" options.
 global-client-fingerprint: chrome
+
+# MARK: 路由标记
+#
+# 为 Linux 下的出站连接提供默认流量标记
+routing-mark: 1000
 
 # MARK: TCP Keep Alive 配置
 #
@@ -248,10 +271,10 @@ sniffer:
     - "Mijia Cloud"
   # 跳过嗅探的来源 IP 段列表
   skip-src-address:
-    # - 192.168.0.3/32
+    # - 192.168.x.x/32
   # 跳过嗅探的目标 IP 段列表
   skip-dst-address:
-    # - 192.168.0.3/32
+    # - 192.168.x.x/32
 
 # MARK: DNS配置
 #
@@ -297,6 +320,12 @@ dns:
     - system
   # 用于direct出口域名解析的 DNS 服务器，如果不填则遵循nameserver-policy、nameserver和fallback的配置
   direct-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+    - 180.76.76.76
+    - "[2400:3200::1]"
+    - "[2402:4e00::]"
+    - "[2400:da00::6666]"
     - system
   # 是否遵循nameserver-policy，默认为不遵守，仅当direct-nameserver不为空时生效
   direct-nameserver-follow-policy: false
@@ -311,6 +340,10 @@ dns:
     - "[2400:3200::1]"
     - "[2402:4e00::]"
     - "[2400:da00::6666]"
+  # 指定域名查询的解析服务器，可使用 geosite, 优先于 nameserver/fallback 查询
+  # 键支持域名通配
+  # 值支持字符串/数组
+  nameserver-policy: null
   # 后备域名解析服务器，一般情况下使用境外 DNS, 保证结果可信
   # 配置 fallback后默认启用 fallback-filter,geoip-code为 cn
   fallback:
@@ -327,15 +360,15 @@ dns:
   # 如果不填则遵循nameserver-policy、nameserver和fallback的配置
   proxy-server-nameserver:
     - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-    - https://doh.360.cn/dns-query
-    - https://cloudflare-dns.com/dns-query
     - https://dns.google/dns-query
+    - https://doh.pub/dns-query
+    - https://cloudflare-dns.com/dns-query
+    - https://doh.360.cn/dns-query
     - https://doh.opendns.com/dns-query
   # 可选值 fake-ip/redir-host，默认redir-host
   enhanced-mode: fake-ip
   # fake-ip 池设置
-  fake-ip-range: 198.18.0.1/16
+  fake-ip-range: 10.96.0.0/16
   # fakeip 过滤，以下地址不会下发 fakeip 映射用于连接
   # 值支持域名通配以及引入域名集合
   fake-ip-filter:
@@ -344,6 +377,10 @@ dns:
     - "*.local"
     - "*.localhost"
     - "*.localdomain"
+    - "*.test"
+    - "*.example"
+    - "*.invalid"
+    - "*.home.arpa"
     # NTP服务
     - time.*.com
     - time.*.gov
@@ -390,6 +427,7 @@ dns:
     # 可选值为对于的 geosite 内包含的集合
     # geosite 列表的内容被视为已污染，匹配到 geosite 的域名，将只使用 fallback解析，不去使用 nameserver
     geosite:
+      - gfw
       - geolocation-!cn
 
 # MARK: 策略组锚点
@@ -1258,7 +1296,7 @@ rule-providers:
   direct-applications-classical:
     <<: *classical
     path: ./rule-providers/direct-applications-classical.yaml
-    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Applications_Classical.yaml"
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt"
 
   direct-replenish-domain:
     <<: *domain
