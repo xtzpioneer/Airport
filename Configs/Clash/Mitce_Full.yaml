@@ -41,7 +41,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2024/11/14
+# 更新时间：2024/11/17
 
 # MARK: 端口配置
 #
@@ -289,8 +289,10 @@ dns:
   # false 将返回 AAAA 的空结果
   ipv6: true
   # 单位：ms，内部双栈并发时，向上游查询 AAAA 时，等待 AAAA 的时间，默认 100ms
-  ipv6-timeout: 300
-  # 可选 blacklist/whitelist，默认blacklist``，whitelist 即只有匹配成功才返回 fake-ip
+  ipv6-timeout: 200
+  # 配置fake-ip-filter的匹配模式，可选 blacklist/whitelist
+  # 默认为blacklist，即如果匹配成功不返回fake-ip
+  # 可设置为whitelist，即只有匹配成功才返回fake-ip
   fake-ip-filter-mode: blacklist
   # 是否查询系统 hosts，默认 true
   use-system-hosts: true
@@ -304,18 +306,19 @@ dns:
   respect-rules: true
   # 用于解析 nameserver，fallback 以及其他 DNS 服务器配置的，DNS 服务域名
   # 只能使用纯 IP 地址，可使用加密 DNS
+  # system 从系统配置中附加 DNS 服务器。如果未找到，它将打印错误日志并跳过。
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
     - 180.76.76.76
-    - 1.1.1.1
     - 8.8.8.8
+    - 1.1.1.1
     - 208.67.222.222
     - "[2400:3200::1]"
     - "[2402:4e00::]"
     - "[2400:da00::6666]"
-    - "[2606:4700:4700::1111]"
     - "[2001:4860:4860::8888]"
+    - "[2606:4700:4700::1111]"
     - "[2620:0:ccc::2]"
     - system
   # 用于direct出口域名解析的 DNS 服务器，如果不填则遵循nameserver-policy、nameserver和fallback的配置
@@ -331,15 +334,13 @@ dns:
   direct-nameserver-follow-policy: false
   # 默认的域名解析服务器
   nameserver:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-    - https://doh.360.cn/dns-query
     - 223.5.5.5
     - 119.29.29.29
     - 180.76.76.76
     - "[2400:3200::1]"
     - "[2402:4e00::]"
     - "[2400:da00::6666]"
+    - system
   # 指定域名查询的解析服务器，可使用 geosite, 优先于 nameserver/fallback 查询
   # 键支持域名通配
   # 值支持字符串/数组
@@ -347,14 +348,11 @@ dns:
   # 后备域名解析服务器，一般情况下使用境外 DNS, 保证结果可信
   # 配置 fallback后默认启用 fallback-filter,geoip-code为 cn
   fallback:
-    - https://dns.google/dns-query
-    - https://cloudflare-dns.com/dns-query
-    - https://doh.opendns.com/dns-query
     - 8.8.8.8
     - 1.1.1.1
     - 208.67.222.222
-    - "[2606:4700:4700::1111]"
     - "[2001:4860:4860::8888]"
+    - "[2606:4700:4700::1111]"
     - "[2620:0:ccc::2]"
   # 代理节点域名解析服务器，仅用于解析代理节点的域名，
   # 如果不填则遵循nameserver-policy、nameserver和fallback的配置
@@ -1316,6 +1314,17 @@ rule-providers:
     path: ./rule-providers/direct-cloud-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cloud/CloudCN/CloudCN_No_Resolve.yaml"
 
+  # DSN解析
+  direct-dns-classical:
+    <<: *classical
+    path: ./rule-providers/direct-dns-classical.yaml
+    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/ChinaDNS_No_Resolve.yaml"
+
+  globe-dns-classical:
+    <<: *classical
+    path: ./rule-providers/globe-dns-classical.yaml
+    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/GlobalDNS_No_Resolve.yaml"
+
 # MARK: 分流规则配置
 
 # 注意：规则顺序直接影响规则判定，将会导致分流效果不佳。
@@ -1323,6 +1332,10 @@ rule-providers:
 # 注意：规则顺序直接影响规则判定，将会导致分流效果不佳。
 
 rules:
+  # DNS解析
+  - RULE-SET,direct-dns-classical,直连
+  - RULE-SET,globe-dns-classical,国际互联
+
   # 直连应用
   - RULE-SET,ad-reject-domain,广告拦截
 
