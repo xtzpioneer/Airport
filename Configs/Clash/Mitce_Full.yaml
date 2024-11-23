@@ -41,7 +41,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2024/11/18
+# 更新时间：2024/11/23
 
 # MARK: 端口配置
 #
@@ -560,7 +560,7 @@ p: &p
   interval: 86400
   health-check:
     enable: true
-    url: "http://www.apple.com/library/test/success.html"
+    url: "https://www.apple.com/library/test/success.html"
     interval: 600
     tolerance: 50
 
@@ -570,7 +570,7 @@ url-test: &url-test
   interval: 300
   tolerance: 50
   lazy: true
-  url: "http://www.apple.com/library/test/success.html"
+  url: "https://www.apple.com/library/test/success.html"
   disable-udp: false
   timeout: 5000
   max-failed-times: 5
@@ -582,7 +582,7 @@ fallabck: &fallabck
   type: fallback
   interval: 50
   lazy: true
-  url: "http://www.apple.com/library/test/success.html"
+  url: "https://www.apple.com/library/test/success.html"
   disable-udp: false
   timeout: 5000
   max-failed-times: 5
@@ -593,7 +593,7 @@ load-balance-ch: &load-balance-ch
   type: load-balance
   interval: 50
   lazy: true
-  url: "http://www.apple.com/library/test/success.html"
+  url: "https://www.apple.com/library/test/success.html"
   disable-udp: false
   strategy: consistent-hashing
   timeout: 5000
@@ -605,7 +605,7 @@ load-balance-rr: &load-balance-rr
   type: load-balance
   interval: 50
   lazy: true
-  url: "http://www.apple.com/library/test/success.html"
+  url: "https://www.apple.com/library/test/success.html"
   disable-udp: false
   strategy: round-robin
   timeout: 5000
@@ -1060,7 +1060,7 @@ proxy-groups:
     interval: 300
     tolerance: 50
     lazy: true
-    url: "http://www.apple.com/library/test/success.html"
+    url: "https://www.apple.com/library/test/success.html"
     disable-udp: false
     timeout: 5000
     max-failed-times: 5
