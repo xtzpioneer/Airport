@@ -41,7 +41,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2024/11/24
+# 更新时间：2024/11/28
 
 # MARK: 端口配置
 #
@@ -384,41 +384,13 @@ dns:
     - "*.example"
     - "*.invalid"
     - "*.home.arpa"
+    - rule-set:direct-lan-classical
     # NTP服务
-    - time.*.com
-    - time.*.gov
-    - time.*.edu.cn
-    - time.*.apple.com
-    - time-ios.apple.com
-    - time1.*.com
-    - time2.*.com
-    - time3.*.com
-    - time4.*.com
-    - time5.*.com
-    - time6.*.com
-    - time7.*.com
-    - ntp.*.com
-    - ntp1.*.com
-    - ntp2.*.com
-    - ntp3.*.com
-    - ntp4.*.com
-    - ntp5.*.com
-    - ntp6.*.com
-    - ntp7.*.com
-    - "*.time.edu.cn"
-    - "*.ntp.org.cn"
-    - "+.pool.ntp.org"
-    - time1.cloud.tencent.com
-    - cn.ntp.org.cn
-    - ntp.ntsc.ac.cn
-    - cn.pool.ntp.org
+    - rule-set:ntp-service-classical
     # STUN
-    - stun.*.*
-    - stun.*.*.*
-    - "+.stun.*.*"
-    - "+.stun.*.*.*"
-    - "+.stun.*.*.*.*"
-    - "+.stun.*.*.*.*.*"
+    - rule-set:stun-classical
+    # DNS
+    - rule-set:dns-classical
   # 后备域名解析服务器筛选，满足条件的将使用 fallback结果或只使用 fallback解析
   fallback-filter:
     # 是否启用 geoip 判断
@@ -1299,6 +1271,11 @@ rule-providers:
     path: ./rule-providers/direct-lancidr-ip.yaml
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/lancidr.txt"
 
+  direct-lan-classical:
+    <<: *classical
+    path: ./rule-providers/direct-lan-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Lan/Lan_No_Resolve.yaml"
+
   direct-private-domain:
     <<: *domain
     path: ./rule-providers/direct-private-domain.yaml
@@ -1319,7 +1296,12 @@ rule-providers:
     path: ./rule-providers/direct-cloud-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cloud/CloudCN/CloudCN_No_Resolve.yaml"
 
-  # DSN解析
+  # DNS
+  dns-classical:
+    <<: *classical
+    path: ./rule-providers/dns-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/DNS/DNS_No_Resolve.yaml"
+
   direct-dns-classical:
     <<: *classical
     path: ./rule-providers/direct-dns-classical.yaml
@@ -1329,6 +1311,18 @@ rule-providers:
     <<: *classical
     path: ./rule-providers/globe-dns-classical.yaml
     url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/GlobalDNS_No_Resolve.yaml"
+
+  # STUN
+  stun-classical:
+    <<: *classical
+    path: ./rule-providers/stun-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/STUN/STUN_No_Resolve.yaml"
+
+  # NTPService
+  ntp-service-classical:
+    <<: *classical
+    path: ./rule-providers/ntp-service-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/NTPService/NTPService_No_Resolve.yaml"
 
 # MARK: 分流规则配置
 
@@ -1404,6 +1398,7 @@ rules:
   # 直连
   - RULE-SET,direct-private-domain,直连
   - RULE-SET,direct-domain,直连
+  - RULE-SET,direct-lan-classical,直连
   - RULE-SET,direct-cncidr-ip,直连,no-resolve
   - RULE-SET,direct-lancidr-ip,直连,no-resolve
   - RULE-SET,direct-cloud-classical,直连
