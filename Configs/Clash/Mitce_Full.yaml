@@ -41,7 +41,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2024/11/28
+# 更新时间：2024/11/29
 
 # MARK: 端口配置
 #
@@ -374,6 +374,9 @@ dns:
   fake-ip-range: 10.96.0.0/16
   # fakeip 过滤，以下地址不会下发 fakeip 映射用于连接
   # 值支持域名通配以及引入域名集合
+  # - rule-set:fakeip-filter
+  # fakeip-filter 为 rule-providers 中的名为 fakeip-filter 规则订阅，
+  # 且 behavior 必须为 domain/classical，当为 classical 时仅会生效域名类规则
   fake-ip-filter:
     # LAN
     - "*.lan"
@@ -385,12 +388,12 @@ dns:
     - "*.invalid"
     - "*.home.arpa"
     - rule-set:direct-lan-classical
-    # NTP服务
+    # DNS
+    - rule-set:dns-classical
+    # NTP
     - rule-set:ntp-service-classical
     # STUN
     - rule-set:stun-classical
-    # DNS
-    - rule-set:dns-classical
   # 后备域名解析服务器筛选，满足条件的将使用 fallback结果或只使用 fallback解析
   fallback-filter:
     # 是否启用 geoip 判断
@@ -1351,6 +1354,7 @@ rules:
   - RULE-SET,microsoft-onedrive-classical,OneDrive
   - RULE-SET,microsoft-github-classical,GitHub
   - RULE-SET,microsoft-service-classical,微软服务
+
   # 谷歌服务
   - RULE-SET,google-youtube-classical,YouTube 视频
   - RULE-SET,google-youtube-music-classical,YouTube 音乐
@@ -1398,9 +1402,9 @@ rules:
   # 直连
   - RULE-SET,direct-private-domain,直连
   - RULE-SET,direct-domain,直连
-  - RULE-SET,direct-lan-classical,直连
   - RULE-SET,direct-cncidr-ip,直连,no-resolve
   - RULE-SET,direct-lancidr-ip,直连,no-resolve
+  - RULE-SET,direct-lan-classical,直连
   - RULE-SET,direct-cloud-classical,直连
   - RULE-SET,direct-replenish-domain,直连
 
