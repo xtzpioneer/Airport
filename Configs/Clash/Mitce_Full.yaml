@@ -1296,15 +1296,15 @@ rule-providers:
     path: ./rule-providers/direct-applications-classical.yaml
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt"
 
-  direct-replenish-applications-classical:
+  direct-applications-replenish-classical:
     <<: *classical
-    path: ./rule-providers/direct-replenish-applications-classical.yaml
-    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Replenish_Applications_Classical.yaml"
+    path: ./rule-providers/direct-applications-replenish-classical.yaml
+    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Applications_Replenish_Classical.yaml"
 
-  direct-replenish-domain:
+  direct-domain-replenish-domain:
     <<: *domain
-    path: ./rule-providers/direct-replenish-domain.yaml
-    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Replenish_Domain.yaml"
+    path: ./rule-providers/direct-domain-replenish-domain.yaml
+    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Domain_Replenish.yaml"
 
   direct-cloud-classical:
     <<: *classical
@@ -1352,7 +1352,7 @@ rules:
 
   # 应用进程
   - RULE-SET,direct-applications-classical,直连
-  - RULE-SET,direct-replenish-applications-classical,直连
+  - RULE-SET,direct-applications-replenish-classical,直连
 
   # 广告拦截
   - RULE-SET,ad-reject-domain,广告拦截
@@ -1419,8 +1419,8 @@ rules:
   - RULE-SET,direct-private-domain,直连
   - RULE-SET,direct-lan-classical,直连
   - RULE-SET,direct-cloud-classical,直连
-  - RULE-SET,direct-replenish-domain,直连
   - RULE-SET,direct-domain,直连
+  - RULE-SET,direct-domain-replenish-domain,直连
   - RULE-SET,direct-lancidr-ip,直连,no-resolve
   - RULE-SET,direct-cncidr-ip,直连,no-resolve
 
