@@ -1,6 +1,9 @@
 # Mitce 机场官网：https://mitce.com/aff.php?aff=4905
 # Mitce 机场定制配置：https://raw.githubusercontent.com/xtzPioneer/Airport/main/Configs/Clash/Mitce_Full.yaml
 #
+# Mihomo 内核：https://github.com/MetaCubeX/mihomo
+# Mihomo 内核文档：https://wiki.metacubex.one
+#
 # Clash Verg Rev 支持：https://github.com/clash-verge-rev/clash-verge-rev
 # Mihomo Party 支持：https://github.com/pompurin404/mihomo-party
 # ClashMetaForAndroid 支持：https://github.com/MetaCubeX/ClashMetaForAndroid.git
@@ -41,7 +44,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2024/11/29
+# 更新时间：2024/11/30
 
 # MARK: 端口配置
 #
@@ -217,7 +220,7 @@ tun:
   # system 使用系统协议栈，可以提供更稳定/全面的 tun 体验，且占用相对其他堆栈更低
   # gvisor 通过在用户空间中实现网络协议栈，可以提供更高的安全性和隔离性，同时可以避免操作系统内核和用户空间之间的切换，从而在特定情况下具有更好的网络处理性能
   # mixed 混合堆栈，tcp 使用 system栈，udp 使用 gvisor栈，使用体验可能相对更好
-  stack: gvisor
+  stack: system
   # dns 劫持，将匹配到的连接导入内部 dns 模块
   dns-hijack:
     - "any:53"
@@ -320,6 +323,7 @@ dns:
     - "[2001:4860:4860::8888]"
     - "[2606:4700:4700::1111]"
     - "[2620:0:ccc::2]"
+    - system
   # 用于direct出口域名解析的 DNS 服务器，如果不填则遵循nameserver-policy、nameserver和fallback的配置
   direct-nameserver:
     - 223.5.5.5
@@ -389,9 +393,11 @@ dns:
     - "*.home.arpa"
     - rule-set:direct-lan-classical
     # DNS
+    - rule-set:direct-dns-classical
+    - rule-set:globe-dns-classical
     - rule-set:dns-classical
     # NTP
-    - rule-set:ntp-service-classical
+    - rule-set:ntp-classical
     # STUN
     - rule-set:stun-classical
   # 后备域名解析服务器筛选，满足条件的将使用 fallback结果或只使用 fallback解析
@@ -788,17 +794,12 @@ proxy-groups:
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Speedtest.png"
     <<: *default-select
 
-  # 地域/区域/地区
+  # 地区/区域
   - name: 香港节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png"
     type: select
     proxies: [香港自动选择, 香港负载均衡散列, 香港负载均衡轮询]
     include-all-providers: true
-    filter: *filter-hk
-
-  - name: 香港自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png"
-    <<: *url-test
     filter: *filter-hk
 
   - name: 香港负载均衡散列
@@ -820,11 +821,6 @@ proxy-groups:
     include-all-providers: true
     filter: *filter-tw
 
-  - name: 台湾自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
-    <<: *url-test
-    filter: *filter-tw
-
   - name: 台湾负载均衡散列
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
     include-all-providers: true
@@ -842,11 +838,6 @@ proxy-groups:
     type: select
     proxies: [日本自动选择, 日本负载均衡散列, 日本负载均衡轮询]
     include-all-providers: true
-    filter: *filter-jp
-
-  - name: 日本自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png"
-    <<: *url-test
     filter: *filter-jp
 
   - name: 日本负载均衡散列
@@ -868,11 +859,6 @@ proxy-groups:
     include-all-providers: true
     filter: *filter-sg
 
-  - name: 新加坡自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png"
-    <<: *url-test
-    filter: *filter-sg
-
   - name: 新加坡载均衡散列
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png"
     include-all-providers: true
@@ -890,11 +876,6 @@ proxy-groups:
     type: select
     proxies: [韩国自动选择, 韩国载均衡散列, 韩国载均衡轮询]
     include-all-providers: true
-    filter: *filter-kr
-
-  - name: 韩国自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png"
-    <<: *url-test
     filter: *filter-kr
 
   - name: 韩国载均衡散列
@@ -916,11 +897,6 @@ proxy-groups:
     include-all-providers: true
     filter: *filter-us
 
-  - name: 美国自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png"
-    <<: *url-test
-    filter: *filter-us
-
   - name: 美国载均衡散列
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png"
     include-all-providers: true
@@ -939,11 +915,6 @@ proxy-groups:
     proxies: [德国自动选择, 德国载均衡散列, 德国载均衡轮询]
     filter: *filter-de
     include-all-providers: true
-
-  - name: 德国自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png"
-    <<: *url-test
-    filter: *filter-de
 
   - name: 德国载均衡散列
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png"
@@ -964,11 +935,6 @@ proxy-groups:
     filter: *filter-au
     include-all-providers: true
 
-  - name: 澳大利亚自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png"
-    <<: *url-test
-    filter: *filter-au
-
   - name: 澳大利亚载均衡散列
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png"
     include-all-providers: true
@@ -988,11 +954,6 @@ proxy-groups:
     filter: *filter-gb
     include-all-providers: true
 
-  - name: 英国自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png"
-    <<: *url-test
-    filter: *filter-gb
-
   - name: 英国载均衡散列
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png"
     include-all-providers: true
@@ -1011,11 +972,6 @@ proxy-groups:
     proxies: [印度自动选择, 印度载均衡散列, 印度载均衡轮询]
     filter: *filter-in
     include-all-providers: true
-
-  - name: 印度自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png"
-    <<: *url-test
-    filter: *filter-in
 
   - name: 印度载均衡散列
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png"
@@ -1052,6 +1008,57 @@ proxy-groups:
     hidden: false
     <<: *region-select
 
+  - name: 香港自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png"
+    <<: *url-test
+    filter: *filter-hk
+
+  - name: 台湾自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
+    <<: *url-test
+    filter: *filter-tw
+
+  - name: 日本自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png"
+    <<: *url-test
+    filter: *filter-jp
+
+  - name: 新加坡自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png"
+    <<: *url-test
+    filter: *filter-sg
+
+  - name: 韩国自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png"
+    <<: *url-test
+    filter: *filter-kr
+
+  - name: 美国自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png"
+    <<: *url-test
+    filter: *filter-us
+
+  - name: 德国自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png"
+    <<: *url-test
+    filter: *filter-de
+
+  - name: 澳大利亚自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png"
+    <<: *url-test
+    filter: *filter-au
+
+  - name: 英国自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png"
+    <<: *url-test
+    filter: *filter-gb
+
+  - name: 印度自动选择
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png"
+    <<: *url-test
+    filter: *filter-in
+
+  # 负载均衡
   - name: "负载均衡散列"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available.png"
     include-all-providers: true
@@ -1074,7 +1081,7 @@ proxy-groups:
       - *load-balance-rr
       - *region-select
 
-  # 动作
+  # 内置策略
   - name: "直连"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Direct.png"
     type: select
@@ -1315,17 +1322,17 @@ rule-providers:
     path: ./rule-providers/globe-dns-classical.yaml
     url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/GlobalDNS_No_Resolve.yaml"
 
+  # NTP
+  ntp-classical:
+    <<: *classical
+    path: ./rule-providers/ntp-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/NTPService/NTPService_No_Resolve.yaml"
+
   # STUN
   stun-classical:
     <<: *classical
     path: ./rule-providers/stun-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/STUN/STUN_No_Resolve.yaml"
-
-  # NTPService
-  ntp-service-classical:
-    <<: *classical
-    path: ./rule-providers/ntp-service-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/NTPService/NTPService_No_Resolve.yaml"
+    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/STUN_No_Resolve.yaml"
 
 # MARK: 分流规则配置
 
@@ -1338,7 +1345,10 @@ rules:
   - RULE-SET,direct-dns-classical,直连
   - RULE-SET,globe-dns-classical,国际互联
 
-  # 直连应用
+  # 应用进程
+  - RULE-SET,direct-applications-classical,直连
+
+  # 广告拦截
   - RULE-SET,ad-reject-domain,广告拦截
 
   # 苹果服务
@@ -1390,8 +1400,8 @@ rules:
   - RULE-SET,globe-classical,国际互联
 
   # 国际云计算
-  - RULE-SET,globe-cloud-ip,国际互联,no-resolve
   - RULE-SET,globe-cloud-classical,国际互联
+  - RULE-SET,globe-cloud-ip,国际互联,no-resolve
 
   # 游戏服务
   - RULE-SET,game-classical,游戏服务
@@ -1402,11 +1412,11 @@ rules:
   # 直连
   - RULE-SET,direct-private-domain,直连
   - RULE-SET,direct-domain,直连
-  - RULE-SET,direct-cncidr-ip,直连,no-resolve
-  - RULE-SET,direct-lancidr-ip,直连,no-resolve
   - RULE-SET,direct-lan-classical,直连
   - RULE-SET,direct-cloud-classical,直连
   - RULE-SET,direct-replenish-domain,直连
+  - RULE-SET,direct-cncidr-ip,直连,no-resolve
+  - RULE-SET,direct-lancidr-ip,直连,no-resolve
 
   # GEO
   - GEOIP,LAN,直连
