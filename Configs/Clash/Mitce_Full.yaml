@@ -44,7 +44,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2024/11/30
+# 更新时间：2024/12/01
 
 # MARK: 端口配置
 #
@@ -242,6 +242,9 @@ tun:
   # 添加防火墙规则以阻止 Windows 的 普通多宿主 DNS 解析行为 造成的 DNS 泄露
   # 它可能会使某些应用程序（如 VirtualBox）在某些情况下无法正常工作。
   strict-route: false
+  # 启用 auto-route 时排除自定义网段
+  route-exclude-address:
+    # - 172.16.x.x/16
 
 # MARK: 域名嗅探配置
 #
@@ -1294,7 +1297,8 @@ rule-providers:
   direct-applications-classical:
     <<: *classical
     path: ./rule-providers/direct-applications-classical.yaml
-    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt"
+    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Applications_Classical.yaml"
+    # url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt"
 
   direct-applications-replenish-classical:
     <<: *classical
