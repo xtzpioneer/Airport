@@ -1296,6 +1296,11 @@ rule-providers:
     path: ./rule-providers/direct-applications-classical.yaml
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt"
 
+  direct-replenish-applications-classical:
+    <<: *classical
+    path: ./rule-providers/direct-replenish-applications-classical.yaml
+    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Replenish_Applications_Classical.yaml"
+
   direct-replenish-domain:
     <<: *domain
     path: ./rule-providers/direct-replenish-domain.yaml
@@ -1347,6 +1352,7 @@ rules:
 
   # 应用进程
   - RULE-SET,direct-applications-classical,直连
+  - RULE-SET,direct-replenish-applications-classical,直连
 
   # 广告拦截
   - RULE-SET,ad-reject-domain,广告拦截
@@ -1391,6 +1397,16 @@ rules:
   # Spotify 音乐
   - RULE-SET,spotify-classical,Spotify 音乐
 
+  # 游戏服务
+  - RULE-SET,game-classical,游戏服务
+
+  # 网速测试
+  - RULE-SET,globe-speedtest-classical,网速测试
+
+  # 国际云计算
+  - RULE-SET,globe-cloud-classical,国际互联
+  - RULE-SET,globe-cloud-ip,国际互联,no-resolve
+
   # 国际媒体
   - RULE-SET,globe-media-domain,国际媒体
   - RULE-SET,globe-media-classical,国际媒体
@@ -1399,24 +1415,14 @@ rules:
   - RULE-SET,globe-domain,国际互联
   - RULE-SET,globe-classical,国际互联
 
-  # 国际云计算
-  - RULE-SET,globe-cloud-classical,国际互联
-  - RULE-SET,globe-cloud-ip,国际互联,no-resolve
-
-  # 游戏服务
-  - RULE-SET,game-classical,游戏服务
-
-  # 网速测试
-  - RULE-SET,globe-speedtest-classical,网速测试
-
   # 直连
   - RULE-SET,direct-private-domain,直连
-  - RULE-SET,direct-domain,直连
   - RULE-SET,direct-lan-classical,直连
   - RULE-SET,direct-cloud-classical,直连
   - RULE-SET,direct-replenish-domain,直连
-  - RULE-SET,direct-cncidr-ip,直连,no-resolve
+  - RULE-SET,direct-domain,直连
   - RULE-SET,direct-lancidr-ip,直连,no-resolve
+  - RULE-SET,direct-cncidr-ip,直连,no-resolve
 
   # GEO
   - GEOIP,LAN,直连
