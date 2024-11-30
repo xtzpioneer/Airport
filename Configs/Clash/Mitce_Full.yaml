@@ -805,35 +805,11 @@ proxy-groups:
     include-all-providers: true
     filter: *filter-hk
 
-  - name: 香港负载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png"
-    include-all-providers: true
-    <<: *load-balance-ch
-    filter: *filter-hk
-
-  - name: 香港负载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png"
-    include-all-providers: true
-    <<: *load-balance-rr
-    filter: *filter-hk
-
   - name: 台湾节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
     type: select
     proxies: [台湾自动选择, 台湾负载均衡散列, 台湾负载均衡轮询]
     include-all-providers: true
-    filter: *filter-tw
-
-  - name: 台湾负载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
-    include-all-providers: true
-    <<: *load-balance-ch
-    filter: *filter-tw
-
-  - name: 台湾负载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
-    include-all-providers: true
-    <<: *load-balance-rr
     filter: *filter-tw
 
   - name: 日本节点
@@ -843,35 +819,11 @@ proxy-groups:
     include-all-providers: true
     filter: *filter-jp
 
-  - name: 日本负载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png"
-    include-all-providers: true
-    <<: *load-balance-ch
-    filter: *filter-jp
-
-  - name: 日本负载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png"
-    include-all-providers: true
-    <<: *load-balance-rr
-    filter: *filter-jp
-
   - name: 新加坡节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png"
     type: select
     proxies: [新加坡自动选择, 新加坡载均衡散列, 新加坡载均衡轮询]
     include-all-providers: true
-    filter: *filter-sg
-
-  - name: 新加坡载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png"
-    include-all-providers: true
-    <<: *load-balance-ch
-    filter: *filter-sg
-
-  - name: 新加坡载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png"
-    include-all-providers: true
-    <<: *load-balance-rr
     filter: *filter-sg
 
   - name: 韩国节点
@@ -881,35 +833,11 @@ proxy-groups:
     include-all-providers: true
     filter: *filter-kr
 
-  - name: 韩国载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png"
-    include-all-providers: true
-    <<: *load-balance-ch
-    filter: *filter-kr
-
-  - name: 韩国载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png"
-    include-all-providers: true
-    <<: *load-balance-rr
-    filter: *filter-kr
-
   - name: 美国节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png"
     type: select
     proxies: [美国自动选择, 美国载均衡散列, 美国载均衡轮询]
     include-all-providers: true
-    filter: *filter-us
-
-  - name: 美国载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png"
-    include-all-providers: true
-    <<: *load-balance-ch
-    filter: *filter-us
-
-  - name: 美国载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png"
-    include-all-providers: true
-    <<: *load-balance-rr
     filter: *filter-us
 
   - name: 德国节点
@@ -919,36 +847,12 @@ proxy-groups:
     filter: *filter-de
     include-all-providers: true
 
-  - name: 德国载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png"
-    include-all-providers: true
-    <<: *load-balance-ch
-    filter: *filter-de
-
-  - name: 德国载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png"
-    include-all-providers: true
-    <<: *load-balance-rr
-    filter: *filter-de
-
   - name: 澳大利亚节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png"
     type: select
     proxies: [澳大利亚自动选择, 澳大利亚载均衡散列, 澳大利亚载均衡轮询]
     filter: *filter-au
     include-all-providers: true
-
-  - name: 澳大利亚载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png"
-    include-all-providers: true
-    <<: *load-balance-ch
-    filter: *filter-au
-
-  - name: 澳大利亚载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png"
-    include-all-providers: true
-    <<: *load-balance-rr
-    filter: *filter-au
 
   - name: 英国节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png"
@@ -957,36 +861,12 @@ proxy-groups:
     filter: *filter-gb
     include-all-providers: true
 
-  - name: 英国载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png"
-    include-all-providers: true
-    <<: *load-balance-ch
-    filter: *filter-gb
-
-  - name: 英国载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png"
-    include-all-providers: true
-    <<: *load-balance-rr
-    filter: *filter-gb
-
   - name: 印度节点
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png"
     type: select
     proxies: [印度自动选择, 印度载均衡散列, 印度载均衡轮询]
     filter: *filter-in
     include-all-providers: true
-
-  - name: 印度载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png"
-    include-all-providers: true
-    <<: *load-balance-ch
-    filter: *filter-in
-
-  - name: 印度载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png"
-    include-all-providers: true
-    <<: *load-balance-rr
-    filter: *filter-in
 
   # 兜底
   - name: "漏网之鱼"
@@ -1062,27 +942,147 @@ proxy-groups:
     filter: *filter-in
 
   # 负载均衡
-  - name: "负载均衡散列"
+  - name: 负载均衡散列
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available.png"
     include-all-providers: true
     <<: *load-balance-ch
 
-  - name: "负载均衡轮询"
+  - name: 负载均衡轮询
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available.png"
     include-all-providers: true
     <<: *load-balance-rr
 
-  - name: "地区负载均衡散列"
+  - name: 地区负载均衡散列
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available.png"
     <<:
       - *load-balance-ch
       - *region-select
 
-  - name: "地区负载均衡轮询"
+  - name: 地区负载均衡轮询
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available.png"
     <<:
       - *load-balance-rr
       - *region-select
+
+  - name: 香港负载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-hk
+
+  - name: 香港负载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-hk
+
+  - name: 台湾负载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-tw
+
+  - name: 台湾负载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-tw
+
+  - name: 日本负载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-jp
+
+  - name: 日本负载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-jp
+
+  - name: 新加坡载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-sg
+
+  - name: 新加坡载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-sg
+
+  - name: 韩国载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-kr
+
+  - name: 韩国载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-kr
+
+  - name: 美国载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-us
+
+  - name: 美国载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-us
+
+  - name: 德国载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-de
+
+  - name: 德国载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-de
+
+  - name: 澳大利亚载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-au
+
+  - name: 澳大利亚载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-au
+
+  - name: 英国载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-gb
+
+  - name: 英国载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-gb
+
+  - name: 印度载均衡散列
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png"
+    include-all-providers: true
+    <<: *load-balance-ch
+    filter: *filter-in
+
+  - name: 印度载均衡轮询
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png"
+    include-all-providers: true
+    <<: *load-balance-rr
+    filter: *filter-in
 
   # 内置策略
   - name: "直连"
