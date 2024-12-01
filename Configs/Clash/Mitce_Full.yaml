@@ -1274,9 +1274,14 @@ rule-providers:
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Speedtest/Speedtest_No_Resolve.yaml"
 
   # 广告拦截
-  ad-reject-domain:
+  ad-reject-1-domain:
     <<: *domain
-    path: ./rule-providers/ad-reject-domain.yaml
+    path: ./rule-providers/ad-reject-1-domain.yaml
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt"
+
+  ad-reject-2-domain:
+    <<: *domain
+    path: ./rule-providers/ad-reject-2-domain.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Advertising/Advertising_Domain.yaml"
 
   ad-reject-classical:
@@ -1378,7 +1383,8 @@ rule-providers:
 
 rules:
   # 广告拦截
-  - RULE-SET,ad-reject-domain,广告拦截
+  - RULE-SET,ad-reject-1-domain,广告拦截
+  - RULE-SET,ad-reject-2-domain,广告拦截
   - RULE-SET,ad-reject-classical,广告拦截
 
   # DNS解析
