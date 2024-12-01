@@ -1464,8 +1464,8 @@ rules:
   - RULE-SET,direct-domain-replenish-domain,直连
 
   # GEO
-  - GEOIP,LAN,直连
-  - GEOIP,CN,直连
+  - GEOIP,LAN,直连,no-resolve
+  - GEOIP,CN,直连,no-resolve
 
   # 兜底
   - MATCH,漏网之鱼
