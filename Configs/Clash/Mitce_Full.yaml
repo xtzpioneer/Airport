@@ -1423,7 +1423,7 @@ rules:
   - RULE-SET,netflix-classical,奈飞视频
 
   # Emby 视频
-  - RULE-SET,emby-classical,视频
+  - RULE-SET,emby-classical,Emby 视频
 
   # 人工智能
   - RULE-SET,open-ai-classical,OpenAI
