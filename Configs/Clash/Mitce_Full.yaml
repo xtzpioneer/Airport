@@ -22,7 +22,7 @@
 # 配置文件参考商：https://github.com/Coldvvater/Mononoke/blob/master/Clash/Config/Evolve.yaml
 # 配置文件参考商：https://github.com/Repcz/Tool/blob/X/Clash/Meta/Mihomo.yaml
 # 配置文件参考商：https://github.com/SukkaW/Surge
-# 
+#
 # 支持平台/应用：macOS/Windows/Linux/Clash Verg Rev (Version ≥ 1.7.7）
 # 支持平台/应用：macOS/Windows/Linux/Mihomo Party (Version ≥ 1.2.8）
 # 支持平台/应用：android/ClashMetaForAndroid (Version >= 2.10.4)
@@ -319,7 +319,7 @@ dns:
   # 如果为true，将会按照rules的规则匹配链接方式（走代理或直连），如果有特别指定则任然以指定值为准
   # 仅当proxy-server-nameserver非空时可以开启此选项, 强烈不建议和prefer-h3一起使用
   # 此外，这三者配置中的dns服务器如果出现域名会采用default-nameserver配置项解析，也请确保正确配置default-nameserver
-  respect-rules: true
+  respect-rules: false
   # 用于解析 nameserver，fallback 以及其他 DNS 服务器配置的，DNS 服务域名
   # 只能使用纯 IP 地址，可使用加密 DNS
   # system 从系统配置中附加 DNS 服务器。如果未找到，它将打印错误日志并跳过。
@@ -404,6 +404,7 @@ dns:
     - "*.example"
     - "*.invalid"
     - "*.home.arpa"
+    - rule-set:direct-private-domain
     - rule-set:direct-lan-classical
     # DNS
     - rule-set:direct-dns-classical
@@ -428,12 +429,12 @@ dns:
       - geolocation-!cn
     # 这些网段的结果会被视为污染，nameserver解析出这些结果时将会采用 fallback的解析结果
     ipcidr:
-      - 240.0.0.0/4
+      # - 240.0.0.0/4
     # 这些域名被视为已污染，匹配到这些域名，会直接使用 fallback解析，不去使用 nameserver
     domain:
-      - "+.google.com"
-      - "+.github.com"
-      - "+.youtube.com"
+      # - "+.google.com"
+      # - "+.github.com"
+      # - "+.youtube.com"
 
 # MARK: 策略组锚点
 
@@ -1276,23 +1277,33 @@ rule-providers:
   ad-reject-domain:
     <<: *domain
     path: ./rule-providers/ad-reject-domain.yaml
-    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt"
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Advertising/Advertising_Domain.yaml"
+
+  ad-reject-classical:
+    <<: *classical
+    path: ./rule-providers/ad-reject-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Advertising/Advertising_No_Resolve.yaml"
 
   # 直连
-  direct-domain:
+  direct-china-max-no-media-domain:
     <<: *domain
-    path: ./rule-providers/direct-domain.yaml
-    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/direct.txt"
+    path: ./rule-providers/direct-china-max-no-media-domain.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaMaxNoMedia/ChinaMaxNoMedia_Domain.yaml"
 
-  direct-cncidr-ip:
+  direct-china-max-no-media-ip:
     <<: *ip
-    path: ./rule-providers/direct-cncidr-ip.yaml
-    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt"
+    path: ./rule-providers/direct-china-max-no-media-ip.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaMaxNoMedia/ChinaMaxNoMedia_IP.yaml"
 
-  direct-lancidr-ip:
-    <<: *ip
-    path: ./rule-providers/direct-lancidr-ip.yaml
-    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/lancidr.txt"
+  direct-china-max-no-media-classical:
+    <<: *classical
+    path: ./rule-providers/direct-china-max-no-media-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaMaxNoMedia/ChinaMaxNoMedia.yaml"
+
+  direct-china-media-classical:
+    <<: *classical
+    path: ./rule-providers/direct-china-media-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaMedia/ChinaMedia_No_Resolve.yaml"
 
   direct-lan-classical:
     <<: *classical
@@ -1304,26 +1315,26 @@ rule-providers:
     path: ./rule-providers/direct-private-domain.yaml
     url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt"
 
-  direct-applications-classical:
+  direct-cloud-classical:
     <<: *classical
-    path: ./rule-providers/direct-applications-classical.yaml
-    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Applications_Classical.yaml"
-    # url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt"
-
-  direct-applications-replenish-classical:
-    <<: *classical
-    path: ./rule-providers/direct-applications-replenish-classical.yaml
-    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Applications_Replenish_Classical.yaml"
+    path: ./rule-providers/direct-cloud-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cloud/CloudCN/CloudCN_No_Resolve.yaml"
 
   direct-domain-replenish-domain:
     <<: *domain
     path: ./rule-providers/direct-domain-replenish-domain.yaml
     url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Domain_Replenish.yaml"
 
-  direct-cloud-classical:
+  # 直连应用进程
+  direct-applications-classical:
     <<: *classical
-    path: ./rule-providers/direct-cloud-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cloud/CloudCN/CloudCN_No_Resolve.yaml"
+    path: ./rule-providers/direct-applications-classical.yaml
+    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Applications_Classical.yaml"
+
+  direct-applications-replenish-classical:
+    <<: *classical
+    path: ./rule-providers/direct-applications-replenish-classical.yaml
+    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Applications_Replenish_Classical.yaml"
 
   # DNS
   dns-classical:
@@ -1366,6 +1377,10 @@ rule-providers:
 # 因此，在 Mihomo 中，将会触发 DNS 解析的规则放在域名和 URL 匹配规则后面非常重要。
 
 rules:
+  # 广告拦截
+  - RULE-SET,ad-reject-domain,广告拦截
+  - RULE-SET,ad-reject-classical,广告拦截
+
   # DNS解析
   - RULE-SET,direct-dns-classical,直连
   - RULE-SET,globe-dns-classical,国际互联
@@ -1373,9 +1388,6 @@ rules:
   # 应用进程
   - RULE-SET,direct-applications-classical,直连
   - RULE-SET,direct-applications-replenish-classical,直连
-
-  # 广告拦截
-  - RULE-SET,ad-reject-domain,广告拦截
 
   # 苹果服务
   - RULE-SET,apple-mail-classical,苹果邮件
@@ -1436,13 +1448,14 @@ rules:
   - RULE-SET,globe-classical,国际互联
 
   # 直连
-  - RULE-SET,direct-private-domain,直连
   - RULE-SET,direct-lan-classical,直连
+  - RULE-SET,direct-private-domain,直连
+  - RULE-SET,direct-china-media-classical,直连
+  - RULE-SET,direct-china-max-no-media-domain,直连
+  - RULE-SET,direct-china-max-no-media-classical,直连
+  - RULE-SET,direct-china-max-no-media-ip,直连,no-resolve
   - RULE-SET,direct-cloud-classical,直连
-  - RULE-SET,direct-domain,直连
   - RULE-SET,direct-domain-replenish-domain,直连
-  - RULE-SET,direct-lancidr-ip,直连,no-resolve
-  - RULE-SET,direct-cncidr-ip,直连,no-resolve
 
   # GEO
   - GEOIP,LAN,直连
