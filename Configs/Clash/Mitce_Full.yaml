@@ -230,7 +230,7 @@ tun:
   # system 使用系统协议栈，可以提供更稳定/全面的 tun 体验，且占用相对其他堆栈更低
   # gvisor 通过在用户空间中实现网络协议栈，可以提供更高的安全性和隔离性，同时可以避免操作系统内核和用户空间之间的切换，从而在特定情况下具有更好的网络处理性能
   # mixed 混合堆栈，tcp 使用 system栈，udp 使用 gvisor栈，使用体验可能相对更好
-  stack: system
+  stack: gvisor
   # DNS 劫持，将匹配到的连接导入内部 DNS 模块
   # 传统DNS 53 可DNS劫持 隐私保护级别:低
   # DoH 443 防止DNS劫持 隐私保护级别:高
@@ -547,6 +547,34 @@ globe-select: &globe-select
     - 英国节点
     - 印度节点
 
+# 应用进程选择（默认节点：绕过）
+applications-process-select: &applications-process-select
+  type: select
+  proxies:
+    - 绕过
+    - 直连
+    - 节点选择
+    - 自动选择
+    - 手动选择
+    - 自动选择地区
+    - 手动选择地区
+    - 故障转移
+    - 地区故障转移
+    - 负载均衡散列
+    - 负载均衡轮询
+    - 地区负载均衡散列
+    - 地区负载均衡轮询
+    - 香港节点
+    - 台湾节点
+    - 日本节点
+    - 韩国节点
+    - 新加坡节点
+    - 美国节点
+    - 德国节点
+    - 澳大利亚节点
+    - 英国节点
+    - 印度节点
+
 # MARK: 订阅更新和延迟测试锚点
 
 # 字段
@@ -811,6 +839,11 @@ proxy-groups:
   - name: "网速测试"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Speedtest.png"
     <<: *default-select
+
+  # 下载进程
+  - name: "下载进程"
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Download.png"
+    <<: *applications-process-select
 
   # 地区/区域
   - name: 香港节点
@@ -1368,6 +1401,12 @@ rule-providers:
     path: ./rule-providers/stun-classical.yaml
     url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/STUN_No_Resolve.yaml"
 
+  # 应用进程
+  applications-process-download-classical:
+    <<: *classical
+    path: ./rule-providers/applications-process-download-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Download/Download_No_Resolve.yaml"
+
 # MARK: 分流规则配置
 
 # 注意：规则自上而下匹配，所以规则顺序直接影响流效果。
@@ -1385,13 +1424,10 @@ rules:
   - RULE-SET,ad-reject-domain,广告拦截
   - RULE-SET,ad-reject-classical,广告拦截
 
-  # DNS解析
-  - RULE-SET,direct-dns-classical,直连
-  - RULE-SET,globe-dns-classical,国际互联
-
   # 应用进程
   - RULE-SET,direct-applications-classical,直连
   - RULE-SET,direct-applications-replenish-classical,直连
+  - RULE-SET,applications-process-download-classical,下载进程
 
   # 苹果服务
   - RULE-SET,apple-mail-classical,苹果邮件
