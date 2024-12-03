@@ -55,7 +55,7 @@
 # 自动选择地区地区：支持
 #
 # 更新时间：2024/12/03
-
+#
 # MARK: 端口配置
 #
 # HTTP(S) 代理服务器端口
@@ -343,9 +343,6 @@ dns:
     - system
   # 默认的域名解析服务器
   nameserver:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-    - https://doh.opendns.com/dns-query
     - 223.5.5.5
     - 119.29.29.29
     - 180.76.76.76
@@ -356,9 +353,6 @@ dns:
   # 后备域名解析服务器，一般情况下使用境外 DNS, 保证结果可信
   # 配置 fallback后默认启用 fallback-filter,geoip-code为 cn
   fallback:
-    - https://dns.google/dns-query
-    - https://cloudflare-dns.com/dns-query
-    - https://doh.opendns.com/dns-query
     - 8.8.8.8
     - 1.1.1.1
     - 208.67.222.222
