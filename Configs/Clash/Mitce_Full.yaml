@@ -600,13 +600,13 @@ p: &p
     enable: true
     url: "https://www.gstatic.com/generate_204"
     interval: 180
-    tolerance: 20
+    tolerance: 25
 
 # 自动选择 测试连通性以及延迟
 url-test: &url-test
   type: url-test
   interval: 180
-  tolerance: 20
+  tolerance: 25
   lazy: true
   url: "https://www.gstatic.com/generate_204"
   disable-udp: false
@@ -930,7 +930,7 @@ proxy-groups:
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Auto.png"
     type: url-test
     interval: 180
-    tolerance: 20
+    tolerance: 25
     lazy: true
     url: "https://www.gstatic.com/generate_204"
     disable-udp: false
