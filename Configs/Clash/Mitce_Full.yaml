@@ -54,7 +54,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2024/12/03
+# 更新时间：2024/12/04
 #
 # MARK: 端口配置
 #
@@ -396,10 +396,6 @@ dns:
     - "*.home.arpa"
     - rule-set:direct-private-domain
     - rule-set:direct-lan-classical
-    # DNS
-    - rule-set:direct-dns-classical
-    - rule-set:globe-dns-classical
-    - rule-set:dns-classical
     # NTP
     - rule-set:ntp-classical
     # STUN
@@ -584,6 +580,7 @@ applications-process-select: &applications-process-select
 # lazy：懒惰状态，默认为true,未选择到当前策略组时，不进行测试
 # timeout：健康检查超时时间，单位为毫秒
 # max-failed-times：最大失败次数，超过则触发一次强制健康检查，默认 5
+# disable-udp：禁用该策略组的UDP
 # include-all：引入所有出站代理以及代理集合，顺序将按照名称排序（引入不包含策略组,可在proxies引入其他策略组）
 # include-all-proxies：引入所有出站代理，顺序将按照名称排序（引入不包含策略组,可在proxies引入其他策略组）
 # include-all-providers：引入所有代理集合，顺序将按照名称排序（会使引入代理集合失效）
@@ -595,23 +592,23 @@ applications-process-select: &applications-process-select
 # 节点集合 测试连通性以及延迟
 p: &p
   type: http
-  interval: 86400
+  interval: 43200
   health-check:
     enable: true
     url: "https://www.gstatic.com/generate_204"
     interval: 180
-    tolerance: 25
+    tolerance: 10
 
 # 自动选择 测试连通性以及延迟
 url-test: &url-test
   type: url-test
   interval: 180
-  tolerance: 25
+  tolerance: 10
   lazy: true
   url: "https://www.gstatic.com/generate_204"
   disable-udp: false
-  timeout: 10000
-  max-failed-times: 10
+  timeout: 5000
+  max-failed-times: 5
   hidden: false
   include-all-providers: true
 
@@ -622,8 +619,8 @@ fallabck: &fallabck
   lazy: true
   url: "https://www.gstatic.com/generate_204"
   disable-udp: false
-  timeout: 10000
-  max-failed-times: 10
+  timeout: 5000
+  max-failed-times: 5
   hidden: false
 
 # 负载均衡-散列 测试连通性以及延迟
@@ -634,8 +631,8 @@ load-balance-ch: &load-balance-ch
   url: "https://www.gstatic.com/generate_204"
   disable-udp: false
   strategy: consistent-hashing
-  timeout: 10000
-  max-failed-times: 10
+  timeout: 5000
+  max-failed-times: 5
   hidden: true
 
 # 负载均衡-轮询 测试连通性以及延迟
@@ -646,8 +643,8 @@ load-balance-rr: &load-balance-rr
   url: "https://www.gstatic.com/generate_204"
   disable-udp: false
   strategy: round-robin
-  timeout: 10000
-  max-failed-times: 10
+  timeout: 5000
+  max-failed-times: 5
   hidden: true
 
 # MARK: 规则行为锚点
@@ -655,17 +652,17 @@ load-balance-rr: &load-balance-rr
 rule-anchor:
   ip: &ip
     type: http
-    interval: 86400
+    interval: 43200
     behavior: ipcidr
 
   domain: &domain
     type: http
-    interval: 86400
+    interval: 43200
     behavior: domain
 
   classical: &classical
     type: http
-    interval: 86400
+    interval: 43200
     behavior: classical
 
 # MARK: 远程订阅配置
@@ -679,11 +676,38 @@ proxy-providers:
     path: ./proxy-providers/Mitce.yaml
     url: ""
     # override 覆写节点内容，以下为支持的字段
-    # override.additional-prefix 为节点名称添加固定前缀
-    # override.additional-suffix 为节点名称添加固定后缀
-    # override.proxy-name 对节点名称内容进行替换，支持正则表达式，pattern 为替换内容，target 为替换目标
     override:
       # additional-prefix: "[A]"
+      # 跳过证书验证，仅适用于使用 tls 的协议
+      # skip-cert-verify: true
+      # 是否允许 UDP 通过代理，默认为 false
+      # udp: true
+      # 上传和下载带宽，以默认以 Mbps 为单位
+      # down: "50 Mbps"
+      # up: "10 Mbps"
+      # 指定当前 proxies 通过 dialer-proxy 建立网络连接，值可以为策略组/出站代理的 name
+      # dialer-proxy: proxy
+      # 指定节点绑定的接口，从此接口发起连接
+      # interface-name: tailscale0
+      # 节点发起连接时附加的路由标记
+      # routing-mark: 233
+      # 代理软件出站使用的 ip 版本，如果不是 direct，则会影响 server 为域名时使用的 ip 地址
+      # 可选：dual/ipv4/ipv6/ipv4-prefer/ipv6-prefer ,默认使用 dual
+      # ipv4: 仅使用 IPv4
+      # ipv6: 仅使用 IPv6
+      # ipv4-prefer: 优先使用 IPv4，对于 TCP 会进行双栈解析，并发链接但是优先使用 IPv4 链接，UDP 则为双栈解析，获取结果中的第一个 IPv4
+      # ipv6-prefer:优先使用 IPv6，对于 TCP 会进行双栈解析，并发链接但是优先使用 IPv6 链接，UDP 则为双栈解析，获取结果中的第一个 IPv6
+      # ip-version: ipv4-prefer
+      # 为节点名称添加固定前缀
+      # additional-prefix: "[A]"
+      # 为节点名称添加固定后缀
+      # additional-suffix: "TEST"
+      # 对节点名称内容进行替换，支持正则表达式，pattern 为替换内容，target 为替换目标
+      # proxy-name:
+      #   - pattern: "test"
+      #     target: "TEST"
+      #   - pattern: "IPLC-(.*?)倍"
+      #     target: "IPLC X $1"
 
 # MARK: 筛选条件锚点
 
@@ -799,6 +823,7 @@ proxy-groups:
   - name: "奈飞视频"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Netflix.png"
     <<: *globe-select
+    include-all-providers: true
 
   # Emby 视频
   - name: "Emby 视频"
@@ -930,12 +955,12 @@ proxy-groups:
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Auto.png"
     type: url-test
     interval: 180
-    tolerance: 25
+    tolerance: 10
     lazy: true
     url: "https://www.gstatic.com/generate_204"
     disable-udp: false
-    timeout: 10000
-    max-failed-times: 10
+    timeout: 5000
+    max-failed-times: 5
     hidden: false
     <<: *region-select
 
@@ -1362,32 +1387,21 @@ rule-providers:
     path: ./rule-providers/direct-domain-replenish-domain.yaml
     url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Domain_Replenish.yaml"
 
-  # 直连应用进程
-  direct-applications-classical:
+  # 应用进程
+  direct-applications-process-classical:
     <<: *classical
-    path: ./rule-providers/direct-applications-classical.yaml
+    path: ./rule-providers/direct-applications-process-classical.yaml
     url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Applications_Classical.yaml"
 
-  direct-applications-replenish-classical:
+  direct-applications-process-replenish-classical:
     <<: *classical
-    path: ./rule-providers/direct-applications-replenish-classical.yaml
+    path: ./rule-providers/direct-applications-process-replenish-classical.yaml
     url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Applications_Replenish_Classical.yaml"
 
-  # DNS
-  dns-classical:
+  applications-process-download-classical:
     <<: *classical
-    path: ./rule-providers/dns-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/DNS/DNS_No_Resolve.yaml"
-
-  direct-dns-classical:
-    <<: *classical
-    path: ./rule-providers/direct-dns-classical.yaml
-    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/ChinaDNS_No_Resolve.yaml"
-
-  globe-dns-classical:
-    <<: *classical
-    path: ./rule-providers/globe-dns-classical.yaml
-    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/GlobalDNS_No_Resolve.yaml"
+    path: ./rule-providers/applications-process-download-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Download/Download_No_Resolve.yaml"
 
   # NTP
   ntp-classical:
@@ -1400,12 +1414,6 @@ rule-providers:
     <<: *classical
     path: ./rule-providers/stun-classical.yaml
     url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/STUN_No_Resolve.yaml"
-
-  # 应用进程
-  applications-process-download-classical:
-    <<: *classical
-    path: ./rule-providers/applications-process-download-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Download/Download_No_Resolve.yaml"
 
 # MARK: 分流规则配置
 
@@ -1425,8 +1433,8 @@ rules:
   - RULE-SET,ad-reject-classical,广告拦截
 
   # 应用进程
-  - RULE-SET,direct-applications-classical,直连
-  - RULE-SET,direct-applications-replenish-classical,直连
+  - RULE-SET,direct-applications-process-classical,直连
+  - RULE-SET,direct-applications-process-replenish-classical,直连
   - RULE-SET,applications-process-download-classical,下载进程
 
   # 苹果服务
