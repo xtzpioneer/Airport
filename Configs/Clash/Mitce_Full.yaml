@@ -54,7 +54,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2024/12/04
+# 更新时间：2024/12/20
 #
 # MARK: 端口配置
 #
@@ -360,14 +360,7 @@ dns:
     - "[2606:4700:4700::1111]"
     - "[2620:0:ccc::2]"
   # 用于direct出口域名解析的 DNS 服务器，如果不填则遵循nameserver-policy、nameserver和fallback的配置
-  direct-nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
-    - 180.76.76.76
-    - "[2400:3200::1]"
-    - "[2402:4e00::]"
-    - "[2400:da00::6666]"
-    - system
+  direct-nameserver: null
   # 代理节点域名解析服务器，仅用于解析代理节点的域名，如果不填则遵循nameserver-policy、nameserver和fallback的配置
   proxy-server-nameserver: null
   # 指定域名查询的解析服务器，可使用 geosite, 优先于 nameserver/fallback 查询
@@ -379,7 +372,7 @@ dns:
   # 可选值 fake-ip/redir-host，默认redir-host
   enhanced-mode: fake-ip
   # fake-ip 池设置
-  fake-ip-range: 10.96.0.0/16
+  fake-ip-range: 172.19.0.1/16
   # fakeip 过滤，以下地址不会下发 fakeip 映射用于连接
   # 值支持域名通配以及引入域名集合
   # - rule-set:fakeip-filter fakeip-filter 为 rule-providers 中的名为 fakeip-filter 规则订阅
@@ -1417,9 +1410,9 @@ rule-providers:
 
 # MARK: 分流规则配置
 
-# 注意：规则自上而下匹配，所以规则顺序直接影响流效果。
-# 注意：规则自上而下匹配，所以规则顺序直接影响流效果。
-# 注意：规则自上而下匹配，所以规则顺序直接影响流效果。
+# 注意：规则自上而下匹配，所以规则顺序直接影响分流效果。
+# 注意：规则自上而下匹配，所以规则顺序直接影响分流效果。
+# 注意：规则自上而下匹配，所以规则顺序直接影响分流效果。
 
 # 首先，请注意，把所有非IP类规则写在 IP类规则之前，这是最没有问题的！
 # 避免 DNS 污染和 DNS 泄漏最有效的办法就是永远不在本地进行 DNS 解析。
