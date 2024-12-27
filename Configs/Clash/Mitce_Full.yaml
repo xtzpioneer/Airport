@@ -54,7 +54,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2024/12/21
+# 更新时间：2024/12/27
 #
 # MARK: 端口配置
 #
@@ -1358,6 +1358,51 @@ rule-providers:
     path: ./rule-providers/direct-china-media-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaMedia/ChinaMedia_No_Resolve.yaml"
 
+  direct-china-neteasemusic-media-classical:
+    <<: *classical
+    path: ./rule-providers/direct-china-neteasemusic-media-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/NetEaseMusic/NetEaseMusic_No_Resolve.yaml"
+
+  direct-china-youku-media-classical:
+    <<: *classical
+    path: ./rule-providers/direct-china-youku-media-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Youku/Youku_No_Resolve.yaml"
+
+  direct-china-tencentvideo-media-classical:
+    <<: *classical
+    path: ./rule-providers/direct-china-tencentvideo-media-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/TencentVideo/TencentVideo_No_Resolve.yaml"
+
+  direct-china-iqiyi-media-classical:
+    <<: *classical
+    path: ./rule-providers/direct-china-iqiyi-media-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/iQIYI/iQIYI_No_Resolve.yaml"
+
+  direct-china-douyu-media-classical:
+    <<: *classical
+    path: ./rule-providers/direct-china-douyu-media-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Douyu/Douyu_No_Resolve.yaml"
+
+  direct-china-himalaya-media-classical:
+    <<: *classical
+    path: ./rule-providers/direct-china-himalaya-media-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Himalaya/Himalaya_No_Resolve.yaml"
+
+  direct-china-douyin-media-classical:
+    <<: *classical
+    path: ./rule-providers/direct-china-douyin-media-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/DouYin/DouYin_No_Resolve.yaml"
+
+  direct-china-zhanqi-media-classical:
+    <<: *classical
+    path: ./rule-providers/direct-china-zhanqi-media-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/zhanqi/zhanqi_No_Resolve.yaml"
+
+  direct-china-51nod-media-classical:
+    <<: *classical
+    path: ./rule-providers/direct-china-51nod-media-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/51nod/51nod_No_Resolve.yaml"
+
   direct-lan-classical:
     <<: *classical
     path: ./rule-providers/direct-lan-classical.yaml
@@ -1489,6 +1534,15 @@ rules:
   # 直连
   - RULE-SET,direct-lan-classical,直连
   - RULE-SET,direct-private-domain,直连
+  - RULE-SET,direct-china-neteasemusic-media-classical,直连
+  - RULE-SET,direct-china-youku-media-classical,直连
+  - RULE-SET,direct-china-tencentvideo-media-classical,直连
+  - RULE-SET,direct-china-iqiyi-media-classical,直连
+  - RULE-SET,direct-china-douyu-media-classical,直连
+  - RULE-SET,direct-china-himalaya-media-classical,直连
+  - RULE-SET,direct-china-douyin-media-classical,直连
+  - RULE-SET,direct-china-zhanqi-media-classical,直连
+  - RULE-SET,direct-china-51nod-media-classical,直连
   - RULE-SET,direct-china-media-classical,直连
   - RULE-SET,direct-china-max-no-media-domain,直连
   - RULE-SET,direct-china-max-no-media-classical,直连
