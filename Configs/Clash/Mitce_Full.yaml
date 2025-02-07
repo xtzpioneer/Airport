@@ -54,7 +54,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2024/12/27
+# 更新时间：2025/02/06
 #
 # MARK: 端口配置
 #
@@ -370,7 +370,7 @@ dns:
   # 可选值 fake-ip/redir-host，默认redir-host
   enhanced-mode: fake-ip
   # fake-ip 池设置
-  fake-ip-range: 172.19.0.1/16
+  fake-ip-range: 10.96.0.0/16
   # fakeip 过滤，以下地址不会下发 fakeip 映射用于连接
   # 值支持域名通配以及引入域名集合
   # - rule-set:fakeip-filter fakeip-filter 为 rule-providers 中的名为 fakeip-filter 规则订阅
