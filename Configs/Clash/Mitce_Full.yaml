@@ -54,7 +54,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/02/06
+# 更新时间：2025/02/28
 #
 # MARK: 端口配置
 #
@@ -114,7 +114,7 @@ geox-url:
   mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country-lite.mmdb"
   asn: https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb
 # 更改 geoip 使用文件，mmdb 或者 dat，可选 true/false,true为 dat，此项有默认值 false
-geodata-mode: false
+geodata-mode: true 
 # 是否自动更新 geodata
 geo-auto-update: true
 # 更新间隔，单位：小时
@@ -122,7 +122,7 @@ geo-update-interval: 24
 # 可选的加载模式如下
 # standard：标准加载器
 # memconservative：专为内存受限 (小内存) 设备优化的加载器 (默认值)
-geodata-loader: standard
+geodata-loader: memconservative
 
 # MARK: 自定全局 UA
 #
@@ -149,8 +149,8 @@ etag-support: true
 # MARK: WEB UI配置
 #
 # 目录，使用 http://{{external-controller}}/ui 访问
-external-ui: ui
-external-ui-name: metacubexd
+external-ui: "./ui"
+external-ui-name: "metacubexd"
 external-ui-url: "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip"
 # API 监听地址
 external-controller: 0.0.0.0:9090
@@ -305,7 +305,7 @@ dns:
   # 是否开启 DoH 支持 HTTP/3，将并发尝试
   prefer-h3: false
   # 开启 DNS 服务器监听
-  listen: :1053
+  listen: :53
   # false 将返回 AAAA 的空结果
   ipv6: true
   # 单位：ms，内部双栈并发时，向上游查询 AAAA 时，等待 AAAA 的时间，默认 100ms
