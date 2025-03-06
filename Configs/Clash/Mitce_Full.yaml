@@ -54,16 +54,16 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/02/28
+# 更新时间：2025/03/07
 #
 # MARK: 端口配置
 #
-# HTTP(S) 代理服务器端口
-port: 7890
+# HTTP(S) 和 SOCKS 代理混合端口
+mixed-port: 7890
 # SOCKS5 代理端口
 socks-port: 7891
-# HTTP(S) 和 SOCKS 代理混合端口
-mixed-port: 7892
+# HTTP(S) 代理服务器端口
+port: 7892
 # 透明代理端口，用于 Linux 和 MacOS
 redir-port: 7893
 # 适用于 Linux 的透明代理服务器端口（TProxy TCP 和 TProxy UDP）
@@ -315,9 +315,9 @@ dns:
   # 可设置为whitelist，即只有匹配成功才返回fake-ip
   fake-ip-filter-mode: blacklist
   # 是否查询系统 hosts，默认 true
-  use-system-hosts: true
+  use-system-hosts: false
   # 是否回应配置中的 hosts，默认 true
-  use-hosts: true
+  use-hosts: false
   # 配置后面的nameserver、fallback和nameserver-policy向dns服务器的连接过程是否遵守遵守rules规则
   # 如果为false（默认值）则这三部分的dns服务器在未特别指定的情况下会直连
   # 如果为true，将会按照rules的规则匹配链接方式（走代理或直连），如果有特别指定则任然以指定值为准
@@ -340,6 +340,7 @@ dns:
     - "[2001:4860:4860::8888]"
     - "[2606:4700:4700::1111]"
     - "[2620:0:ccc::2]"
+    - system
   # 默认的域名解析服务器
   nameserver:
     - 223.5.5.5
@@ -348,6 +349,7 @@ dns:
     - "[2400:3200::1]"
     - "[2402:4e00::]"
     - "[2400:da00::6666]"
+    - system
   # 后备域名解析服务器，一般情况下使用境外 DNS, 保证结果可信
   # 配置 fallback后默认启用 fallback-filter,geoip-code为 cn
   fallback:
