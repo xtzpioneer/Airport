@@ -54,7 +54,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/03/07
+# 更新时间：2025/03/08
 #
 # MARK: 端口配置
 #
@@ -114,7 +114,7 @@ geox-url:
   mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country-lite.mmdb"
   asn: https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb
 # 更改 geoip 使用文件，mmdb 或者 dat，可选 true/false,true为 dat，此项有默认值 false
-geodata-mode: true 
+geodata-mode: true
 # 是否自动更新 geodata
 geo-auto-update: true
 # 更新间隔，单位：小时
@@ -328,37 +328,91 @@ dns:
   # 只能使用纯 IP 地址，可使用加密 DNS
   # system 从系统配置中附加 DNS 服务器。如果未找到，它将打印错误日志并跳过。
   default-nameserver:
+    # 阿里DNS
     - 223.5.5.5
+    # 腾讯DNS
     - 119.29.29.29
+    # 百度DNS
     - 180.76.76.76
+    # 抖音DNS
+    - 180.184.1.1
+    # 华为DNS
+    - 122.112.208.1
+    # 360DNS
+    - 101.226.4.6
+    # GoogleDNS
     - 8.8.8.8
+    # CloudflareDNS
     - 1.1.1.1
+    # OpenDNS
     - 208.67.222.222
+    # Quad9DNS
+    - 9.9.9.10
+    # AdGuardDNS
+    - 94.140.14.140
+    # 阿里DNS
     - "[2400:3200::1]"
+    # 腾讯DNS
     - "[2402:4e00::]"
+    # 百度DNS
     - "[2400:da00::6666]"
+    # GoogleDNS
     - "[2001:4860:4860::8888]"
+    # CloudflareDNS
     - "[2606:4700:4700::1111]"
+    # OpenDNS
     - "[2620:0:ccc::2]"
+    # Quad9DNS
+    - "[2620:fe::10]"
+    # AdGuardDNS
+    - "[2a10:50c0::1:ff]"
+    # 系统DNS
     - system
   # 默认的域名解析服务器
   nameserver:
+    # 阿里DNS
     - 223.5.5.5
+    # 腾讯DNS
     - 119.29.29.29
+    # 百度DNS
     - 180.76.76.76
+    # 抖音DNS
+    - 180.184.1.1
+    # 华为DNS
+    - 122.112.208.1
+    # 360DNS
+    - 101.226.4.6
+    # 阿里DNS
     - "[2400:3200::1]"
+    # 腾讯DNS
     - "[2402:4e00::]"
+    # 百度DNS
     - "[2400:da00::6666]"
+    # 系统DNS
     - system
   # 后备域名解析服务器，一般情况下使用境外 DNS, 保证结果可信
   # 配置 fallback后默认启用 fallback-filter,geoip-code为 cn
   fallback:
+    # GoogleDNS
     - 8.8.8.8
+    # CloudflareDNS
     - 1.1.1.1
+    # OpenDNS
     - 208.67.222.222
+    # Quad9DNS
+    - 9.9.9.10
+    # AdGuardDNS
+    - 94.140.14.140
+    # GoogleDNS
     - "[2001:4860:4860::8888]"
+    # CloudflareDNS
     - "[2606:4700:4700::1111]"
+    # OpenDNS
     - "[2620:0:ccc::2]"
+    # Quad9DNS
+    - "[2620:fe::10]"
+    # AdGuardDNS
+    - "[2a10:50c0::1:ff]"
   # 用于direct出口域名解析的 DNS 服务器，如果不填则遵循nameserver-policy、nameserver和fallback的配置
   direct-nameserver: null
   # 代理节点域名解析服务器，仅用于解析代理节点的域名，如果不填则遵循nameserver-policy、nameserver和fallback的配置
