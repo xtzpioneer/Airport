@@ -54,7 +54,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/03/08
+# 更新时间：2025/03/09
 #
 # MARK: 端口配置
 #
@@ -538,7 +538,7 @@ default-select: &default-select
     - 直连
 
 # 国内选择（默认节点：直连）
-cns-elect: &cns-elect
+cns-select: &cns-select
   type: select
   proxies:
     - 直连
@@ -808,32 +808,32 @@ proxy-groups:
   # 苹果服务
   - name: "苹果服务"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple.png"
-    <<: *cns-elect
+    <<: *cns-select
 
   - name: "苹果系统更新"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_Update.png"
-    <<: *cns-elect
+    <<: *cns-select
 
   - name: "苹果音乐"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_Music.png"
-    <<: *cns-elect
+    <<: *cns-select
 
   - name: "iCloud"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/iCloud.png"
-    <<: *cns-elect
+    <<: *cns-select
 
   - name: "App Store"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/App_Store.png"
-    <<: *cns-elect
+    <<: *cns-select
 
   - name: "苹果邮件"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Mail.png"
-    <<: *cns-elect
+    <<: *cns-select
 
   # 微软服务
   - name: "微软服务"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Microsoft.png"
-    <<: *cns-elect
+    <<: *cns-select
 
   - name: "GitHub"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/GitHub.png"
@@ -841,7 +841,7 @@ proxy-groups:
 
   - name: "OneDrive"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/OneDrive.png"
-    <<: *cns-elect
+    <<: *cns-select
 
   # 谷歌服务
   - name: "谷歌服务"
@@ -1477,13 +1477,13 @@ rule-providers:
   direct-domain-replenish-domain:
     <<: *domain
     path: ./rule-providers/direct-domain-replenish-domain.yaml
-    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Domain_Replenish.yaml"
+    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/refs/heads/main/Rules/Clash/Direct_Applications_Replenish_Classical.yaml"
 
   # 应用进程
   direct-applications-process-classical:
     <<: *classical
     path: ./rule-providers/direct-applications-process-classical.yaml
-    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Applications_Classical.yaml"
+    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/refs/heads/main/Rules/Clash/Direct_Applications_Classical.yaml"
 
   direct-applications-process-replenish-classical:
     <<: *classical
@@ -1505,7 +1505,7 @@ rule-providers:
   stun-classical:
     <<: *classical
     path: ./rule-providers/stun-classical.yaml
-    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/STUN_No_Resolve.yaml"
+    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/refs/heads/main/Rules/Clash/STUN_No_Resolve.yaml"
 
 # MARK: 分流规则配置
 
@@ -1520,13 +1520,15 @@ rule-providers:
 # 因此，在 Mihomo 中，将会触发 DNS 解析的规则放在域名和 URL 匹配规则后面非常重要。
 
 rules:
+  # 应用进程
+  - RULE-SET,direct-applications-process-classical,直连
+  - RULE-SET,direct-applications-process-replenish-classical,直连
+
   # 广告拦截
   - RULE-SET,ad-reject-domain,广告拦截
   - RULE-SET,ad-reject-classical,广告拦截
 
   # 应用进程
-  - RULE-SET,direct-applications-process-classical,直连
-  - RULE-SET,direct-applications-process-replenish-classical,直连
   - RULE-SET,applications-process-download-classical,下载进程
 
   # 苹果服务
@@ -1587,9 +1589,11 @@ rules:
   - RULE-SET,globe-domain,国际互联
   - RULE-SET,globe-classical,国际互联
 
-  # 直连
+  # 私有直连
   - RULE-SET,direct-lan-classical,直连
   - RULE-SET,direct-private-domain,直连
+
+  # 国内直连
   - RULE-SET,direct-china-neteasemusic-media-classical,直连
   - RULE-SET,direct-china-youku-media-classical,直连
   - RULE-SET,direct-china-tencentvideo-media-classical,直连
