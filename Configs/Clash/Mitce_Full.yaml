@@ -443,10 +443,6 @@ dns:
     - "*.home.arpa"
     - rule-set:direct-private-domain
     - rule-set:direct-lan-classical
-    # NTP
-    - rule-set:ntp-classical
-    # STUN
-    - rule-set:stun-classical
   # 后备域名解析服务器筛选，满足条件的将使用 fallback结果或只使用 fallback解析
   fallback-filter:
     # 是否启用 geoip 判断
@@ -1480,32 +1476,10 @@ rule-providers:
     url: "https://raw.githubusercontent.com/xtzPioneer/Airport/refs/heads/main/Rules/Clash/Direct_Applications_Replenish_Classical.yaml"
 
   # 应用进程
-  direct-applications-process-classical:
-    <<: *classical
-    path: ./rule-providers/direct-applications-process-classical.yaml
-    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/refs/heads/main/Rules/Clash/Direct_Applications_Classical.yaml"
-
-  direct-applications-process-replenish-classical:
-    <<: *classical
-    path: ./rule-providers/direct-applications-process-replenish-classical.yaml
-    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/main/Rules/Clash/Direct_Applications_Replenish_Classical.yaml"
-
   applications-process-download-classical:
     <<: *classical
     path: ./rule-providers/applications-process-download-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Download/Download_No_Resolve.yaml"
-
-  # NTP
-  ntp-classical:
-    <<: *classical
-    path: ./rule-providers/ntp-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/NTPService/NTPService_No_Resolve.yaml"
-
-  # STUN
-  stun-classical:
-    <<: *classical
-    path: ./rule-providers/stun-classical.yaml
-    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/refs/heads/main/Rules/Clash/STUN_No_Resolve.yaml"
 
 # MARK: 分流规则配置
 
@@ -1520,10 +1494,6 @@ rule-providers:
 # 因此，在 Mihomo 中，将会触发 DNS 解析的规则放在域名和 URL 匹配规则后面非常重要。
 
 rules:
-  # 应用进程
-  - RULE-SET,direct-applications-process-classical,直连
-  - RULE-SET,direct-applications-process-replenish-classical,直连
-
   # 广告拦截
   - RULE-SET,ad-reject-domain,广告拦截
   - RULE-SET,ad-reject-classical,广告拦截
