@@ -54,7 +54,8 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/03/10
+# 更新时间：2025/03/18
+
 #
 # MARK: 端口配置
 #
@@ -122,7 +123,7 @@ geo-update-interval: 24
 # 可选的加载模式如下
 # standard：标准加载器
 # memconservative：专为内存受限 (小内存) 设备优化的加载器 (默认值)
-geodata-loader: memconservative
+geodata-loader: standard
 
 # MARK: 自定全局 UA
 #
@@ -217,7 +218,7 @@ profile:
   store-selected: true
   # 持久化 fake-ip
   # 储存 fakeip 映射表，域名再次发生连接时，使用原有映射地址
-  store-fake-ip: true
+  store-fake-ip: false
 
 # MARK: TUN配置
 #
@@ -305,7 +306,7 @@ dns:
   # 是否开启 DoH 支持 HTTP/3，将并发尝试
   prefer-h3: false
   # 开启 DNS 服务器监听
-  listen: :53
+  listen: :9053
   # false 将返回 AAAA 的空结果
   ipv6: true
   # 单位：ms，内部双栈并发时，向上游查询 AAAA 时，等待 AAAA 的时间，默认 100ms
@@ -315,9 +316,9 @@ dns:
   # 可设置为whitelist，即只有匹配成功才返回fake-ip
   fake-ip-filter-mode: blacklist
   # 是否查询系统 hosts，默认 true
-  use-system-hosts: false
+  use-system-hosts: true
   # 是否回应配置中的 hosts，默认 true
-  use-hosts: false
+  use-hosts: true
   # 配置后面的nameserver、fallback和nameserver-policy向dns服务器的连接过程是否遵守遵守rules规则
   # 如果为false（默认值）则这三部分的dns服务器在未特别指定的情况下会直连
   # 如果为true，将会按照rules的规则匹配链接方式（走代理或直连），如果有特别指定则任然以指定值为准
@@ -443,7 +444,10 @@ dns:
   # 值支持域名通配以及引入域名集合
   # - rule-set:fakeip-filter fakeip-filter 为 rule-providers 中的名为 fakeip-filter 规则订阅
   # 且 behavior 必须为 domain/classical，当为 classical 时仅会生效域名类规则
+  # "+.*" 等同于 redir-host 模式
   fake-ip-filter:
+    # RH 
+    # - "+.*"
     # LAN
     - "*.lan"
     - "*.local"
