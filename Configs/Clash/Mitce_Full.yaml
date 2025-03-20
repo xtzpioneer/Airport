@@ -610,61 +610,6 @@ globe-select: &globe-select
     - 英国节点
     - 印度节点
 
-# 国内子选择（默认节点：绕过）
-cns-sub-select: &cns-sub-select
-  type: select
-  proxies:
-    - 绕过
-    - 直连
-    - 节点选择
-    - 自动选择
-    - 手动选择
-    - 自动选择地区
-    - 手动选择地区
-    - 故障转移
-    - 地区故障转移
-    - 负载均衡散列
-    - 负载均衡轮询
-    - 地区负载均衡散列
-    - 地区负载均衡轮询
-    - 香港节点
-    - 台湾节点
-    - 日本节点
-    - 韩国节点
-    - 新加坡节点
-    - 美国节点
-    - 德国节点
-    - 澳大利亚节点
-    - 英国节点
-    - 印度节点
-
-# 全球子选择（默认节点：绕过）
-globe-sub-select: &globe-sub-select
-  type: select
-  proxies:
-    - 绕过
-    - 节点选择
-    - 自动选择
-    - 手动选择
-    - 自动选择地区
-    - 手动选择地区
-    - 故障转移
-    - 地区故障转移
-    - 负载均衡散列
-    - 负载均衡轮询
-    - 地区负载均衡散列
-    - 地区负载均衡轮询
-    - 香港节点
-    - 台湾节点
-    - 日本节点
-    - 韩国节点
-    - 新加坡节点
-    - 美国节点
-    - 德国节点
-    - 澳大利亚节点
-    - 英国节点
-    - 印度节点
-
 # 应用进程选择（默认节点：绕过）
 applications-process-select: &applications-process-select
   type: select
@@ -891,19 +836,19 @@ proxy-groups:
 
   - name: "苹果音乐"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_Music.png"
-    <<: *cns-sub-select
+    <<: *cns-select
 
   - name: "iCloud"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/iCloud.png"
-    <<: *cns-sub-select
+    <<: *cns-select
 
   - name: "App Store"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/App_Store.png"
-    <<: *cns-sub-select
+    <<: *cns-select
 
   - name: "苹果邮件"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Mail.png"
-    <<: *cns-sub-select
+    <<: *cns-select
 
   - name: "苹果开发"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/TestFlight.png"
@@ -920,11 +865,11 @@ proxy-groups:
 
   - name: "微软必应"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Windows_11.png"
-    <<: *cns-sub-select
+    <<: *cns-select
 
   - name: "OneDrive"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/OneDrive.png"
-    <<: *cns-sub-select
+    <<: *cns-select
 
   - name: "GitHub"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/GitHub.png"
