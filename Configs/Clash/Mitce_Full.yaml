@@ -173,7 +173,7 @@ secret: ""
 # MARK: TCP 并发配置
 #
 # TCP 并发连接所有 IP, 将使用最快握手的 TCP
-tcp-concurrent: true
+tcp-concurrent: false
 
 # MARK: 延迟配置
 #
@@ -219,6 +219,12 @@ profile:
   # 持久化 fake-ip
   # 储存 fakeip 映射表，域名再次发生连接时，使用原有映射地址
   store-fake-ip: false
+
+# MARK: Hosts配置
+#
+# 类似于 /etc/hosts, 仅支持配置单个 IP
+hosts:
+# localhost: 127.0.0.1
 
 # MARK: TUN配置
 #
@@ -1652,10 +1658,6 @@ rules:
   # 网速测试
   - RULE-SET,globe-speedtest-classical,网速测试
 
-  # 国际云计算
-  - RULE-SET,globe-cloud-classical,国际互联
-  - RULE-SET,globe-cloud-ip,国际互联,no-resolve
-
   # 国际媒体
   - RULE-SET,globe-media-domain,国际媒体
   - RULE-SET,globe-media-classical,国际媒体
@@ -1663,6 +1665,10 @@ rules:
   # 国际互联
   - RULE-SET,globe-domain,国际互联
   - RULE-SET,globe-classical,国际互联
+
+  # 国际云计算
+  - RULE-SET,globe-cloud-classical,国际互联
+  - RULE-SET,globe-cloud-ip,国际互联,no-resolve
 
   # 私有直连
   - RULE-SET,direct-lan-classical,直连
@@ -1685,9 +1691,11 @@ rules:
   - RULE-SET,direct-cloud-classical,直连
   - RULE-SET,direct-domain-replenish-domain,直连
 
-  # GEO
-  - GEOIP,LAN,直连,no-resolve
-  - GEOIP,CN,直连,no-resolve
+  # GEO国内
+  - GEOSITE,private,直连
+  - GEOIP,private,直连,no-resolve
+  - GEOSITE,cn,直连
+  - GEOIP,cn,直连,no-resolve
 
   # 兜底
   - MATCH,漏网之鱼
