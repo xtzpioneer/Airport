@@ -644,6 +644,89 @@ applications-process-select: &applications-process-select
     - 英国节点
     - 印度节点
 
+# 苹果服务选择（默认节点：苹果服务）
+apple-service-select: &apple-service-select
+  type: select
+  proxies:
+    - 苹果服务
+    - 直连
+    - 节点选择
+    - 自动选择
+    - 手动选择
+    - 自动选择地区
+    - 手动选择地区
+    - 故障转移
+    - 地区故障转移
+    - 负载均衡散列
+    - 负载均衡轮询
+    - 地区负载均衡散列
+    - 地区负载均衡轮询
+    - 香港节点
+    - 台湾节点
+    - 日本节点
+    - 韩国节点
+    - 新加坡节点
+    - 美国节点
+    - 德国节点
+    - 澳大利亚节点
+    - 英国节点
+    - 印度节点
+
+# 微软服务选择（默认节点：微软服务）
+microsoft-service-select: &microsoft-service-select
+  type: select
+  proxies:
+    - 微软服务
+    - 直连
+    - 节点选择
+    - 自动选择
+    - 手动选择
+    - 自动选择地区
+    - 手动选择地区
+    - 故障转移
+    - 地区故障转移
+    - 负载均衡散列
+    - 负载均衡轮询
+    - 地区负载均衡散列
+    - 地区负载均衡轮询
+    - 香港节点
+    - 台湾节点
+    - 日本节点
+    - 韩国节点
+    - 新加坡节点
+    - 美国节点
+    - 德国节点
+    - 澳大利亚节点
+    - 英国节点
+    - 印度节点
+
+# 谷歌服务选择（默认节点：谷歌服务）
+google-service-select: &google-service-select
+  type: select
+  proxies:
+    - 谷歌服务
+    - 节点选择
+    - 自动选择
+    - 手动选择
+    - 自动选择地区
+    - 手动选择地区
+    - 故障转移
+    - 地区故障转移
+    - 负载均衡散列
+    - 负载均衡轮询
+    - 地区负载均衡散列
+    - 地区负载均衡轮询
+    - 香港节点
+    - 台湾节点
+    - 日本节点
+    - 韩国节点
+    - 新加坡节点
+    - 美国节点
+    - 德国节点
+    - 澳大利亚节点
+    - 英国节点
+    - 印度节点
+
 # MARK: 订阅更新和延迟测试锚点
 
 # 字段
@@ -838,31 +921,31 @@ proxy-groups:
 
   - name: "苹果系统更新"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_Update.png"
-    <<: *cns-select
+    <<: *apple-service-select
 
   - name: "苹果音乐"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_Music.png"
-    <<: *cns-select
+    <<: *apple-service-select
 
   - name: "iCloud"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/iCloud.png"
-    <<: *cns-select
+    <<: *apple-service-select
 
   - name: "App Store"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/App_Store.png"
-    <<: *cns-select
+    <<: *apple-service-select
 
   - name: "苹果邮件"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Mail.png"
-    <<: *cns-select
+    <<: *apple-service-select
 
   - name: "苹果开发"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/TestFlight.png"
-    <<: *cns-select
+    <<: *apple-service-select
 
   - name: "苹果国际"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_1.png"
-    <<: *cns-select
+    <<: *apple-service-select
 
   # 微软服务
   - name: "微软服务"
@@ -871,11 +954,11 @@ proxy-groups:
 
   - name: "微软必应"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Windows_11.png"
-    <<: *cns-select
+    <<: *microsoft-service-select
 
   - name: "OneDrive"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/OneDrive.png"
-    <<: *cns-select
+    <<: *microsoft-service-select
 
   - name: "GitHub"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/GitHub.png"
@@ -892,11 +975,11 @@ proxy-groups:
 
   - name: "YouTube 视频"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/YouTube.png"
-    <<: *globe-select
+    <<: *google-service-select
 
   - name: "YouTube 音乐"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/YouTube_Music.png"
-    <<: *globe-select
+    <<: *google-service-select
 
   # 电报消息
   - name: "电报消息"
@@ -1372,6 +1455,26 @@ rule-providers:
     path: ./rule-providers/google-youtube-music-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/YouTubeMusic/YouTubeMusic_No_Resolve.yaml"
 
+  google-chromecast-classical:
+    <<: *classical
+    path: ./rule-providers/google-chromecast-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Chromecast/Chromecast_No_Resolve.yaml"
+
+  google-fcm-classical:
+    <<: *classical
+    path: ./rule-providers/google-fcm-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/GoogleFCM/GoogleFCM_No_Resolve.yaml"
+
+  google-bard-ai-classical:
+    <<: *classical
+    path: ./rule-providers/google-bard-ai-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/BardAI/BardAI_No_Resolve.yaml"
+
+  google-gemini-classical:
+    <<: *classical
+    path: ./rule-providers/google-gemini-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Gemini/Gemini_No_Resolve.yaml"
+
   # 电报消息
   telegram-classical:
     <<: *classical
@@ -1629,6 +1732,10 @@ rules:
   # 谷歌服务
   - RULE-SET,google-youtube-classical,YouTube 视频
   - RULE-SET,google-youtube-music-classical,YouTube 音乐
+  - RULE-SET,google-chromecast-classical,谷歌服务
+  - RULE-SET,google-fcm-classical,谷歌服务
+  - RULE-SET,google-bard-ai-classical,谷歌服务
+  - RULE-SET,google-gemini-classical,谷歌服务
   - RULE-SET,google-service-classical,谷歌服务
 
   # 电报消息
