@@ -54,7 +54,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/03/20
+# 更新时间：2025/03/23
 
 #
 # MARK: 端口配置
@@ -173,7 +173,7 @@ secret: ""
 # MARK: TCP 并发配置
 #
 # TCP 并发连接所有 IP, 将使用最快握手的 TCP
-tcp-concurrent: false
+tcp-concurrent: true
 
 # MARK: 延迟配置
 #
@@ -1704,6 +1704,14 @@ rules:
   - RULE-SET,ad-reject-domain,广告拦截
   - RULE-SET,ad-reject-classical,广告拦截
 
+  # 私有直连
+  - RULE-SET,direct-lan-classical,直连
+  - RULE-SET,direct-private-domain,直连
+  
+  # GEO私有直连
+  - GEOSITE,private,直连
+  - GEOIP,private,直连,no-resolve
+
   # 应用进程
   - RULE-SET,direct-applications-process-classical,代理进程
   - RULE-SET,direct-applications-process-replenish-classical,代理进程
@@ -1728,6 +1736,27 @@ rules:
   - RULE-SET,microsoft-github-classical,GitHub
   - RULE-SET,microsoft-copilot-classical,Copilot
   - RULE-SET,microsoft-service-classical,微软服务
+
+  # 国内直连
+  - RULE-SET,direct-china-neteasemusic-media-classical,直连
+  - RULE-SET,direct-china-youku-media-classical,直连
+  - RULE-SET,direct-china-tencentvideo-media-classical,直连
+  - RULE-SET,direct-china-iqiyi-media-classical,直连
+  - RULE-SET,direct-china-douyu-media-classical,直连
+  - RULE-SET,direct-china-himalaya-media-classical,直连
+  - RULE-SET,direct-china-douyin-media-classical,直连
+  - RULE-SET,direct-china-zhanqi-media-classical,直连
+  - RULE-SET,direct-china-51nod-media-classical,直连
+  - RULE-SET,direct-china-media-classical,直连
+  - RULE-SET,direct-china-max-no-media-domain,直连
+  - RULE-SET,direct-china-max-no-media-classical,直连
+  - RULE-SET,direct-china-max-no-media-ip,直连,no-resolve
+  - RULE-SET,direct-domain-replenish-domain,直连
+  - RULE-SET,direct-cloud-classical,直连
+  
+  # GEO直连
+  - GEOSITE,cn,直连
+  - GEOIP,cn,直连,no-resolve
 
   # 谷歌服务
   - RULE-SET,google-youtube-classical,YouTube 视频
@@ -1776,33 +1805,6 @@ rules:
   # 国际云计算
   - RULE-SET,globe-cloud-classical,国际互联
   - RULE-SET,globe-cloud-ip,国际互联,no-resolve
-
-  # 私有直连
-  - RULE-SET,direct-lan-classical,直连
-  - RULE-SET,direct-private-domain,直连
-
-  # 国内直连
-  - RULE-SET,direct-china-neteasemusic-media-classical,直连
-  - RULE-SET,direct-china-youku-media-classical,直连
-  - RULE-SET,direct-china-tencentvideo-media-classical,直连
-  - RULE-SET,direct-china-iqiyi-media-classical,直连
-  - RULE-SET,direct-china-douyu-media-classical,直连
-  - RULE-SET,direct-china-himalaya-media-classical,直连
-  - RULE-SET,direct-china-douyin-media-classical,直连
-  - RULE-SET,direct-china-zhanqi-media-classical,直连
-  - RULE-SET,direct-china-51nod-media-classical,直连
-  - RULE-SET,direct-china-media-classical,直连
-  - RULE-SET,direct-china-max-no-media-domain,直连
-  - RULE-SET,direct-china-max-no-media-classical,直连
-  - RULE-SET,direct-china-max-no-media-ip,直连,no-resolve
-  - RULE-SET,direct-cloud-classical,直连
-  - RULE-SET,direct-domain-replenish-domain,直连
-
-  # GEO国内
-  - GEOSITE,private,直连
-  - GEOIP,private,直连,no-resolve
-  - GEOSITE,cn,直连
-  - GEOIP,cn,直连,no-resolve
 
   # 兜底
   - MATCH,漏网之鱼
