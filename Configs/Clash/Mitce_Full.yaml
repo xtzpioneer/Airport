@@ -54,7 +54,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/03/23
+# 更新时间：2025/04/17
 
 #
 # MARK: 端口配置
@@ -247,6 +247,9 @@ tun:
     - "any:53"
   # 自动选择流量出口接口，多出口网卡同时连接的设备建议手动指定出口网卡
   auto-detect-interface: true
+  # 手动指定出口网卡
+  # 'auto-detect-interface: true' 与 ‘interface-name: en0’ 冲突，需设置成 ‘auto-detect-interface: false’
+  # interface-name: en0
   # 自动设置全局路由，可以自动将全局流量路由进入 tun 网卡。
   auto-route: true
   # 最大传输单元
@@ -1707,7 +1710,7 @@ rules:
   # 私有直连
   - RULE-SET,direct-lan-classical,直连
   - RULE-SET,direct-private-domain,直连
-  
+
   # GEO私有直连
   - GEOSITE,private,直连
   - GEOIP,private,直连,no-resolve
@@ -1753,7 +1756,7 @@ rules:
   - RULE-SET,direct-china-max-no-media-ip,直连,no-resolve
   - RULE-SET,direct-domain-replenish-domain,直连
   - RULE-SET,direct-cloud-classical,直连
-  
+
   # GEO直连
   - GEOSITE,cn,直连
   - GEOIP,cn,直连,no-resolve
