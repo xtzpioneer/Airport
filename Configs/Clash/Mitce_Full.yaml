@@ -8,6 +8,9 @@
 # Mihomo Party 支持：https://github.com/pompurin404/mihomo-party
 # ClashMetaForAndroid 支持：https://github.com/MetaCubeX/ClashMetaForAndroid.git
 #
+# UI供应商：https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
+# UI供应商：https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip
+#
 # 规则提供商：https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash
 # 规则提供商：https://github.com/Loyalsoldier/clash-rules
 # 规则提供商：https://github.com/SukkaW/Surge
@@ -54,7 +57,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/04/26
+# 更新时间：2025/05/23
 
 #
 # MARK: 端口配置
@@ -150,9 +153,11 @@ etag-support: true
 # MARK: WEB UI配置
 #
 # 目录，使用 http://{{external-controller}}/ui 访问
+# 官方 UI：https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
+# 推荐 UI: https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip
 external-ui: "./ui"
-external-ui-name: "metacubexd"
-external-ui-url: "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip"
+external-ui-name: "zashboard"
+external-ui-url: "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip"
 # API 监听地址
 external-controller: :9090
 # API CORS 标头配置
@@ -218,13 +223,18 @@ profile:
   store-selected: true
   # 持久化 fake-ip
   # 储存 fakeip 映射表，域名再次发生连接时，使用原有映射地址
-  store-fake-ip: false
+  store-fake-ip: true
 
 # MARK: Hosts配置
 #
 # 类似于 /etc/hosts, 仅支持配置单个 IP
 hosts:
 # localhost: 127.0.0.1
+
+# MARK: 设置出口网卡
+#
+# 注意：'auto-detect-interface: true' 与 ‘interface-name:’ 冲突，需设置成 ‘auto-detect-interface: false’
+# interface-name: en0
 
 # MARK: TUN配置
 #
@@ -247,9 +257,6 @@ tun:
     - "any:53"
   # 自动选择流量出口接口，多出口网卡同时连接的设备建议手动指定出口网卡
   auto-detect-interface: true
-  # 手动指定出口网卡
-  # 'auto-detect-interface: true' 与 ‘interface-name: en0’ 冲突，需设置成 ‘auto-detect-interface: false’
-  # interface-name: en0
   # 自动设置全局路由，可以自动将全局流量路由进入 tun 网卡。
   auto-route: true
   # 最大传输单元
@@ -1811,3 +1818,4 @@ rules:
 
   # 兜底
   - MATCH,漏网之鱼
+
