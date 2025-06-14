@@ -57,9 +57,8 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/05/23
+# 更新时间：2025/06/15
 
-#
 # MARK: 端口配置
 #
 # HTTP(S) 和 SOCKS 代理混合端口
@@ -153,13 +152,17 @@ etag-support: true
 # MARK: WEB UI配置
 #
 # 目录，使用 http://{{external-controller}}/ui 访问
-# 官方 UI：https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
-# 推荐 UI: https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip
+# 官方 WEB UI：https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
+# 推荐 WEB UI: https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip
 external-ui: "./ui"
 external-ui-name: "zashboard"
 external-ui-url: "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip"
-# API 监听地址
+# API HTTP 监听地址
 external-controller: :9090
+# API HTTPS 监听地址，需要配置 tls 部分配置文件
+external-controller-tls: :9443
+# API 的访问密钥
+secret: "12345678"
 # API CORS 标头配置
 external-controller-cors:
   allow-origins:
@@ -167,13 +170,9 @@ external-controller-cors:
   allow-private-network: true
 # 从Unix socket访问api接口不会验证secret， 如果开启请自行保证安全问题
 external-controller-unix: mihomo.sock
-# API HTTPS 监听地址，需要配置 tls 部分配置文件
-external-controller-tls: :9443
 # 在 RESTful API 端口上开启 DOH 服务器
 # 该URL不会验证secret， 如果开启请自行保证安全问题
 external-doh-server: /dns-query
-# API 的访问密钥
-secret: ""
 
 # MARK: TCP 并发配置
 #
@@ -204,11 +203,18 @@ global-client-fingerprint: chrome
 # 为 Linux 下的出站连接提供默认流量标记
 routing-mark: 1000
 
+# MARK: 实验性配置
+#
+experimental:
+  # quic-go-disable-gso: false
+  # quic-go-disable-ecn: false
+  # dialer-ip4p-convert: false
+  
 # MARK: TCP Keep Alive 配置
 #
 # 修改此项以减少移动设备耗电问题
 # TCP Keep Alive 包的间隔，单位为秒
-keep-alive-interval: 15
+keep-alive-interval: 30
 # TCP Keep Alive 的最大空闲时间
 keep-alive-idle: 600
 # 禁用 TCP Keep Alive，在 Amdroid 默认为 true
@@ -282,7 +288,7 @@ tun:
 # 域名嗅探
 sniffer:
   # 是否启用 sniffer
-  enable: true
+  enable: false
   # 对 redir-host 类型识别的流量进行强制嗅探
   force-dns-mapping: true
   # 对所有未获取到域名的流量进行强制嗅探
@@ -302,10 +308,10 @@ sniffer:
       ports: [443, 8443]
   # 强制进行嗅探的域名列表，使用域名通配
   force-domain:
-    - "+.v2ex.com"
+    # - "+.v2ex.com"
   # 跳过嗅探的域名列表，使用域名通配
   skip-domain:
-    - "Mijia Cloud"
+    # - "Mijia Cloud"
   # 跳过嗅探的来源 IP 段列表
   skip-src-address:
     # - 192.168.X.X/32
@@ -350,101 +356,80 @@ dns:
   # system 从系统配置中附加 DNS 服务器。如果未找到，它将打印错误日志并跳过。
   default-nameserver:
     # 阿里DNS
-    # - 223.5.5.5
-    # - "[2400:3200::1]"
-    # 腾讯DNS
-    # - 119.29.29.29
-    # - "[2402:4e00::]"
-    # 百度DNS
-    # - 180.76.76.76
-    # - "[2400:da00::6666]"
-    # 抖音DNS
-    # - 180.184.1.1
-    # 华为DNS
-    # - 122.112.208.1
-    # 360DNS
-    # - 101.226.4.6
-    # GoogleDNS
-    # - 8.8.8.8
-    # - "[2001:4860:4860::8888]"
-    # CloudflareDNS
-    # - 1.1.1.1
-    # - "[2606:4700:4700::1111]"
-    # OpenDNS
-    # - 208.67.222.222
-    # - "[2620:0:ccc::2]"
-    # Quad9DNS
-    # - 9.9.9.10
-    # - "[2620:fe::10]"
-    # AdGuardDNS
-    # - 94.140.14.140
-    # - "[2a10:50c0::1:ff]"
-    # 系统DNS
-    - system
-  # 默认的域名解析服务器
-  nameserver:
-    # 阿里DNS
     - 223.5.5.5
+    - "[2400:3200::1]"
     # 腾讯DNS
     - 119.29.29.29
+    - "[2402:4e00::]"
     # 百度DNS
     - 180.76.76.76
+    - "[2400:da00::6666]"
     # 抖音DNS
     - 180.184.1.1
     # 华为DNS
     - 122.112.208.1
     # 360DNS
     - 101.226.4.6
+  # 默认的域名解析服务器
+  nameserver:
+    # 阿里DNS
+    - 223.5.5.5
+    - "[2400:3200::1]"
+    - https://dns.alidns.com/dns-query
+    # 腾讯DNS
+    - 119.29.29.29
+    - "[2402:4e00::]"
+    - https://doh.pub/dns-query
+    # 百度DNS
+    - 180.76.76.76
+    - "[2400:da00::6666]"
+    # 抖音DNS
+    - 180.184.1.1
+    # 华为DNS
+    - 122.112.208.1
+    # 360DNS
+    - 101.226.4.6
+    - https://doh.360.cn/dns-query
     # GoogleDNS
     - 8.8.8.8
+    - "[2001:4860:4860::8888]"
+    - https://dns.google/dns-query
     # CloudflareDNS
     - 1.1.1.1
+    - "[2606:4700:4700::1111]"
+    - https://cloudflare-dns.com/dns-query
     # OpenDNS
     - 208.67.222.222
+    - "[2620:0:ccc::2]"
+    - https://doh.opendns.com/dns-query
     # Quad9DNS
     - 9.9.9.10
-    # AdGuardDNS
-    - 94.140.14.140
-    # 阿里DNS
-    - "[2400:3200::1]"
-    # 腾讯DNS
-    - "[2402:4e00::]"
-    # 百度DNS
-    - "[2400:da00::6666]"
-    # GoogleDNS
-    - "[2001:4860:4860::8888]"
-    # CloudflareDNS
-    - "[2606:4700:4700::1111]"
-    # OpenDNS
-    - "[2620:0:ccc::2]"
-    # Quad9DNS
     - "[2620:fe::10]"
     # AdGuardDNS
+    - 94.140.14.140
     - "[2a10:50c0::1:ff]"
     # 系统DNS
     - system
   # 后备域名解析服务器，一般情况下使用境外 DNS, 保证结果可信
   # 配置 fallback后默认启用 fallback-filter,geoip-code为 cn
-  fallback:
+  fallback: null
     # GoogleDNS
     # - 8.8.8.8
+    # - "[2001:4860:4860::8888]"
+    # - https://dns.google/dns-query
     # CloudflareDNS
     # - 1.1.1.1
+    # - "[2606:4700:4700::1111]"
+    # - https://cloudflare-dns.com/dns-query
     # OpenDNS
     # - 208.67.222.222
+    # - "[2620:0:ccc::2]"
+    # - https://doh.opendns.com/dns-query
     # Quad9DNS
     # - 9.9.9.10
-    # AdGuardDNS
-    # - 94.140.14.140
-    # GoogleDNS
-    # - "[2001:4860:4860::8888]"
-    # CloudflareDNS
-    # - "[2606:4700:4700::1111]"
-    # OpenDNS
-    # - "[2620:0:ccc::2]"
-    # Quad9DNS
     # - "[2620:fe::10]"
     # AdGuardDNS
+    # - 94.140.14.140
     # - "[2a10:50c0::1:ff]"
   # 用于direct出口域名解析的 DNS 服务器，如果不填则遵循nameserver-policy、nameserver和fallback的配置
   direct-nameserver: null
@@ -458,7 +443,7 @@ dns:
   direct-nameserver-follow-policy: false
   # 可选值 fake-ip/redir-host，默认redir-host
   enhanced-mode: fake-ip
-  # fake-ip 池设置
+  # fake-ip 池，默认198.18.0.1/16
   fake-ip-range: 28.0.0.1/8
   # fakeip 过滤，以下地址不会下发 fakeip 映射用于连接
   # 值支持域名通配以及引入域名集合
@@ -484,7 +469,7 @@ dns:
     # STUN
     - rule-set:stun-classical
   # 后备域名解析服务器筛选，满足条件的将使用 fallback结果或只使用 fallback解析
-  fallback-filter:
+  fallback-filter: null
     # 是否启用 geoip 判断
     # geoip: true
     # 可选值为 国家缩写，默认值为 CN
@@ -1818,4 +1803,3 @@ rules:
 
   # 兜底
   - MATCH,漏网之鱼
-
