@@ -57,7 +57,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/06/15
+# 更新时间：2025/06/16
 
 # MARK: 端口配置
 #
@@ -115,13 +115,13 @@ geox-url:
   geoip: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat"
   geosite: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
   mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country-lite.mmdb"
-  asn: https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb
+  asn: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb"
 # 更改 geoip 使用文件，mmdb 或者 dat，可选 true/false,true为 dat，此项有默认值 false
 geodata-mode: true
 # 是否自动更新 geodata
 geo-auto-update: true
 # 更新间隔，单位：小时
-geo-update-interval: 24
+geo-update-interval: 48
 # 可选的加载模式如下
 # standard：标准加载器
 # memconservative：专为内存受限 (小内存) 设备优化的加载器 (默认值)
@@ -1803,3 +1803,4 @@ rules:
 
   # 兜底
   - MATCH,漏网之鱼
+
