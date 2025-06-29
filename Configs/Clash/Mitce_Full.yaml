@@ -1,5 +1,5 @@
 # Mitce 机场官网：https://mitce.net/aff.php?aff=4905
-# Mitce 机场定制配置：https://raw.githubusercontent.com/xtzPioneer/Airport/main/Configs/Clash/Mitce_Full.yaml
+# Mitce 机场定制配置：https://raw.githubusercontent.com/xtzpioneer/Airport/main/Configs/Clash/Mitce_Full.yaml
 #
 # Mihomo 内核：https://github.com/MetaCubeX/mihomo
 # Mihomo 内核文档：https://wiki.metacubex.one
@@ -57,7 +57,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/06/24
+# 更新时间：2025/06/29
 
 # MARK: 端口配置
 #
@@ -1664,18 +1664,18 @@ rule-providers:
   direct-domain-replenish-domain:
     <<: *domain
     path: ./rule-providers/direct-domain-replenish-domain.yaml
-    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/refs/heads/main/Rules/Clash/Direct_Domain_Replenish.yaml"
+    url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/Direct_Domain_Replenish.yaml"
 
   # 应用进程
   direct-applications-process-classical:
     <<: *classical
     path: ./rule-providers/direct-applications-process-classical.yaml
-    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/refs/heads/main/Rules/Clash/Direct_Applications_Classical.yaml"
+    url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/Direct_Applications_Classical.yaml"
 
   direct-applications-process-replenish-classical:
     <<: *classical
     path: ./rule-providers/direct-applications-process-replenish-classical.yaml
-    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/refs/heads/main/Rules/Clash/Direct_Applications_Replenish_Classical.yaml"
+    url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/Direct_Applications_Replenish_Classical.yaml"
 
   applications-process-download-classical:
     <<: *classical
@@ -1692,7 +1692,7 @@ rule-providers:
   stun-classical:
     <<: *classical
     path: ./rule-providers/stun-classical.yaml
-    url: "https://raw.githubusercontent.com/xtzPioneer/Airport/refs/heads/main/Rules/Clash/STUN_No_Resolve.yaml"
+    url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/STUN_No_Resolve.yaml"
 
 # MARK: 分流规则配置
 
