@@ -135,7 +135,7 @@ global-ua: clash.meta
 # MARK: 日志配置
 #
 # 日志等级 silent/error/warning/info/debug
-log-level: silent
+log-level: info
 
 # MARK: IPV6配置
 #
@@ -237,7 +237,7 @@ profile:
 #
 # 类似于 /etc/hosts, 仅支持配置单个 IP
 hosts:
-  #localhost: 127.0.0.1
+  localhost: 127.0.0.1
 
 # MARK: 设置出口网卡
 #
@@ -1815,3 +1815,4 @@ rules:
 
   # 兜底
   - MATCH,漏网之鱼
+
