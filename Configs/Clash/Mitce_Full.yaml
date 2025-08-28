@@ -57,7 +57,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/06/29
+# 更新时间：2025/08/28
 
 # MARK: 端口配置
 #
@@ -678,6 +678,34 @@ apple-service-select: &apple-service-select
     - 澳大利亚节点
     - 英国节点
     - 印度节点
+    
+# 苹果国际服务选择（默认节点：节点选择）
+apple-globe-service-select: &apple-globe-service-select
+  type: select
+  proxies:
+    - 节点选择
+    - 苹果服务
+    - 直连
+    - 自动选择
+    - 手动选择
+    - 自动选择地区
+    - 手动选择地区
+    - 故障转移
+    - 地区故障转移
+    - 负载均衡散列
+    - 负载均衡轮询
+    - 地区负载均衡散列
+    - 地区负载均衡轮询
+    - 香港节点
+    - 台湾节点
+    - 日本节点
+    - 韩国节点
+    - 新加坡节点
+    - 美国节点
+    - 德国节点
+    - 澳大利亚节点
+    - 英国节点
+    - 印度节点
 
 # 微软服务选择（默认节点：微软服务）
 microsoft-service-select: &microsoft-service-select
@@ -948,11 +976,11 @@ proxy-groups:
 
   - name: "苹果开发"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/TestFlight.png"
-    <<: *apple-service-select
+    <<: *apple-globe-service-select
 
   - name: "苹果国际"
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_1.png"
-    <<: *apple-service-select
+    <<: *apple-globe-service-select
 
   # 微软服务
   - name: "微软服务"
@@ -1815,4 +1843,3 @@ rules:
 
   # 兜底
   - MATCH,漏网之鱼
-
