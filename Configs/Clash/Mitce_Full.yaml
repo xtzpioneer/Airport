@@ -57,16 +57,16 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/08/28
+# 更新时间：2025/09/20
 
 # MARK: 端口配置
 #
 # HTTP(S) 和 SOCKS 代理混合端口
 mixed-port: 7890
-# SOCKS5 代理端口
-socks-port: 7891
 # HTTP(S) 代理服务器端口
-port: 7892
+port: 7891
+# SOCKS5 代理端口
+socks-port: 7892
 # 透明代理端口，用于 Linux 和 MacOS
 redir-port: 7893
 # 适用于 Linux 的透明代理服务器端口（TProxy TCP 和 TProxy UDP）
@@ -119,7 +119,7 @@ geox-url:
 # 更改 geoip 使用文件，mmdb 或者 dat，可选 true/false,true为 dat，此项有默认值 false
 geodata-mode: true
 # 是否自动更新 geodata
-geo-auto-update: true
+geo-auto-update: false
 # 更新间隔，单位：小时
 geo-update-interval: 48
 # 可选的加载模式如下
@@ -151,10 +151,10 @@ etag-support: true
 
 # MARK: WEB UI配置
 #
-# 目录，使用 http://{{external-controller}}/ui 访问
+# 目录，使用 http://{{external-controller}}/ui/ui-name 访问
 # 官方 WEB UI：https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
 # 推荐 WEB UI: https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip
-external-ui: "./ui"
+external-ui: ./ui
 external-ui-name: "zashboard"
 external-ui-url: "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip"
 # API HTTP 监听地址
@@ -203,7 +203,7 @@ global-client-fingerprint: chrome
 # MARK: 路由标记
 #
 # 为 Linux 下的出站连接提供默认流量标记
-routing-mark: 1000
+routing-mark: 5000
 
 # MARK: 实验性配置
 #
@@ -211,7 +211,7 @@ experimental:
   #quic-go-disable-gso: false
   #quic-go-disable-ecn: false
   #dialer-ip4p-convert: false
-  
+
 # MARK: TCP Keep Alive 配置
 #
 # 修改此项以减少移动设备耗电问题
@@ -231,13 +231,13 @@ profile:
   store-selected: true
   # 持久化 fake-ip
   # 储存 fakeip 映射表，域名再次发生连接时，使用原有映射地址
-  store-fake-ip: true
+  store-fake-ip: false
 
 # MARK: Hosts配置
 #
 # 类似于 /etc/hosts, 仅支持配置单个 IP
 hosts:
-  localhost: 127.0.0.1
+  #localhost: 127.0.0.1
 
 # MARK: 设置出口网卡
 #
@@ -260,7 +260,7 @@ tun:
   # Windows: 设置 -> Windows 安全中心 -> 允许应用通过防火墙 -> 选中内核
   # MacOS: 一般无需配置，防火墙默认放行签名软件，如果遇到开启防火墙无法使用的情况，可以尝试放行：系统设置 -> 网络 -> 防火墙 -> 选项 -> 添加 mihomo app
   # Linux: 一般无需配置，防火墙默认不拦截应用，如果遇到开启防火墙无法使用的情况，可以尝试放行 TUN 网卡出站流量（假设 TUN 网卡为 Mihomo）: sudo iptables -A OUTPUT -o Mihomo -j ACCEPT
-  stack: gvisor
+  stack: system
   # DNS 劫持，将匹配到的连接导入内部 DNS 模块
   # 传统DNS 53 可DNS劫持 隐私保护级别:低
   # DoH 443 防止DNS劫持 隐私保护级别:高
@@ -268,6 +268,7 @@ tun:
   # DoQ 784 防止DNS劫持 隐私保护级别:高
   dns-hijack:
     - "any:53"
+    - "tcp://any:53"
   # 自动选择流量出口接口，多出口网卡同时连接的设备建议手动指定出口网卡
   auto-detect-interface: true
   # 自动设置全局路由，可以自动将全局流量路由进入 tun 网卡。
@@ -363,40 +364,42 @@ dns:
   # system 从系统配置中附加 DNS 服务器。如果未找到，它将打印错误日志并跳过。
   default-nameserver:
     # 阿里DNS
-    - 223.5.5.5
-    - "[2400:3200::1]"
+    #- 223.5.5.5
+    #- "[2400:3200::1]"
     # 腾讯DNS
-    - 119.29.29.29
-    - "[2402:4e00::]"
+    #- 119.29.29.29
+    #- "[2402:4e00::]"
     # 百度DNS
-    - 180.76.76.76
-    - "[2400:da00::6666]"
+    #- 180.76.76.76
+    #- "[2400:da00::6666]"
     # 抖音DNS
-    - 180.184.1.1
+    #- 180.184.1.1
     # 华为DNS
-    - 122.112.208.1
+    #- 122.112.208.1
     # 360DNS
-    - 101.226.4.6
+    #- 101.226.4.6
+    # 系统DNS
+    - system
   # 默认的域名解析服务器
   nameserver:
     # GoogleDNS
-    - 8.8.8.8
-    - "[2001:4860:4860::8888]"
+    #- 8.8.8.8
+    #- "[2001:4860:4860::8888]"
     #- https://dns.google/dns-query
     # CloudflareDNS
-    - 1.1.1.1
-    - "[2606:4700:4700::1111]"
+    #- 1.1.1.1
+    #- "[2606:4700:4700::1111]"
     #- https://cloudflare-dns.com/dns-query
     # OpenDNS
-    - 208.67.222.222
-    - "[2620:0:ccc::2]"
+    #- 208.67.222.222
+    #- "[2620:0:ccc::2]"
     #- https://doh.opendns.com/dns-query
     # Quad9DNS
-    - 9.9.9.10
-    - "[2620:fe::10]"
+    #- 9.9.9.10
+    #- "[2620:fe::10]"
     # AdGuardDNS
-    - 94.140.14.140
-    - "[2a10:50c0::1:ff]"
+    #- 94.140.14.140
+    #- "[2a10:50c0::1:ff]"
     # 阿里DNS
     - 223.5.5.5
     - "[2400:3200::1]"
@@ -406,14 +409,14 @@ dns:
     - "[2402:4e00::]"
     #- https://doh.pub/dns-query
     # 百度DNS
-    - 180.76.76.76
-    - "[2400:da00::6666]"
+    #- 180.76.76.76
+    #- "[2400:da00::6666]"
     # 抖音DNS
-    - 180.184.1.1
+    #- 180.184.1.1
     # 华为DNS
-    - 122.112.208.1
+    #- 122.112.208.1
     # 360DNS
-    - 101.226.4.6
+    #- 101.226.4.6
     #- https://doh.360.cn/dns-query
     # 系统DNS
     - system
@@ -440,16 +443,13 @@ dns:
     #- 94.140.14.140
     #- "[2a10:50c0::1:ff]"
   # 用于direct出口域名解析的 DNS 服务器，如果不填则遵循nameserver-policy、nameserver和fallback的配置
-  direct-nameserver:
-    null
+  direct-nameserver: null
   # 代理节点域名解析服务器，仅用于解析代理节点的域名，如果不填则遵循nameserver-policy、nameserver和fallback的配置
-  proxy-server-nameserver:
-    null
+  proxy-server-nameserver: null
   # 指定域名查询的解析服务器，可使用 geosite, 优先于 nameserver/fallback 查询
   # 键支持域名通配
   # 值支持字符串/数组
-  nameserver-policy:
-    null
+  nameserver-policy: null
   # 是否遵循nameserver-policy，默认为不遵守，仅当direct-nameserver不为空时生效
   direct-nameserver-follow-policy: false
   # 可选值 fake-ip/redir-host，默认redir-host
@@ -460,25 +460,25 @@ dns:
   # 值支持域名通配以及引入域名集合
   # - rule-set:fakeip-filter fakeip-filter 为 rule-providers 中的名为 fakeip-filter 规则订阅
   # 且 behavior 必须为 domain/classical，当为 classical 时仅会生效域名类规则
-  # "+.*" 等同于 redir-host 模式
+  # RH "+.*" 等同于 redir-host 模式
   fake-ip-filter:
     # RH
-    #- "+.*"
+    - "+.*"
     # LAN
-    - "*.lan"
-    - "*.local"
-    - "*.localhost"
-    - "*.localdomain"
-    - "*.test"
-    - "*.example"
-    - "*.invalid"
-    - "*.home.arpa"
-    - rule-set:direct-private-domain
-    - rule-set:direct-lan-classical
+    #- "*.lan"
+    #- "*.local"
+    #- "*.localhost"
+    #- "*.localdomain"
+    #- "*.test"
+    #- "*.example"
+    #- "*.invalid"
+    #- "*.home.arpa"
+    #- rule-set:direct-private-domain
+    #- rule-set:direct-lan-classical
     # NTP
-    - rule-set:ntp-classical
+    #- rule-set:ntp-classical
     # STUN
-    - rule-set:stun-classical
+    #- rule-set:stun-classical
   # 后备域名解析服务器筛选，满足条件的将使用 fallback结果或只使用 fallback解析
   fallback-filter:
     null
@@ -491,19 +491,19 @@ dns:
     # 可选值为对于的 geosite 内包含的集合
     # geosite 列表的内容被视为已污染，匹配到 geosite 的域名，将只使用 fallback解析，不去使用 nameserver
     #geosite:
-       #- gfw
-       #- geolocation-!cn
+    #- gfw
+    #- geolocation-!cn
     # 这些网段的结果会被视为污染，nameserver解析出这些结果时将会采用 fallback的解析结果
     #ipcidr:
-       #- 240.0.0.0/4
+    #- 240.0.0.0/4
     # 这些域名被视为已污染，匹配到这些域名，会直接使用 fallback解析，不去使用 nameserver
     #domain:
-       #- "+.google.com"
-       #- "+.github.com"
-       #- "+.youtube.com"
+    #- "+.google.com"
+    #- "+.github.com"
+    #- "+.youtube.com"
 
 # MARK: 策略组锚点
-
+#
 # 节点选择（默认节点：自动选择）
 proxie-select: &proxie-select
   type: select
@@ -529,7 +529,7 @@ proxie-select: &proxie-select
     - 英国节点
     - 印度节点
 
-# 区域选择 (默认节点：香港)
+# 区域选择 (默认节点：香港节点)
 region-select: &region-select
   proxies:
     - 香港节点
@@ -678,7 +678,7 @@ apple-service-select: &apple-service-select
     - 澳大利亚节点
     - 英国节点
     - 印度节点
-    
+
 # 苹果国际服务选择（默认节点：节点选择）
 apple-globe-service-select: &apple-globe-service-select
   type: select
@@ -763,7 +763,7 @@ google-service-select: &google-service-select
     - 印度节点
 
 # MARK: 订阅更新和延迟测试锚点
-
+#
 # 字段
 #
 # interval：健康检查间隔，如不为 0 则启用定时测试，单位为秒
@@ -800,7 +800,7 @@ url-test: &url-test
   disable-udp: false
   timeout: 5000
   max-failed-times: 5
-  hidden: false
+  hidden: true
   include-all-providers: true
 
 # 回退/转移/故障转移 测试连通性以及延迟
@@ -812,7 +812,7 @@ fallabck: &fallabck
   disable-udp: false
   timeout: 5000
   max-failed-times: 5
-  hidden: false
+  hidden: true
 
 # 负载均衡-散列 测试连通性以及延迟
 load-balance-ch: &load-balance-ch
@@ -839,7 +839,7 @@ load-balance-rr: &load-balance-rr
   hidden: true
 
 # MARK: 规则行为锚点
-
+#
 rule-anchor:
   ip: &ip
     type: http
@@ -857,7 +857,7 @@ rule-anchor:
     behavior: classical
 
 # MARK: 远程订阅配置
-
+#
 # 1. url 里填写自己的订阅链接，多个订阅链接时名称不能重复。
 # 2. 请使用 Clash 类型订阅链接填入引号""内使用。
 # 3. 或可使用通用订阅链接通过 Sub-Store 进行订阅转换(用于 Stash)。
@@ -895,13 +895,13 @@ proxy-providers:
       #additional-suffix: "TEST"
       # 对节点名称内容进行替换，支持正则表达式，pattern 为替换内容，target 为替换目标
       #proxy-name:
-         #- pattern: "test"
-            #target: "TEST"
-         #- pattern: "IPLC-(.*?)倍"
-            #target: "IPLC X $1"
+      #- pattern: "test"
+      #target: "TEST"
+      #- pattern: "IPLC-(.*?)倍"
+      #target: "IPLC X $1"
 
 # MARK: 筛选条件锚点
-
+#
 filter-hk: &filter-hk "香港|深港|沪港|京港|港|(?i)HK|(?i)Hong Kong|🇭🇰"
 filter-tw: &filter-tw "台湾|台北|台中|台|新北|彰化|(?i)Taiwan|(?i)TW|🇨🇳"
 filter-jp: &filter-jp "日本|川日|东京|大阪|泉日|埼玉|沪日|深日|京日|苏日|沪日|上日|广日|[^-]日|(?i)JP|(?i)Japan|(?i)Tokyo|🇯🇵"
@@ -914,9 +914,9 @@ filter-gb: &filter-gb "伦敦|曼彻斯特|伯明翰|利物浦|爱丁堡|格拉�
 filter-in: &filter-in "新德里|孟买|班加罗尔|海得拉巴|艾哈迈达巴德|钦奈|卡尔各答|浦那|(?i)IN|(?i)India|(?i)印度|🇮🇳"
 
 # MARK: 定义代理组配置
-
+#
 proxy-groups:
-  # 节点选择
+  # 手动选择
   - name: 节点选择
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Proxy.png"
     <<: *proxie-select
@@ -932,153 +932,158 @@ proxy-groups:
     <<: *region-select
 
   # 回退/转移/故障转移
-  - name: "故障转移"
+  - name: 故障转移
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available_1.png"
     include-all-providers: true
     <<: *fallabck
 
-  - name: "地区故障转移"
+  - name: 地区故障转移
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available_1.png"
     <<:
       - *fallabck
       - *region-select
 
   # 广告拦截
-  - name: "广告拦截"
+  - name: 广告拦截
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/AdBlack.png"
     type: select
     proxies: [绕过, 拒绝]
 
   # 苹果服务
-  - name: "苹果服务"
+  - name: 苹果服务
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple.png"
     <<: *cns-select
 
-  - name: "苹果系统更新"
+  - name: 苹果系统更新
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_Update.png"
     <<: *apple-service-select
 
-  - name: "苹果音乐"
+  - name: 苹果音乐
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_Music.png"
     <<: *apple-service-select
 
-  - name: "iCloud"
+  - name: iCloud
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/iCloud.png"
     <<: *apple-service-select
 
-  - name: "App Store"
+  - name: App Store
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/App_Store.png"
     <<: *apple-service-select
 
-  - name: "苹果邮件"
+  - name: 苹果邮件
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Mail.png"
     <<: *apple-service-select
 
-  - name: "苹果开发"
+  - name: 苹果开发
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/TestFlight.png"
-    <<: *apple-globe-service-select
+    <<: *apple-service-select
 
-  - name: "苹果国际"
+  - name: 苹果国际
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_1.png"
     <<: *apple-globe-service-select
 
   # 微软服务
-  - name: "微软服务"
+  - name: 微软服务
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Microsoft.png"
     <<: *cns-select
 
-  - name: "微软必应"
+  - name: 微软必应
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Windows_11.png"
     <<: *microsoft-service-select
 
-  - name: "OneDrive"
+  - name: OneDrive
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/OneDrive.png"
     <<: *microsoft-service-select
 
-  - name: "GitHub"
+  - name: GitHub
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/GitHub.png"
     <<: *globe-select
 
-  - name: "Copilot"
+  - name: Copilot
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Copilot.png"
     <<: *globe-select
 
   # 谷歌服务
-  - name: "谷歌服务"
+  - name: 谷歌服务
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Google_Search.png"
     <<: *globe-select
 
-  - name: "YouTube 视频"
+  - name: YouTube 视频
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/YouTube.png"
     <<: *google-service-select
 
-  - name: "YouTube 音乐"
+  - name: YouTube 音乐
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/YouTube_Music.png"
     <<: *google-service-select
 
   # 电报消息
-  - name: "电报消息"
+  - name: 电报消息
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Telegram_X.png"
     <<: *globe-select
 
   # Discord
-  - name: "Discord"
+  - name: Discord
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Discord.png"
     <<: *globe-select
 
   # 奈飞视频
-  - name: "奈飞视频"
+  - name: 奈飞视频
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Netflix.png"
     <<: *globe-select
     include-all-providers: true
 
   # Emby 视频
-  - name: "Emby 视频"
+  - name: Emby 视频
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Emby.png"
     <<: *default-select
 
   # 人工智能
-  - name: "OpenAI"
+  - name: OpenAI
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Bot.png"
     <<: *globe-select
 
   # 国际抖音
-  - name: "国际抖音"
+  - name: 国际抖音
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/TikTok.png"
     <<: *globe-select
 
   # Spotify 音乐
-  - name: "Spotify 音乐"
+  - name: Spotify 音乐
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Spotify.png"
     <<: *globe-select
 
   # 国际媒体
-  - name: "国际媒体"
+  - name: 国际媒体
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/ForeignMedia.png"
     <<: *globe-select
 
   # 国际互联
-  - name: "国际互联"
+  - name: 国际互联
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Global.png"
     <<: *globe-select
 
+  # 国内互联
+  - name: 国内互联
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
+    <<: *cns-select
+  
   # 游戏服务
-  - name: "游戏服务"
+  - name: 游戏服务
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Game.png"
     <<: *default-select
 
   # 测速测试
-  - name: "网速测试"
+  - name: 网速测试
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Speedtest.png"
     <<: *default-select
 
   # 代理进程
-  - name: "代理进程"
+  - name: 代理进程
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Quantumult_X.png"
     <<: *applications-process-select
 
   # 下载进程
-  - name: "下载进程"
+  - name: 下载进程
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Download.png"
     <<: *applications-process-select
 
@@ -1154,7 +1159,7 @@ proxy-groups:
     include-all-providers: true
 
   # 兜底
-  - name: "漏网之鱼"
+  - name: 漏网之鱼
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Final.png"
     <<: *default-select
 
@@ -1173,7 +1178,7 @@ proxy-groups:
     disable-udp: false
     timeout: 5000
     max-failed-times: 5
-    hidden: false
+    hidden: true
     <<: *region-select
 
   - name: 香港自动选择
@@ -1370,20 +1375,20 @@ proxy-groups:
     filter: *filter-in
 
   # 内置策略
-  - name: "直连"
+  - name: 直连
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Direct.png"
     type: select
     udp: true
     hidden: true
     proxies: [DIRECT]
 
-  - name: "拒绝"
+  - name: 拒绝
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Reject.png"
     type: select
     hidden: true
     proxies: [REJECT]
 
-  - name: "绕过"
+  - name: 绕过
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Bypass.png"
     type: select
     hidden: true
@@ -1709,21 +1714,21 @@ rule-providers:
     <<: *classical
     path: ./rule-providers/applications-process-download-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Download/Download_No_Resolve.yaml"
-
+    
   # NTP
-  ntp-classical:
-    <<: *classical
-    path: ./rule-providers/ntp-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/NTPService/NTPService_No_Resolve.yaml"
+  #ntp-classical:
+    #<<: *classical
+    #path: ./rule-providers/ntp-classical.yaml
+    #url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/NTPService/NTPService_No_Resolve.yaml"
 
   # STUN
-  stun-classical:
-    <<: *classical
-    path: ./rule-providers/stun-classical.yaml
-    url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/STUN_No_Resolve.yaml"
+  #stun-classical:
+    #<<: *classical
+    #path: ./rule-providers/stun-classical.yaml
+    #url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/STUN_No_Resolve.yaml"
 
 # MARK: 分流规则配置
-
+#
 # 注意：规则自上而下匹配，所以规则顺序直接影响分流效果。
 # 注意：规则自上而下匹配，所以规则顺序直接影响分流效果。
 # 注意：规则自上而下匹配，所以规则顺序直接影响分流效果。
@@ -1821,25 +1826,25 @@ rules:
   - RULE-SET,globe-cloud-ip,国际互联,no-resolve
 
   # 国内直连
-  - RULE-SET,direct-china-neteasemusic-media-classical,直连
-  - RULE-SET,direct-china-youku-media-classical,直连
-  - RULE-SET,direct-china-tencentvideo-media-classical,直连
-  - RULE-SET,direct-china-iqiyi-media-classical,直连
-  - RULE-SET,direct-china-douyu-media-classical,直连
-  - RULE-SET,direct-china-himalaya-media-classical,直连
-  - RULE-SET,direct-china-douyin-media-classical,直连
-  - RULE-SET,direct-china-zhanqi-media-classical,直连
-  - RULE-SET,direct-china-51nod-media-classical,直连
-  - RULE-SET,direct-china-media-classical,直连
-  - RULE-SET,direct-china-max-no-media-domain,直连
-  - RULE-SET,direct-china-max-no-media-classical,直连
-  - RULE-SET,direct-china-max-no-media-ip,直连,no-resolve
-  - RULE-SET,direct-domain-replenish-domain,直连
-  - RULE-SET,direct-cloud-classical,直连
+  - RULE-SET,direct-china-neteasemusic-media-classical,国内互联
+  - RULE-SET,direct-china-youku-media-classical,国内互联
+  - RULE-SET,direct-china-tencentvideo-media-classical,国内互联
+  - RULE-SET,direct-china-iqiyi-media-classical,国内互联
+  - RULE-SET,direct-china-douyu-media-classical,国内互联
+  - RULE-SET,direct-china-himalaya-media-classical,国内互联
+  - RULE-SET,direct-china-douyin-media-classical,国内互联
+  - RULE-SET,direct-china-zhanqi-media-classical,国内互联
+  - RULE-SET,direct-china-51nod-media-classical,国内互联
+  - RULE-SET,direct-china-media-classical,国内互联
+  - RULE-SET,direct-china-max-no-media-domain,国内互联
+  - RULE-SET,direct-china-max-no-media-classical,国内互联
+  - RULE-SET,direct-china-max-no-media-ip,国内互联,no-resolve
+  - RULE-SET,direct-domain-replenish-domain,国内互联
+  - RULE-SET,direct-cloud-classical,国内互联
 
   # GEO国内直连
-  - GEOSITE,cn,直连
-  - GEOIP,cn,直连,no-resolve
+  - GEOSITE,cn,国内互联
+  - GEOIP,cn,国内互联,no-resolve
 
   # 兜底
   - MATCH,漏网之鱼
