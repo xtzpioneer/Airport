@@ -868,7 +868,6 @@ proxy-providers:
     url: ""
     # override 覆写节点内容，以下为支持的字段
     override:
-      #additional-prefix: "[A]"
       # 跳过证书验证，仅适用于使用 tls 的协议
       #skip-cert-verify: true
       # 是否允许 UDP 通过代理，默认为 false
@@ -1066,7 +1065,7 @@ proxy-groups:
   - name: 国内互联
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
     <<: *cns-select
-  
+
   # 游戏服务
   - name: 游戏服务
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Game.png"
@@ -1395,7 +1394,7 @@ proxy-groups:
     proxies: [PASS]
 
 # MARK: 规则集配置
-
+#
 rule-providers:
   # 苹果服务
   apple-service-classical:
@@ -1714,7 +1713,7 @@ rule-providers:
     <<: *classical
     path: ./rule-providers/applications-process-download-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Download/Download_No_Resolve.yaml"
-    
+
   # NTP
   #ntp-classical:
     #<<: *classical
