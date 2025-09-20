@@ -679,34 +679,6 @@ apple-service-select: &apple-service-select
     - 英国节点
     - 印度节点
 
-# 苹果国际服务选择（默认节点：苹果服务）
-apple-globe-service-select: &apple-globe-service-select
-  type: select
-  proxies:
-    - 苹果服务
-    - 节点选择
-    - 直连
-    - 自动选择
-    - 手动选择
-    - 自动选择地区
-    - 手动选择地区
-    - 故障转移
-    - 地区故障转移
-    - 负载均衡散列
-    - 负载均衡轮询
-    - 地区负载均衡散列
-    - 地区负载均衡轮询
-    - 香港节点
-    - 台湾节点
-    - 日本节点
-    - 韩国节点
-    - 新加坡节点
-    - 美国节点
-    - 德国节点
-    - 澳大利亚节点
-    - 英国节点
-    - 印度节点
-
 # 微软服务选择（默认节点：微软服务）
 microsoft-service-select: &microsoft-service-select
   type: select
@@ -952,7 +924,7 @@ proxy-groups:
   - name: 苹果服务
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple.png"
     <<: *cns-select
-
+    
   - name: 苹果系统更新
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_Update.png"
     <<: *apple-service-select
@@ -972,14 +944,14 @@ proxy-groups:
   - name: 苹果邮件
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Mail.png"
     <<: *apple-service-select
-
+    
+  - name: 苹果账户
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_2.png"
+    <<: *apple-service-select
+    
   - name: 苹果开发
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/TestFlight.png"
     <<: *apple-service-select
-
-  - name: 苹果国际
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_1.png"
-    <<: *apple-globe-service-select
 
   # 微软服务
   - name: 微软服务
@@ -1447,11 +1419,6 @@ rule-providers:
     path: ./rule-providers/apple-beats-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Beats/Beats_No_Resolve.yaml"
 
-  apple-proxy-classical:
-    <<: *classical
-    path: ./rule-providers/apple-proxy-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/AppleProxy/AppleProxy_No_Resolve.yaml"
-
   # 微软服务
   microsoft-service-classical:
     <<: *classical
@@ -1758,14 +1725,13 @@ rules:
 
   # 苹果服务
   - RULE-SET,apple-mail-classical,苹果邮件
-  - RULE-SET,apple-app-store-classical,App Store
-  - RULE-SET,apple-icloud-classical,iCloud
   - RULE-SET,apple-music-classical,苹果音乐
   - RULE-SET,apple-system-ota-classical,苹果系统更新
+  - RULE-SET,apple-app-store-classical,App Store
   - RULE-SET,apple-developer-classical,苹果开发
-  - RULE-SET,apple-proxy-classical,苹果国际
-  - RULE-SET,apple-account-classical,苹果服务
   - RULE-SET,apple-beats-classical,苹果服务
+  - RULE-SET,apple-account-classical,苹果账户
+  - RULE-SET,apple-icloud-classical,iCloud
   - RULE-SET,apple-service-domain,苹果服务
   - RULE-SET,apple-service-classical,苹果服务
 
@@ -1838,8 +1804,8 @@ rules:
   - RULE-SET,direct-china-max-no-media-domain,国内互联
   - RULE-SET,direct-china-max-no-media-classical,国内互联
   - RULE-SET,direct-china-max-no-media-ip,国内互联,no-resolve
-  - RULE-SET,direct-domain-replenish-domain,国内互联
   - RULE-SET,direct-cloud-classical,国内互联
+  - RULE-SET,direct-domain-replenish-domain,国内互联
 
   # GEO国内直连
   - GEOSITE,cn,国内互联
@@ -1847,3 +1813,4 @@ rules:
 
   # 兜底
   - MATCH,漏网之鱼
+
