@@ -679,12 +679,12 @@ apple-service-select: &apple-service-select
     - 英国节点
     - 印度节点
 
-# 苹果国际服务选择（默认节点：节点选择）
+# 苹果国际服务选择（默认节点：苹果服务）
 apple-globe-service-select: &apple-globe-service-select
   type: select
   proxies:
-    - 节点选择
     - 苹果服务
+    - 节点选择
     - 直连
     - 自动选择
     - 手动选择
