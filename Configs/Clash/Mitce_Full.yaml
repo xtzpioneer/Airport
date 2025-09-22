@@ -57,7 +57,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/09/21
+# 更新时间：2025/09/23
 
 # MARK: 端口配置
 #
@@ -237,7 +237,7 @@ profile:
 #
 # 类似于 /etc/hosts, 仅支持配置单个 IP
 hosts:
-  #localhost: 127.0.0.1
+  localhost: 127.0.0.1
 
 # MARK: 设置出口网卡
 #
@@ -1694,14 +1694,6 @@ rules:
   - RULE-SET,ad-reject-domain,广告拦截
   - RULE-SET,ad-reject-classical,广告拦截
 
-  # 私有直连
-  - RULE-SET,direct-lan-classical,直连
-  - RULE-SET,direct-private-domain,直连
-
-  # GEO私有直连
-  - GEOSITE,private,直连
-  - GEOIP,private,直连
-
   # 应用进程
   - RULE-SET,direct-applications-process-classical,代理进程
   - RULE-SET,direct-applications-process-replenish-classical,代理进程
@@ -1790,6 +1782,14 @@ rules:
   - RULE-SET,direct-china-max-no-media-ip,国内互联
   - RULE-SET,direct-cloud-classical,国内互联
   - RULE-SET,direct-domain-replenish-domain,国内互联
+  
+  # 私有直连
+  - RULE-SET,direct-lan-classical,直连
+  - RULE-SET,direct-private-domain,直连
+
+  # GEO私有直连
+  - GEOSITE,private,直连
+  - GEOIP,private,直连
 
   # GEO国内直连
   - GEOSITE,cn,国内互联
