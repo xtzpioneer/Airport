@@ -1,5 +1,7 @@
 payload:
   # 基础保留
+  # *（星号）不要删除，保证所有未知情况默认用 redir-host。
+  # localhost、127.*、lan、ntp 等一定要保留，否则系统会出奇怪的问题。
   - '*'
   - '*.lan'
   - '*.local'
@@ -11,7 +13,6 @@ payload:
   - '::1'
   - 'fc00::/7'
   - 'fe80::/10'
-  
   # 内网/路由器/NAS
   - 'router.*'
   - 'routerlogin.*'
@@ -30,7 +31,6 @@ payload:
   - 'printer.*'
   - '*.lan'
   - '*.localdomain'
-  
   # 时间同步/网络探测
   - 'time.*'
   - 'ntp.*'
@@ -52,7 +52,6 @@ payload:
   - '*.msftncsi.com'
   - 'nmcheck.gnome.org'
   - 'detectportal.firefox.com'
-  
   # Windows/Office/激活
   - '*.windowsupdate.com'
   - '*.update.microsoft.com'
@@ -65,7 +64,6 @@ payload:
   - '*.skype.com'
   - 'activation.sls.microsoft.com'
   - 'validation.sls.microsoft.com'
-  
   # macOS/iOS/iCloud
   - '*.apple.com'
   - '*.icloud.com'
@@ -74,7 +72,6 @@ payload:
   - '*.mzstatic.com'
   - 'guzzoni.apple.com'
   - 'captive.apple.com'
-  
   # Linux/开源系统
   - 'archive.ubuntu.com'
   - 'security.ubuntu.com'
@@ -83,7 +80,6 @@ payload:
   - 'rpmfusion.org'
   - 'mirrors.*'
   - '*.archlinux.org'
-  
   # 游戏平台
   - 'steamserver.net'
   - '*.steamcontent.com'
@@ -105,7 +101,6 @@ payload:
   - '*.wildrift.leagueoflegends.com'
   - '*.valorant.com'
   - '*.gog.com'
-  
   # VoIP/即时通讯
   - '*.skype.com'
   - '*.zoom.us'
@@ -117,14 +112,28 @@ payload:
   - '*.line.me'
   - '*.wechat.com'
   - '*.qq.com'
-  
   # 视频会议
   - '*.zoom.us'
   - '*.webex.com'
   - '*.gotomeeting.com'
   - '*.bluejeans.com'
   - '*.slack.com'
-  
+  # STUN服务器
+  # 保证P2P/WebRTC正常
+  - 'stun.l.google.com'
+  - 'stun1.l.google.com'
+  - 'stun2.l.google.com'
+  - 'stun3.l.google.com'
+  - 'stun4.l.google.com'
+  - 'stun.services.mozilla.com'
+  - 'stun.stunprotocol.org'
+  - 'stun.sipgate.net'
+  - 'stun.ekiga.net'
+  - 'stun.voiparound.com'
+  - 'stun.voipbuster.com'
+  - 'stun.voipstunt.com'
+  - 'stun.counterpath.com'
+  - 'stun.ideasip.com'
   # 特殊/保留域名
   - '*.test'
   - '*.example'
@@ -133,18 +142,5 @@ payload:
   - '*.localdomain'
   - 'local'
   - 'home.arpa'
-  
-  # 流媒体（可按需加
-  # Netflix/YouTube/Spotify等通常走fake-ip
-  # 如果遇到兼容性问题，可以解除 fake-ip
-  # - '*.netflix.com'
-  # - '*.nflxvideo.net'
-  # - '*.youtube.com'
-  # - '*.ytimg.com'
-  # - '*.googlevideo.com'
-  # - '*.spotify.com'
-  # - '*.pandora.com'
-  # - '*.deezer.com'
-  
 
   
