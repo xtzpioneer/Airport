@@ -179,7 +179,7 @@ external-doh-server: /dns-query
 # MARK: TCP 并发配置
 #
 # TCP 并发连接所有 IP, 将使用最快握手的 TCP
-tcp-concurrent: true
+tcp-concurrent: false
 
 # MARK: 延迟配置
 #
@@ -268,7 +268,6 @@ tun:
   # DoQ 784 防止DNS劫持 隐私保护级别:高
   dns-hijack:
     - "any:53"
-    - "tcp://any:53"
   # 自动选择流量出口接口，多出口网卡同时连接的设备建议手动指定出口网卡
   auto-detect-interface: true
   # 自动设置全局路由，可以自动将全局流量路由进入 tun 网卡。
@@ -344,7 +343,7 @@ dns:
   # 是否开启 DoH 支持 HTTP/3，将并发尝试
   prefer-h3: false
   # 开启 DNS 服务器监听
-  listen: :53
+  listen: :9053
   # false 将返回 AAAA 的空结果
   ipv6: false
   # 单位：ms，内部双栈并发时，向上游查询 AAAA 时，等待 AAAA 的时间，默认 100ms
@@ -423,7 +422,7 @@ dns:
     #- 101.226.4.6
     #- https://doh.360.cn/dns-query
     # 系统DNS
-    - system
+    #- system
   # 后备域名解析服务器，一般情况下使用境外 DNS, 保证结果可信
   # 配置 fallback后默认启用 fallback-filter,geoip-code为 cn
   fallback:
@@ -466,14 +465,15 @@ dns:
   # 且 behavior 必须为 domain/classical，当为 classical 时仅会生效域名类规则
   # RH "+.*" 等同于 redir-host 模式
   fake-ip-filter:
+    null
     # RH
     #- "+.*"
     # RS
-    - rule-set:fake-ip-filter-domain
-    - rule-set:direct-private-domain
-    - rule-set:direct-lan-classical
-    - rule-set:ntp-service-classical
-    - rule-set:stun-service-classical
+    #- rule-set:fake-ip-filter-domain
+    #- rule-set:direct-private-domain
+    #- rule-set:direct-lan-classical
+    #- rule-set:ntp-service-classical
+    #- rule-set:stun-service-classical
   # 后备域名解析服务器筛选，满足条件的将使用 fallback结果或只使用 fallback解析
   fallback-filter:
     null
@@ -1692,20 +1692,20 @@ rule-providers:
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Download/Download.yaml"
 
   # FakeIP Filter
-  fake-ip-filter-domain:
-    <<: *domain
-    path: ./rule-providers/fake-ip-filter-domain.yaml
-    url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/Fake_IP_Filter_Domain.yaml"
+  #fake-ip-filter-domain:
+    #<<: *domain
+    #path: ./rule-providers/fake-ip-filter-domain.yaml
+    #url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/Fake_IP_Filter_Domain.yaml"
     
-  ntp-service-classical:
-    <<: *classical
-    path: ./rule-providers/ntp-service-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/NTPService/NTPService.yaml"
+  #ntp-service-classical:
+    #<<: *classical
+    #path: ./rule-providers/ntp-service-classical.yaml
+    #url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/NTPService/NTPService.yaml"
 
-  stun-service-classical:
-    <<: *classical
-    path: ./rule-providers/stun-service-classical.yaml
-    url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/STUN_Service_Classical.yaml"
+  #stun-service-classical:
+    #<<: *classical
+    #path: ./rule-providers/stun-service-classical.yaml
+    #url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/STUN_Service_Classical.yaml"
     
 # MARK: 分流规则配置
 #
@@ -1827,5 +1827,6 @@ rules:
 
   # 兜底
   - MATCH,漏网之鱼
+
 
 
