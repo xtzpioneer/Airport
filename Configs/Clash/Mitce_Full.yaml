@@ -57,7 +57,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/09/28
+# 更新时间：2025/09/30
 
 # MARK: 端口配置
 #
@@ -216,11 +216,11 @@ experimental:
 #
 # 修改此项以减少移动设备耗电问题
 # TCP Keep Alive 包的间隔，单位为秒
-#keep-alive-interval: 15
+keep-alive-interval: 15
 # TCP Keep Alive 的最大空闲时间
-#keep-alive-idle: 15
+keep-alive-idle: 15
 # 禁用 TCP Keep Alive，在 Amdroid 默认为 true
-#disable-keep-alive: false
+disable-keep-alive: false
 
 # MARK: 持久化配置
 #
@@ -237,7 +237,7 @@ profile:
 #
 # 类似于 /etc/hosts, 仅支持配置单个 IP
 hosts:
-  localhost: 127.0.0.1
+  #localhost: 127.0.0.1
 
 # MARK: 设置出口网卡
 #
