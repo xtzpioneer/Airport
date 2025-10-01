@@ -57,7 +57,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/09/30
+# 更新时间：2025/10/1
 
 # MARK: 端口配置
 #
@@ -260,7 +260,7 @@ tun:
   # Windows: 设置 -> Windows 安全中心 -> 允许应用通过防火墙 -> 选中内核
   # MacOS: 一般无需配置，防火墙默认放行签名软件，如果遇到开启防火墙无法使用的情况，可以尝试放行：系统设置 -> 网络 -> 防火墙 -> 选项 -> 添加 mihomo app
   # Linux: 一般无需配置，防火墙默认不拦截应用，如果遇到开启防火墙无法使用的情况，可以尝试放行 TUN 网卡出站流量（假设 TUN 网卡为 Mihomo）: sudo iptables -A OUTPUT -o Mihomo -j ACCEPT
-  stack: system
+  stack: gvisor
   # DNS 劫持，将匹配到的连接导入内部 DNS 模块
   # 传统DNS 53 可DNS劫持 隐私保护级别:低
   # DoH 443 防止DNS劫持 隐私保护级别:高
@@ -1730,10 +1730,6 @@ rules:
   - RULE-SET,direct-lan-classical,直连
   - RULE-SET,direct-private-domain,直连
 
-  # GEO私有直连
-  - GEOSITE,private,直连
-  - GEOIP,private,直连
-
   # 应用进程
   - RULE-SET,direct-applications-process-classical,代理进程
   - RULE-SET,direct-applications-process-replenish-classical,代理进程
@@ -1823,10 +1819,6 @@ rules:
   - RULE-SET,direct-cloud-classical,国内互联
   - RULE-SET,direct-domain-replenish-domain,国内互联
   
-  # GEO国内直连
-  - GEOSITE,cn,国内互联
-  - GEOIP,cn,国内互联
-
   # 兜底
   - MATCH,漏网之鱼
 
