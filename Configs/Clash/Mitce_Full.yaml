@@ -142,7 +142,7 @@ log-level: info
 # 开启 IPv6 总开关，关闭阻断所有 IPv6 链接和屏蔽 DNS 请求 AAAA 记录
 # 是否允许内核接受 IPv6 流量
 # 可选值 true/false,默认为 true
-ipv6: false
+ipv6: true
 
 # MARK: ETag支持
 #
