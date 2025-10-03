@@ -203,7 +203,7 @@ global-client-fingerprint: chrome
 # MARK: 路由标记
 #
 # 为 Linux 下的出站连接提供默认流量标记
-routing-mark: 5000
+#routing-mark: 6666
 
 # MARK: 实验性配置
 #
