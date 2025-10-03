@@ -57,7 +57,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/10/3
+# 更新时间：2025/10/4
 
 # MARK: 端口配置
 #
@@ -251,7 +251,7 @@ tun:
   # 是否开启
   enable: false
   # tun 模式堆栈，如无使用问题，建议使用 mixed栈，默认 gvisor
-  # 可用值： system/gvisor/mixed
+  # 可用值：system/gvisor/mixed
   # system 使用系统协议栈，可以提供更稳定/全面的 tun 体验，且占用相对其他堆栈更低
   # gvisor 通过在用户空间中实现网络协议栈，可以提供更高的安全性和隔离性，同时可以避免操作系统内核和用户空间之间的切换，从而在特定情况下具有更好的网络处理性能
   # mixed 混合堆栈，tcp 使用 system栈，udp 使用 gvisor栈，使用体验可能相对更好
@@ -260,7 +260,7 @@ tun:
   # Windows: 设置 -> Windows 安全中心 -> 允许应用通过防火墙 -> 选中内核
   # MacOS: 一般无需配置，防火墙默认放行签名软件，如果遇到开启防火墙无法使用的情况，可以尝试放行：系统设置 -> 网络 -> 防火墙 -> 选项 -> 添加 mihomo app
   # Linux: 一般无需配置，防火墙默认不拦截应用，如果遇到开启防火墙无法使用的情况，可以尝试放行 TUN 网卡出站流量（假设 TUN 网卡为 Mihomo）: sudo iptables -A OUTPUT -o Mihomo -j ACCEPT
-  stack: gvisor
+  stack: system
   # DNS 劫持，将匹配到的连接导入内部 DNS 模块
   # 传统DNS 53 可DNS劫持 隐私保护级别:低
   # DoH 443 防止DNS劫持 隐私保护级别:高
