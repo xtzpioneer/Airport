@@ -57,7 +57,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/10/22
+# 更新时间：2025/10/29
 
 # MARK: 端口配置
 #
@@ -778,13 +778,13 @@ p: &p
     enable: true
     url: "https://www.gstatic.com/generate_204"
     interval: 180
-    tolerance: 50
+    tolerance: 10
 
 # 自动选择 测试连通性以及延迟
 url-test: &url-test
   type: url-test
   interval: 180
-  tolerance: 50
+  tolerance: 10
   lazy: true
   url: "https://www.gstatic.com/generate_204"
   disable-udp: false
@@ -1161,7 +1161,7 @@ proxy-groups:
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Auto.png"
     type: url-test
     interval: 180
-    tolerance: 50
+    tolerance: 10
     lazy: true
     url: "https://www.gstatic.com/generate_204"
     disable-udp: false
@@ -1827,3 +1827,6 @@ rules:
   
   # 兜底
   - MATCH,漏网之鱼
+
+
+
