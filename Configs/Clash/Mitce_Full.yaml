@@ -384,9 +384,7 @@ dns:
     # 360DNS
     #- 101.226.4.6
     # 系统DNS
-    #- system
-    - 223.5.5.5
-    - "[2400:3200::1]"
+    - system
   # 默认的域名解析服务器
   nameserver:
     # GoogleDNS
@@ -427,8 +425,8 @@ dns:
     #- https://doh.360.cn/dns-query
     # 系统DNS
     #- system
-    - 8.8.8.8
-    - "[2001:4860:4860::8888]"
+    - 223.5.5.5
+    - "[2400:3200::1]"
   # 后备域名解析服务器，一般情况下使用境外 DNS, 保证结果可信
   # 配置 fallback后默认启用 fallback-filter,geoip-code为 cn
   fallback:
@@ -452,9 +450,7 @@ dns:
     #- 94.140.14.140
     #- "[2a10:50c0::1:ff]"
   # 用于direct出口域名解析的 DNS 服务器，如果不填则遵循nameserver-policy、nameserver和fallback的配置
-  direct-nameserver:
-    - 223.5.5.5
-    - "[2400:3200::1]"
+  direct-nameserver: null
   # 代理节点域名解析服务器，仅用于解析代理节点的域名，如果不填则遵循nameserver-policy、nameserver和fallback的配置
   proxy-server-nameserver: null
   # 指定域名查询的解析服务器，可使用 geosite, 优先于 nameserver/fallback 查询
@@ -1827,6 +1823,3 @@ rules:
   
   # 兜底
   - MATCH,漏网之鱼
-
-
-
