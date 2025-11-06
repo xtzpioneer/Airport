@@ -35,7 +35,6 @@
 # 故障转移（全节点+地区节点）：支持
 # 负载均衡（全节点+地区节点 散列+轮询）：支持
 # 兜底代理：支持
-#
 # 微软分流：支持
 # 苹果分流：支持
 # 谷歌分流：支持
@@ -52,12 +51,11 @@
 # 游戏服务分流：支持
 # 国际抖音分流：支持
 # 网络测速分流：支持
-#
 # 区分地区：支持
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/10/31
+# 更新时间：2025/11/6
 
 # MARK: 端口配置
 #
@@ -232,7 +230,7 @@ profile:
   store-selected: true
   # 持久化 fake-ip
   # 储存 fakeip 映射表，域名再次发生连接时，使用原有映射地址
-  store-fake-ip: false
+  store-fake-ip: true
 
 # MARK: Hosts配置
 #
@@ -405,14 +403,14 @@ dns:
     #- system
   # 默认的域名解析服务器
   nameserver:
-    # GoogleDNS
-    - 8.8.8.8
-    - "[2001:4860:4860::8888]"
-    #- https://dns.google/dns-query
     # CloudflareDNS
     - 1.1.1.1
     - "[2606:4700:4700::1111]"
     #- https://cloudflare-dns.com/dns-query
+    # GoogleDNS
+    - 8.8.8.8
+    - "[2001:4860:4860::8888]"
+    #- https://dns.google/dns-query
     # OpenDNS
     #- 208.67.222.222
     #- "[2620:0:ccc::2]"
@@ -1096,14 +1094,14 @@ proxy-groups:
     <<: *default-select
 
   # 代理进程
-  - name: 代理进程
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Quantumult_X.png"
-    <<: *applications-process-select
+  #- name: 代理进程
+    #icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Quantumult_X.png"
+    #<<: *applications-process-select
 
   # 下载进程
-  - name: 下载进程
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Download.png"
-    <<: *applications-process-select
+  #- name: 下载进程
+    #icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Download.png"
+    #<<: *applications-process-select
 
   # 地区/区域
   - name: 香港节点
@@ -1713,20 +1711,20 @@ rule-providers:
     url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/Direct_Domain_Replenish.yaml"
 
   # 应用进程
-  direct-applications-process-classical:
-    <<: *classical
-    path: ./rule-providers/direct-applications-process-classical.yaml
-    url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/Direct_Applications_Classical.yaml"
+  #direct-applications-process-classical:
+    #<<: *classical
+    #path: ./rule-providers/direct-applications-process-classical.yaml
+    #url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/Direct_Applications_Classical.yaml"
 
-  direct-applications-process-replenish-classical:
-    <<: *classical
-    path: ./rule-providers/direct-applications-process-replenish-classical.yaml
-    url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/Direct_Applications_Replenish_Classical.yaml"
+  #direct-applications-process-replenish-classical:
+    #<<: *classical
+    #path: ./rule-providers/direct-applications-process-replenish-classical.yaml
+    #url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/Direct_Applications_Replenish_Classical.yaml"
 
-  applications-process-download-classical:
-    <<: *classical
-    path: ./rule-providers/applications-process-download-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Download/Download.yaml"
+  #applications-process-download-classical:
+    #<<: *classical
+    #path: ./rule-providers/applications-process-download-classical.yaml
+    #url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Download/Download.yaml"
 
   # FakeIP Filter
   #fake-ip-filter-domain:
@@ -1766,9 +1764,9 @@ rules:
   - RULE-SET,direct-private-domain,直连
 
   # 应用进程
-  - RULE-SET,direct-applications-process-classical,代理进程
-  - RULE-SET,direct-applications-process-replenish-classical,代理进程
-  - RULE-SET,applications-process-download-classical,下载进程
+  #- RULE-SET,direct-applications-process-classical,代理进程
+  #- RULE-SET,direct-applications-process-replenish-classical,代理进程
+  #- RULE-SET,applications-process-download-classical,下载进程
 
   # 苹果服务
   - RULE-SET,apple-mail-classical,苹果邮件
