@@ -55,7 +55,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/11/6
+# 更新时间：2025/11/7
 
 # MARK: 端口配置
 #
@@ -290,25 +290,30 @@ tun:
   endpoint-independent-nat: true
   # 启用 auto-route 时排除自定义网段
   route-exclude-address:
-    - 0.0.0.0/8
-    - 10.0.0.0/8
-    - 100.64.0.0/10
-    - 127.0.0.0/8
-    - 169.254.0.0/16
-    - 172.16.0.0/12
-    - 192.0.0.0/24
-    - 192.0.2.0/24
-    - 192.88.99.0/24
-    - 192.168.0.0/16
-    - 198.51.100.0/24
-    - 203.0.113.0/24
-    - 224.0.0.0/4
-    - 255.255.255.255/32
-    - 239.255.255.250/32
-    - ::/127
-    - fc00::/7
-    - fe80::/10
-    - ff00::/8
+    # IPv4
+    - 0.0.0.0/8              # 本地网络保留
+    - 10.0.0.0/8             # 私有网段 (A 类)
+    - 100.64.0.0/10          # 运营商 NAT 地址 (CGNAT)
+    - 127.0.0.0/8            # 本地回环 (localhost)
+    - 169.254.0.0/16         # 链路本地 (无 DHCP)
+    - 172.16.0.0/12          # 私有网段 (B 类)
+    - 192.0.0.0/24           # IANA 保留地址
+    - 192.0.2.0/24           # 文档示例网段
+    - 192.88.99.0/24         # IPv6 转发中继 (已废弃)
+    - 192.168.0.0/16         # 私有网段 (C 类)
+    - 198.18.0.0/15          # 网络性能测试网段 (RFC2544)
+    - 198.51.100.0/24        # 文档示例
+    - 203.0.113.0/24         # 文档示例
+    - 224.0.0.0/4            # IPv4 多播地址
+    - 239.255.255.250/32     # SSDP 多播 (UPnP)
+    - 255.255.255.255/32     # 广播地址
+    # IPv6
+    - ::1/128                # IPv6 回环地址
+    - ::/128                 # IPv6 未指定地址
+    - fc00::/7               # 唯一本地地址 (ULA)
+    - fe80::/10              # 链路本地地址
+    - ff00::/8               # 多播地址
+    - 2001:db8::/32          # IPv6 文档与测试网段
   
 # MARK: 域名嗅探配置
 #
@@ -357,15 +362,13 @@ dns:
   # 支持的缓存算法
   # lru: Least Recently Used, 默认值 就是“最近最少使用优先删除”，用来管理 DNS 缓存大小，保持内存可控，同时让常用域名快速解析。
   # arc: Adaptive Replacement Cache 自适应缓存
-  cache-algorithm: lru
+  cache-algorithm: arc
   # 是否开启 DoH 支持 HTTP/3，将并发尝试
   prefer-h3: false
   # 开启 DNS 服务器监听
   listen: :9053
   # false 将返回 AAAA 的空结果
   ipv6: true
-  # 单位：ms，内部双栈并发时，向上游查询 AAAA 时，等待 AAAA 的时间，默认 100ms
-  ipv6-timeout: 200
   # 配置fake-ip-filter的匹配模式，可选 blacklist/whitelist
   # 默认为blacklist，即如果匹配成功不返回fake-ip
   # 可设置为whitelist，即只有匹配成功才返回fake-ip
@@ -443,8 +446,7 @@ dns:
     #- system
   # 后备域名解析服务器，一般情况下使用境外 DNS, 保证结果可信
   # 配置 fallback后默认启用 fallback-filter,geoip-code为 cn
-  fallback:
-    null
+  fallback: null
     # GoogleDNS
     #- 8.8.8.8
     #- "[2001:4860:4860::8888]"
@@ -481,7 +483,7 @@ dns:
     # 360DNS
     #- 101.226.4.6
     # 系统DNS
-    #- system
+    # - system
   # 代理节点域名解析服务器，仅用于解析代理节点的域名，如果不填则遵循nameserver-policy、nameserver和fallback的配置
   proxy-server-nameserver: null
   # 指定域名查询的解析服务器，可使用 geosite, 优先于 nameserver/fallback 查询
@@ -493,14 +495,13 @@ dns:
   # 可选值 fake-ip/redir-host，默认redir-host
   enhanced-mode: redir-host
   # fake-ip 池，默认为 198.18.0.1/16
-  fake-ip-range: 198.18.0.1/16
+  fake-ip-range: 28.0.0.1/8
   # fakeip 过滤，以下地址不会下发 fakeip 映射用于连接
   # 值支持域名通配以及引入域名集合
   # - rule-set:fakeip-filter fakeip-filter 为 rule-providers 中的名为 fakeip-filter 规则订阅
   # 且 behavior 必须为 domain/classical，当为 classical 时仅会生效域名类规则
   # RH "+.*" 等同于 redir-host 模式
-  fake-ip-filter:
-    null
+  fake-ip-filter: null
     # RH
     #- "+.*"
     # RS
@@ -510,8 +511,7 @@ dns:
     #- rule-set:ntp-service-classical
     #- rule-set:stun-service-classical
   # 后备域名解析服务器筛选，满足条件的将使用 fallback结果或只使用 fallback解析
-  fallback-filter:
-    null
+  fallback-filter: null
     # 是否启用 geoip 判断
     #geoip: true
     # 可选值为 国家缩写，默认值为 CN
