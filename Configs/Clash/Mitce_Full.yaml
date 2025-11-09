@@ -798,7 +798,7 @@ p: &p
   interval: 43200
   health-check:
     enable: true
-    url: "https://cp.cloudflare.com/generate_204"
+    url: "http://cp.cloudflare.com/generate_204"
     interval: 180
     tolerance: 10
 
@@ -808,7 +808,7 @@ url-test: &url-test
   interval: 180
   tolerance: 10
   lazy: true
-  url: "https://cp.cloudflare.com/generate_204"
+  url: "http://cp.cloudflare.com/generate_204"
   disable-udp: false
   timeout: 5000
   max-failed-times: 5
@@ -820,7 +820,7 @@ fallabck: &fallabck
   type: fallback
   interval: 180
   lazy: true
-  url: "https://cp.cloudflare.com/generate_204"
+  url: "http://cp.cloudflare.com/generate_204"
   disable-udp: false
   timeout: 5000
   max-failed-times: 5
@@ -831,7 +831,7 @@ load-balance-ch: &load-balance-ch
   type: load-balance
   interval: 180
   lazy: true
-  url: "https://cp.cloudflare.com/generate_204"
+  url: "http://cp.cloudflare.com/generate_204"
   disable-udp: false
   strategy: consistent-hashing
   timeout: 5000
@@ -843,7 +843,7 @@ load-balance-rr: &load-balance-rr
   type: load-balance
   interval: 180
   lazy: true
-  url: "https://cp.cloudflare.com/generate_204"
+  url: "http://cp.cloudflare.com/generate_204"
   disable-udp: false
   strategy: round-robin
   timeout: 5000
@@ -1188,7 +1188,7 @@ proxy-groups:
     interval: 180
     tolerance: 10
     lazy: true
-    url: "https://cp.cloudflare.com/generate_204"
+    url: "http://cp.cloudflare.com/generate_204"
     disable-udp: false
     timeout: 5000
     max-failed-times: 5
