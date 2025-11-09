@@ -42,12 +42,12 @@
 # 国际互联分流：支持
 # 人工智能分流：支持
 # 奈飞视频分流：支持
-# YouTube 视频分流：支持
-# YouTube 音乐分流：支持
-# 电报消息分流：支持
+# YouTube视频分流：支持
+# YouTube音乐分流：支持
+# Telegram分流：支持
 # Discord分流：支持
-# Emby 视频分流：支持
-# Spotify 音乐分流：支持
+# Emby视频分流：支持
+# Spotify音乐分流：支持
 # 游戏服务分流：支持
 # 国际抖音分流：支持
 # 网络测速分流：支持
@@ -55,7 +55,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/11/8
+# 更新时间：2025/11/9
 
 # MARK: 端口配置
 #
@@ -89,7 +89,7 @@ lan-allowed-ips:
   - ::/0
 # 禁止连接的 IP 地址段，黑名单优先级高于白名单，默认值为空
 lan-disallowed-ips:
-  #- 192.168.X.X/32
+  #- 192.168.x.x/32
 
 # MARK: 进程匹配模式配置
 #
@@ -290,30 +290,49 @@ tun:
   endpoint-independent-nat: true
   # 启用 auto-route 时排除自定义网段
   route-exclude-address:
-    # IPv4
-    - 0.0.0.0/8              # 本地网络保留
-    - 10.0.0.0/8             # 私有网段 (A 类)
-    - 100.64.0.0/10          # 运营商 NAT 地址 (CGNAT)
-    - 127.0.0.0/8            # 本地回环 (localhost)
-    - 169.254.0.0/16         # 链路本地 (无 DHCP)
-    - 172.16.0.0/12          # 私有网段 (B 类)
-    - 192.0.0.0/24           # IANA 保留地址
-    - 192.0.2.0/24           # 文档示例网段
-    - 192.88.99.0/24         # IPv6 转发中继 (已废弃)
-    - 192.168.0.0/16         # 私有网段 (C 类)
-    - 198.18.0.0/15          # 网络性能测试网段 (RFC2544)
-    - 198.51.100.0/24        # 文档示例
-    - 203.0.113.0/24         # 文档示例
-    - 224.0.0.0/4            # IPv4 多播地址
-    - 239.255.255.250/32     # SSDP 多播 (UPnP)
-    - 255.255.255.255/32     # 广播地址
-    # IPv6
-    - ::1/128                # IPv6 回环地址
-    - ::/128                 # IPv6 未指定地址
-    - fc00::/7               # 唯一本地地址 (ULA)
-    - fe80::/10              # 链路本地地址
-    - ff00::/8               # 多播地址
-    - 2001:db8::/32          # IPv6 文档与测试网段
+    # IPv4 本地网络保留
+    - 0.0.0.0/8
+    # IPv4 私有网段 (A 类)              
+    - 10.0.0.0/8
+    # IPv4 运营商 NAT 地址 (CGNAT)             
+    - 100.64.0.0/10
+    # IPv4 本地回环 (localhost)          
+    - 127.0.0.0/8
+    # IPv4 链路本地 (无 DHCP)            
+    - 169.254.0.0/16
+    # IPv4 私有网段 (B 类)         
+    - 172.16.0.0/12
+    # IPv4 IANA 保留地址          
+    - 192.0.0.0/24
+    # IPv4 文档示例网段           
+    - 192.0.2.0/24
+    # IPv4 私有网段 (C 类)           
+    - 192.168.0.0/16
+    # 保留 FakeIP 网段 
+    # IPv4 网络性能测试网段 (RFC2544)
+    #- 198.18.0.0/15
+    # IPv4 文档示例网段          
+    - 198.51.100.0/24
+    # IPv4 文档示例网段       
+    - 203.0.113.0/24
+    # IPv4 多播地址         
+    - 224.0.0.0/4
+    # IPv4 SSDP 多播 (UPnP)           
+    - 239.255.255.250/32
+    # IPv4 广播地址     
+    - 255.255.255.255/32
+    # IPv6 回环地址
+    - ::1/128
+    # IPv6 未指定地址               
+    - ::/128
+    # IPv6 唯一本地地址 (ULA)
+    - fc00::/7               
+    # IPv6 链路本地地址                
+    - fe80::/10
+    # IPv6 多播地址             
+    - ff00::/8
+    # IPv6 文档与测试网段          
+    - 2001:db8::/32   
   
 # MARK: 域名嗅探配置
 #
@@ -348,10 +367,10 @@ sniffer:
     #- "Mijia Cloud"
   # 跳过嗅探的来源 IP 段列表
   skip-src-address:
-    #- 192.168.X.X/32
+    #- 192.168.x.x/32
   # 跳过嗅探的目标 IP 段列表
   skip-dst-address:
-    #- 192.168.X.X/32
+    #- 192.168.x.x/32
 
 # MARK: DNS配置
 #
@@ -391,33 +410,22 @@ dns:
     - 223.5.5.5
     - "[2400:3200::1]"
     # 腾讯DNS
-    #- 119.29.29.29
-    #- "[2402:4e00::]"
-    # 百度DNS
-    #- 180.76.76.76
-    #- "[2400:da00::6666]"
-    # 抖音DNS
-    #- 180.184.1.1
-    # 华为DNS
-    #- 122.112.208.1
-    # 360DNS
-    #- 101.226.4.6
-    # 系统DNS
-    #- system
+    - 119.29.29.29
+    - "[2402:4e00::]"
   # 默认的域名解析服务器
   nameserver:
     # CloudflareDNS
     - 1.1.1.1
     - "[2606:4700:4700::1111]"
-    #- https://cloudflare-dns.com/dns-query
+    #- "https://cloudflare-dns.com/dns-query"
     # GoogleDNS
-    #- 8.8.8.8
-    #- "[2001:4860:4860::8888]"
-    #- https://dns.google/dns-query
+    - 8.8.8.8
+    - "[2001:4860:4860::8888]"
+    #- "https://dns.google/dns-query"
     # OpenDNS
     #- 208.67.222.222
     #- "[2620:0:ccc::2]"
-    #- https://doh.opendns.com/dns-query
+    #- "https://doh.opendns.com/dns-query"
     # Quad9DNS
     #- 9.9.9.10
     #- "[2620:fe::10]"
@@ -427,11 +435,11 @@ dns:
     # 阿里DNS
     #- 223.5.5.5
     #- "[2400:3200::1]"
-    #- https://dns.alidns.com/dns-query
+    #- "https://dns.alidns.com/dns-query"
     # 腾讯DNS
     #- 119.29.29.29
     #- "[2402:4e00::]"
-    #- https://doh.pub/dns-query
+    #- "https://doh.pub/dns-query"
     # 百度DNS
     #- 180.76.76.76
     #- "[2400:da00::6666]"
@@ -441,24 +449,22 @@ dns:
     #- 122.112.208.1
     # 360DNS
     #- 101.226.4.6
-    #- https://doh.360.cn/dns-query
-    # 系统DNS
-    #- system
+    #- "https://doh.360.cn/dns-query"
   # 后备域名解析服务器，一般情况下使用境外 DNS, 保证结果可信
   # 配置 fallback后默认启用 fallback-filter,geoip-code为 cn
   fallback: null
-    # GoogleDNS
-    #- 8.8.8.8
-    #- "[2001:4860:4860::8888]"
-    #- https://dns.google/dns-query
     # CloudflareDNS
     #- 1.1.1.1
     #- "[2606:4700:4700::1111]"
-    #- https://cloudflare-dns.com/dns-query
+    #- "https://cloudflare-dns.com/dns-query"
+    # GoogleDNS
+    #- 8.8.8.8
+    #- "[2001:4860:4860::8888]"
+    #- "https://dns.google/dns-query"
     # OpenDNS
     #- 208.67.222.222
     #- "[2620:0:ccc::2]"
-    #- https://doh.opendns.com/dns-query
+    #- "https://doh.opendns.com/dns-query"
     # Quad9DNS
     #- 9.9.9.10
     #- "[2620:fe::10]"
@@ -471,19 +477,8 @@ dns:
     - 223.5.5.5
     - "[2400:3200::1]"
     # 腾讯DNS
-    #- 119.29.29.29
-    #- "[2402:4e00::]"
-    # 百度DNS
-    #- 180.76.76.76
-    #- "[2400:da00::6666]"
-    # 抖音DNS
-    #- 180.184.1.1
-    # 华为DNS
-    #- 122.112.208.1
-    # 360DNS
-    #- 101.226.4.6
-    # 系统DNS
-    # - system
+    - 119.29.29.29
+    - "[2402:4e00::]"
   # 代理节点域名解析服务器，仅用于解析代理节点的域名，如果不填则遵循nameserver-policy、nameserver和fallback的配置
   proxy-server-nameserver: null
   # 指定域名查询的解析服务器，可使用 geosite, 优先于 nameserver/fallback 查询
@@ -495,7 +490,9 @@ dns:
   # 可选值 fake-ip/redir-host，默认redir-host
   enhanced-mode: redir-host
   # fake-ip 池，默认为 198.18.0.1/16
-  fake-ip-range: 28.0.0.1/8
+  fake-ip-range: 198.18.0.1/16
+  # fake-ip6 池，默认为 fdfe:dcba:9876::1/64
+  fake-ip-range6: fdfe:dcba:9876::1/64
   # fakeip 过滤，以下地址不会下发 fakeip 映射用于连接
   # 值支持域名通配以及引入域名集合
   # - rule-set:fakeip-filter fakeip-filter 为 rule-providers 中的名为 fakeip-filter 规则订阅
@@ -781,8 +778,6 @@ google-service-select: &google-service-select
 
 # MARK: 订阅更新和延迟测试锚点
 #
-# 字段
-#
 # interval：健康检查间隔，如不为 0 则启用定时测试，单位为秒
 # tolerance：节点切换容差，单位 ms
 # lazy：懒惰状态，默认为true,未选择到当前策略组时，不进行测试
@@ -803,7 +798,7 @@ p: &p
   interval: 43200
   health-check:
     enable: true
-    url: "http://www.gstatic.com/generate_204"
+    url: "https://cp.cloudflare.com/generate_204"
     interval: 180
     tolerance: 10
 
@@ -813,7 +808,7 @@ url-test: &url-test
   interval: 180
   tolerance: 10
   lazy: true
-  url: "http://www.gstatic.com/generate_204"
+  url: "https://cp.cloudflare.com/generate_204"
   disable-udp: false
   timeout: 5000
   max-failed-times: 5
@@ -825,18 +820,18 @@ fallabck: &fallabck
   type: fallback
   interval: 180
   lazy: true
-  url: "http://www.gstatic.com/generate_204"
+  url: "https://cp.cloudflare.com/generate_204"
   disable-udp: false
   timeout: 5000
   max-failed-times: 5
-  hidden: true
+  hidden: false
 
 # 负载均衡-散列 测试连通性以及延迟
 load-balance-ch: &load-balance-ch
   type: load-balance
   interval: 180
   lazy: true
-  url: "http://www.gstatic.com/generate_204"
+  url: "https://cp.cloudflare.com/generate_204"
   disable-udp: false
   strategy: consistent-hashing
   timeout: 5000
@@ -848,7 +843,7 @@ load-balance-rr: &load-balance-rr
   type: load-balance
   interval: 180
   lazy: true
-  url: "http://www.gstatic.com/generate_204"
+  url: "https://cp.cloudflare.com/generate_204"
   disable-udp: false
   strategy: round-robin
   timeout: 5000
@@ -982,7 +977,7 @@ proxy-groups:
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/iCloud.png"
     <<: *apple-service-select
 
-  - name: App Store
+  - name: AppStore
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/App_Store.png"
     <<: *apple-service-select
 
@@ -1024,16 +1019,16 @@ proxy-groups:
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Google_Search.png"
     <<: *globe-select
 
-  - name: YouTube 视频
+  - name: YouTube视频
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/YouTube.png"
     <<: *google-service-select
 
-  - name: YouTube 音乐
+  - name: YouTube音乐
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/YouTube_Music.png"
     <<: *google-service-select
 
-  # 电报消息
-  - name: 电报消息
+  # Telegram
+  - name: Telegram
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Telegram_X.png"
     <<: *globe-select
 
@@ -1048,8 +1043,8 @@ proxy-groups:
     <<: *globe-select
     include-all-providers: true
 
-  # Emby 视频
-  - name: Emby 视频
+  # Emby视频
+  - name: Emby视频
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Emby.png"
     <<: *default-select
 
@@ -1057,14 +1052,16 @@ proxy-groups:
   - name: OpenAI
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Bot.png"
     <<: *globe-select
+    include-all-providers: true
 
   # 国际抖音
   - name: 国际抖音
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/TikTok.png"
     <<: *globe-select
+    include-all-providers: true
 
-  # Spotify 音乐
-  - name: Spotify 音乐
+  # Spotify音乐
+  - name: Spotify音乐
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Spotify.png"
     <<: *globe-select
 
@@ -1081,7 +1078,8 @@ proxy-groups:
   # 国内互联
   - name: 国内互联
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
-    <<: *cns-select
+    type: select
+    proxies: [直连, 香港节点, 台湾节点]
 
   # 游戏服务
   - name: 游戏服务
@@ -1089,7 +1087,7 @@ proxy-groups:
     <<: *default-select
 
   # 测速测试
-  - name: 网速测试
+  - name: 国际测速
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Speedtest.png"
     <<: *default-select
 
@@ -1190,7 +1188,7 @@ proxy-groups:
     interval: 180
     tolerance: 10
     lazy: true
-    url: "http://www.gstatic.com/generate_204"
+    url: "https://cp.cloudflare.com/generate_204"
     disable-udp: false
     timeout: 5000
     max-failed-times: 5
@@ -1526,7 +1524,7 @@ rule-providers:
     path: ./rule-providers/google-gemini-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Gemini/Gemini.yaml"
 
-  # 电报消息
+  # Telegram
   telegram-classical:
     <<: *classical
     path: ./rule-providers/telegram-classical.yaml
@@ -1544,7 +1542,7 @@ rule-providers:
     path: ./rule-providers/netflix-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Netflix/Netflix_Classical.yaml"
 
-  # Emby 视频
+  # Emby视频
   emby-classical:
     <<: *classical
     path: ./rule-providers/emby-classical.yaml
@@ -1562,7 +1560,7 @@ rule-providers:
     path: ./rule-providers/tiktok-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/TikTok/TikTok.yaml"
 
-  # Spotify 音乐
+  # Spotify音乐
   spotify-classical:
     <<: *classical
     path: ./rule-providers/spotify-classical.yaml
@@ -1607,7 +1605,7 @@ rule-providers:
     path: ./rule-providers/globe-cloud-ip.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Cloud/CloudGlobal/CloudGlobal_IP.yaml"
 
-  # 网速测试
+  # 国际测速
   globe-speedtest-classical:
     <<: *classical
     path: ./rule-providers/globe-speedtest-classical.yaml
@@ -1747,7 +1745,7 @@ rule-providers:
 # 注意：规则自上而下匹配，所以规则顺序直接影响分流效果。
 # 注意：规则自上而下匹配，所以规则顺序直接影响分流效果。
 # 注意：规则自上而下匹配，所以规则顺序直接影响分流效果。
-
+#
 # 首先，请注意，把所有非IP类规则写在 IP类规则之前，这是最没有问题的！
 # 避免 DNS 污染和 DNS 泄漏最有效的办法就是永远不在本地进行 DNS 解析。
 # 而 Mihomo 能且只能通过 Fake IP 和域名规则匹配的方式 可以实现非直连域名 一定不在本地本机进行任何 DNS 解析。
@@ -1772,7 +1770,7 @@ rules:
   - RULE-SET,apple-mail-classical,苹果邮件
   - RULE-SET,apple-music-classical,苹果音乐
   - RULE-SET,apple-system-ota-classical,苹果系统更新
-  - RULE-SET,apple-app-store-classical,App Store
+  - RULE-SET,apple-app-store-classical,AppStore
   - RULE-SET,apple-developer-classical,苹果开发
   - RULE-SET,apple-beats-classical,苹果服务
   - RULE-SET,apple-account-classical,苹果账户
@@ -1788,16 +1786,16 @@ rules:
   - RULE-SET,microsoft-service-classical,微软服务
 
   # 谷歌服务
-  - RULE-SET,google-youtube-classical,YouTube 视频
-  - RULE-SET,google-youtube-music-classical,YouTube 音乐
+  - RULE-SET,google-youtube-classical,YouTube视频
+  - RULE-SET,google-youtube-music-classical,YouTube音乐
   - RULE-SET,google-chromecast-classical,谷歌服务
   - RULE-SET,google-fcm-classical,谷歌服务
   - RULE-SET,google-bard-ai-classical,谷歌服务
   - RULE-SET,google-gemini-classical,谷歌服务
   - RULE-SET,google-service-classical,谷歌服务
 
-  # 电报消息
-  - RULE-SET,telegram-classical,电报消息
+  # Telegram
+  - RULE-SET,telegram-classical,Telegram
 
   # Discord
   - RULE-SET,discord-classical,Discord
@@ -1805,8 +1803,8 @@ rules:
   # 奈飞视频
   - RULE-SET,netflix-classical,奈飞视频
 
-  # Emby 视频
-  - RULE-SET,emby-classical,Emby 视频
+  # Emby视频
+  - RULE-SET,emby-classical,Emby视频
 
   # 人工智能
   - RULE-SET,open-ai-classical,OpenAI
@@ -1814,14 +1812,14 @@ rules:
   # 国际抖音
   - RULE-SET,tiktok-classical,国际抖音
 
-  # Spotify 音乐
-  - RULE-SET,spotify-classical,Spotify 音乐
+  # Spotify音乐
+  - RULE-SET,spotify-classical,Spotify音乐
 
   # 游戏服务
   - RULE-SET,game-classical,游戏服务
 
-  # 网速测试
-  - RULE-SET,globe-speedtest-classical,网速测试
+  # 国际测速
+  - RULE-SET,globe-speedtest-classical,国际测速
 
   # 国际媒体
   - RULE-SET,globe-media-domain,国际媒体
@@ -1835,7 +1833,7 @@ rules:
   - RULE-SET,globe-cloud-classical,国际互联
   - RULE-SET,globe-cloud-ip,国际互联
 
-  # 国内直连
+  # 国内互联
   - RULE-SET,direct-china-neteasemusic-media-classical,国内互联
   - RULE-SET,direct-china-youku-media-classical,国内互联
   - RULE-SET,direct-china-tencentvideo-media-classical,国内互联
