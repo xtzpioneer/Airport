@@ -55,7 +55,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/11/9
+# 更新时间：2025/11/30
 
 # MARK: 端口配置
 #
@@ -415,13 +415,13 @@ dns:
   # 默认的域名解析服务器
   nameserver:
     # CloudflareDNS
-    - 1.1.1.1
-    - "[2606:4700:4700::1111]"
-    #- "https://cloudflare-dns.com/dns-query"
+    #- 1.1.1.1
+    #- "[2606:4700:4700::1111]"
+    - "https://cloudflare-dns.com/dns-query"
     # GoogleDNS
-    - 8.8.8.8
-    - "[2001:4860:4860::8888]"
-    #- "https://dns.google/dns-query"
+    #- 8.8.8.8
+    #- "[2001:4860:4860::8888]"
+    - "https://dns.google/dns-query"
     # OpenDNS
     #- 208.67.222.222
     #- "[2620:0:ccc::2]"
@@ -474,11 +474,13 @@ dns:
   # 用于direct出口域名解析的 DNS 服务器，如果不填则遵循nameserver-policy、nameserver和fallback的配置
   direct-nameserver:
     # 阿里DNS
-    - 223.5.5.5
-    - "[2400:3200::1]"
+    #- 223.5.5.5
+    #- "[2400:3200::1]"
+    - "https://dns.alidns.com/dns-query"
     # 腾讯DNS
-    - 119.29.29.29
-    - "[2402:4e00::]"
+    #- 119.29.29.29
+    #- "[2402:4e00::]"
+    - "https://doh.pub/dns-query"
   # 代理节点域名解析服务器，仅用于解析代理节点的域名，如果不填则遵循nameserver-policy、nameserver和fallback的配置
   proxy-server-nameserver: null
   # 指定域名查询的解析服务器，可使用 geosite, 优先于 nameserver/fallback 查询
