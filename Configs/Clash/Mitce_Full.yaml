@@ -268,6 +268,8 @@ tun:
   dns-hijack:
     - "any:53"
     - "tcp://any:53"
+  # 指定 tun 网卡名称，MacOS 设备只能使用 utun 开头的网卡名
+  device: utun1024
   # 自动选择流量出口接口，多出口网卡同时连接的设备建议手动指定出口网卡
   auto-detect-interface: true
   # 自动设置全局路由，可以自动将全局流量路由进入 tun 网卡。
@@ -393,7 +395,7 @@ dns:
   # 可设置为whitelist，即只有匹配成功才返回fake-ip
   fake-ip-filter-mode: blacklist
   # 是否查询系统 hosts，默认 true
-  use-system-hosts: true
+  use-system-hosts: false
   # 是否回应配置中的 hosts，默认 true
   use-hosts: true
   # 配置后面的nameserver、fallback和nameserver-policy向dns服务器的连接过程是否遵守遵守rules规则
