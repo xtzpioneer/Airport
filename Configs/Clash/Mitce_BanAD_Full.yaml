@@ -133,7 +133,7 @@ global-ua: clash.meta
 # MARK: 日志配置
 #
 # 日志等级 silent/error/warning/info/debug
-log-level: silent
+log-level: info
 
 # MARK: IPV6配置
 #
@@ -410,13 +410,13 @@ dns:
     - 223.5.5.5
     - "[2400:3200::1]"
     # 腾讯DNS
-    #- 119.29.29.29
-    #- "[2402:4e00::]"
+    - 119.29.29.29
+    - "[2402:4e00::]"
   # 默认的域名解析服务器
   nameserver:
     # CloudflareDNS
-    #- 1.1.1.1
-    #- "[2606:4700:4700::1111]"
+    - 1.1.1.1
+    - "[2606:4700:4700::1111]"
     #- "https://cloudflare-dns.com/dns-query"
     # GoogleDNS
     - 8.8.8.8
@@ -476,11 +476,9 @@ dns:
     # 阿里DNS
     - 223.5.5.5
     - "[2400:3200::1]"
-    #- "https://dns.alidns.com/dns-query"
     # 腾讯DNS
-    #- 119.29.29.29
-    #- "[2402:4e00::]"
-    #- "https://doh.pub/dns-query"
+    - 119.29.29.29
+    - "[2402:4e00::]"
   # 代理节点域名解析服务器，仅用于解析代理节点的域名，如果不填则遵循nameserver-policy、nameserver和fallback的配置
   proxy-server-nameserver: null
   # 指定域名查询的解析服务器，可使用 geosite, 优先于 nameserver/fallback 查询
@@ -802,7 +800,7 @@ p: &p
   interval: 43200
   health-check:
     enable: true
-    url: "http://www.gstatic.com/generate_204"
+    url: "http://cp.cloudflare.com/generate_204"
     interval: 180
     tolerance: 10
 
@@ -812,7 +810,7 @@ url-test: &url-test
   interval: 180
   tolerance: 10
   lazy: true
-  url: "http://www.gstatic.com/generate_204"
+  url: "http://cp.cloudflare.com/generate_204"
   disable-udp: false
   timeout: 5000
   max-failed-times: 5
@@ -824,7 +822,7 @@ fallabck: &fallabck
   type: fallback
   interval: 180
   lazy: true
-  url: "http://www.gstatic.com/generate_204"
+  url: "http://cp.cloudflare.com/generate_204"
   disable-udp: false
   timeout: 5000
   max-failed-times: 5
@@ -835,7 +833,7 @@ load-balance-ch: &load-balance-ch
   type: load-balance
   interval: 180
   lazy: true
-  url: "http://www.gstatic.com/generate_204"
+  url: "http://cp.cloudflare.com/generate_204"
   disable-udp: false
   strategy: consistent-hashing
   timeout: 5000
@@ -847,7 +845,7 @@ load-balance-rr: &load-balance-rr
   type: load-balance
   interval: 180
   lazy: true
-  url: "http://www.gstatic.com/generate_204"
+  url: "http://cp.cloudflare.com/generate_204"
   disable-udp: false
   strategy: round-robin
   timeout: 5000
@@ -1192,7 +1190,7 @@ proxy-groups:
     interval: 180
     tolerance: 10
     lazy: true
-    url: "http://www.gstatic.com/generate_204"
+    url: "http://cp.cloudflare.com/generate_204"
     disable-udp: false
     timeout: 5000
     max-failed-times: 5
