@@ -30,7 +30,7 @@
 # 支持平台/应用：macOS/Windows/Linux/Mihomo Party (Version ≥ 1.2.8）
 # 支持平台/应用：android/ClashMetaForAndroid (Version >= 2.10.4)
 #
-# 广告拦截：不支持
+# 广告拦截（可关闭）：支持
 # 自动测速：支持
 # 故障转移（全节点+地区节点）：支持
 # 负载均衡（全节点+地区节点 散列+轮询）：支持
@@ -332,7 +332,7 @@ tun:
     # IPv6 多播地址             
     - ff00::/8
     # IPv6 文档与测试网段          
-    - 2001:db8::/32          
+    - 2001:db8::/32   
   
 # MARK: 域名嗅探配置
 #
@@ -957,6 +957,12 @@ proxy-groups:
     <<:
       - *fallabck
       - *region-select
+
+  # 广告拦截
+  - name: 广告拦截
+    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/AdBlack.png"
+    type: select
+    proxies: [绕过, 拒绝]
 
   # 苹果服务
   - name: 苹果服务
@@ -1609,6 +1615,17 @@ rule-providers:
     path: ./rule-providers/globe-speedtest-classical.yaml
     url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Speedtest/Speedtest.yaml"
 
+  # 广告拦截
+  ad-reject-domain:
+    <<: *domain
+    path: ./rule-providers/ad-reject-domain.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Advertising/Advertising_Domain.yaml"
+
+  ad-reject-classical:
+    <<: *classical
+    path: ./rule-providers/ad-reject-classical.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Advertising/Advertising.yaml"
+
   # 直连
   direct-china-max-no-media-domain:
     <<: *domain
@@ -1740,6 +1757,10 @@ rule-providers:
 # 因此，在 Mihomo 中，将会触发 DNS 解析的规则放在域名和 URL 匹配规则后面非常重要。
 
 rules:
+  # 广告拦截
+  - RULE-SET,ad-reject-domain,广告拦截
+  - RULE-SET,ad-reject-classical,广告拦截
+  
   # 私有直连
   - RULE-SET,direct-lan-classical,直连
   - RULE-SET,direct-private-domain,直连
