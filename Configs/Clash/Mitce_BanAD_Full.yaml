@@ -55,7 +55,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/12/7
+# 更新时间：2025/12/8
 
 # MARK: 端口配置
 #
@@ -230,7 +230,7 @@ profile:
   store-selected: true
   # 持久化 fake-ip
   # 储存 fakeip 映射表，域名再次发生连接时，使用原有映射地址
-  store-fake-ip: true
+  store-fake-ip: false
 
 # MARK: Hosts配置
 #
@@ -383,7 +383,7 @@ dns:
   # 支持的缓存算法
   # lru: Least Recently Used, 默认值 就是“最近最少使用优先删除”，用来管理 DNS 缓存大小，保持内存可控，同时让常用域名快速解析。
   # arc: Adaptive Replacement Cache 自适应缓存
-  cache-algorithm: arc
+  cache-algorithm: lru
   # 是否开启 DoH 支持 HTTP/3，将并发尝试
   prefer-h3: false
   # 开启 DNS 服务器监听
@@ -408,79 +408,17 @@ dns:
   # 只能使用纯 IP 地址，可使用加密 DNS
   # system 从系统配置中附加 DNS 服务器。如果未找到，它将打印错误日志并跳过。
   default-nameserver:
-    # 阿里DNS
     - 223.5.5.5
-    - "[2400:3200::1]"
-    # 腾讯DNS
-    - 119.29.29.29
-    - "[2402:4e00::]"
   # 默认的域名解析服务器
   nameserver:
-    # CloudflareDNS
     - 1.1.1.1
-    - "[2606:4700:4700::1111]"
-    #- "https://cloudflare-dns.com/dns-query"
-    # GoogleDNS
     - 8.8.8.8
-    - "[2001:4860:4860::8888]"
-    #- "https://dns.google/dns-query"
-    # OpenDNS
-    #- 208.67.222.222
-    #- "[2620:0:ccc::2]"
-    #- "https://doh.opendns.com/dns-query"
-    # Quad9DNS
-    #- 9.9.9.10
-    #- "[2620:fe::10]"
-    # AdGuardDNS
-    #- 94.140.14.140
-    #- "[2a10:50c0::1:ff]"
-    # 阿里DNS
-    #- 223.5.5.5
-    #- "[2400:3200::1]"
-    #- "https://dns.alidns.com/dns-query"
-    # 腾讯DNS
-    #- 119.29.29.29
-    #- "[2402:4e00::]"
-    #- "https://doh.pub/dns-query"
-    # 百度DNS
-    #- 180.76.76.76
-    #- "[2400:da00::6666]"
-    # 抖音DNS
-    #- 180.184.1.1
-    # 华为DNS
-    #- 122.112.208.1
-    # 360DNS
-    #- 101.226.4.6
-    #- "https://doh.360.cn/dns-query"
   # 后备域名解析服务器，一般情况下使用境外 DNS, 保证结果可信
   # 配置 fallback后默认启用 fallback-filter,geoip-code为 cn
   fallback: null
-    # CloudflareDNS
-    #- 1.1.1.1
-    #- "[2606:4700:4700::1111]"
-    #- "https://cloudflare-dns.com/dns-query"
-    # GoogleDNS
-    #- 8.8.8.8
-    #- "[2001:4860:4860::8888]"
-    #- "https://dns.google/dns-query"
-    # OpenDNS
-    #- 208.67.222.222
-    #- "[2620:0:ccc::2]"
-    #- "https://doh.opendns.com/dns-query"
-    # Quad9DNS
-    #- 9.9.9.10
-    #- "[2620:fe::10]"
-    # AdGuardDNS
-    #- 94.140.14.140
-    #- "[2a10:50c0::1:ff]"
   # 用于direct出口域名解析的 DNS 服务器，如果不填则遵循nameserver-policy、nameserver和fallback的配置
   direct-nameserver:
-    # 阿里DNS
-    - 223.5.5.5
-    - "[2400:3200::1]"
-    # 腾讯DNS
-    - 119.29.29.29
-    - "[2402:4e00::]"
+    - system
   # 代理节点域名解析服务器，仅用于解析代理节点的域名，如果不填则遵循nameserver-policy、nameserver和fallback的配置
   proxy-server-nameserver: null
   # 指定域名查询的解析服务器，可使用 geosite, 优先于 nameserver/fallback 查询
@@ -499,11 +437,7 @@ dns:
   # 值支持域名通配以及引入域名集合
   # - rule-set:fakeip-filter fakeip-filter 为 rule-providers 中的名为 fakeip-filter 规则订阅
   # 且 behavior 必须为 domain/classical，当为 classical 时仅会生效域名类规则
-  # RH "+.*" 等同于 redir-host 模式
   fake-ip-filter: null
-    # RH
-    #- "+.*"
-    # RS
     #- rule-set:fake-ip-filter-domain
     #- rule-set:direct-private-domain
     #- rule-set:direct-lan-classical
@@ -881,7 +815,6 @@ proxy-providers:
   Mitce:
     <<: *p
     path: ./proxy-providers/mitce.yaml
-    url: ""
     # override 覆写节点内容，以下为支持的字段
     override:
       # 跳过证书验证，仅适用于使用 tls 的协议
