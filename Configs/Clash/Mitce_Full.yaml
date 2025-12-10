@@ -55,7 +55,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/12/8
+# 更新时间：2025/12/10
 
 # MARK: 端口配置
 #
@@ -133,7 +133,7 @@ global-ua: clash.meta
 # MARK: 日志配置
 #
 # 日志等级 silent/error/warning/info/debug
-log-level: info
+log-level: silent
 
 # MARK: IPV6配置
 #
@@ -183,7 +183,7 @@ tcp-concurrent: false
 #
 # 开启统一延迟时，会计算 RTT，以消除连接握手等带来的不同类型节点的延迟差异
 # 可选值 true/false
-unified-delay: false
+unified-delay: true
 
 # MARK: TLS
 #
@@ -409,16 +409,18 @@ dns:
   # system 从系统配置中附加 DNS 服务器。如果未找到，它将打印错误日志并跳过。
   default-nameserver:
     - 223.5.5.5
+    - 223.6.6.6
   # 默认的域名解析服务器
   nameserver:
     - 1.1.1.1
-    - 8.8.8.8
+    - 1.0.0.1
   # 后备域名解析服务器，一般情况下使用境外 DNS, 保证结果可信
   # 配置 fallback后默认启用 fallback-filter,geoip-code为 cn
   fallback: null
   # 用于direct出口域名解析的 DNS 服务器，如果不填则遵循nameserver-policy、nameserver和fallback的配置
   direct-nameserver:
-    - system
+    - 223.5.5.5
+    - 223.6.6.6
   # 代理节点域名解析服务器，仅用于解析代理节点的域名，如果不填则遵循nameserver-policy、nameserver和fallback的配置
   proxy-server-nameserver: null
   # 指定域名查询的解析服务器，可使用 geosite, 优先于 nameserver/fallback 查询
@@ -737,14 +739,15 @@ p: &p
   health-check:
     enable: true
     url: "http://cp.cloudflare.com/generate_204"
-    interval: 180
-    tolerance: 10
+    interval: 300
+    timeout: 5000
+    lazy: true
+    expected-status: 204
 
 # 自动选择 测试连通性以及延迟
 url-test: &url-test
   type: url-test
-  interval: 180
-  tolerance: 10
+  interval: 300
   lazy: true
   url: "http://cp.cloudflare.com/generate_204"
   disable-udp: false
@@ -756,7 +759,7 @@ url-test: &url-test
 # 回退/转移/故障转移 测试连通性以及延迟
 fallabck: &fallabck
   type: fallback
-  interval: 180
+  interval: 300
   lazy: true
   url: "http://cp.cloudflare.com/generate_204"
   disable-udp: false
@@ -767,7 +770,7 @@ fallabck: &fallabck
 # 负载均衡-散列 测试连通性以及延迟
 load-balance-ch: &load-balance-ch
   type: load-balance
-  interval: 180
+  interval: 300
   lazy: true
   url: "http://cp.cloudflare.com/generate_204"
   disable-udp: false
@@ -779,7 +782,7 @@ load-balance-ch: &load-balance-ch
 # 负载均衡-轮询 测试连通性以及延迟
 load-balance-rr: &load-balance-rr
   type: load-balance
-  interval: 180
+  interval: 300
   lazy: true
   url: "http://cp.cloudflare.com/generate_204"
   disable-udp: false
@@ -1117,8 +1120,7 @@ proxy-groups:
   - name: 自动选择地区
     icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Auto.png"
     type: url-test
-    interval: 180
-    tolerance: 10
+    interval: 300
     lazy: true
     url: "http://cp.cloudflare.com/generate_204"
     disable-udp: false
