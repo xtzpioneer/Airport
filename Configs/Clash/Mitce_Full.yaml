@@ -183,7 +183,7 @@ tcp-concurrent: false
 #
 # 开启统一延迟时，会计算 RTT，以消除连接握手等带来的不同类型节点的延迟差异
 # 可选值 true/false
-unified-delay: true
+unified-delay: false
 
 # MARK: TLS
 #
@@ -259,7 +259,7 @@ tun:
   # Windows: 设置 -> Windows 安全中心 -> 允许应用通过防火墙 -> 选中内核
   # MacOS: 一般无需配置，防火墙默认放行签名软件，如果遇到开启防火墙无法使用的情况，可以尝试放行：系统设置 -> 网络 -> 防火墙 -> 选项 -> 添加 mihomo app
   # Linux: 一般无需配置，防火墙默认不拦截应用，如果遇到开启防火墙无法使用的情况，可以尝试放行 TUN 网卡出站流量（假设 TUN 网卡为 Mihomo）: sudo iptables -A OUTPUT -o Mihomo -j ACCEPT
-  stack: gvisor
+  stack: system
   # DNS 劫持，将匹配到的连接导入内部 DNS 模块
   # 传统DNS 53 可DNS劫持 隐私保护级别:低
   # DoH 443 防止DNS劫持 隐私保护级别:高
@@ -409,18 +409,24 @@ dns:
   # system 从系统配置中附加 DNS 服务器。如果未找到，它将打印错误日志并跳过。
   default-nameserver:
     - 223.5.5.5
+    - 119.29.29.29
     - 223.6.6.6
+    - 182.254.116.116
   # 默认的域名解析服务器
   nameserver:
     - 1.1.1.1
+    - 8.8.8.8
     - 1.0.0.1
+    - 8.8.4.4
   # 后备域名解析服务器，一般情况下使用境外 DNS, 保证结果可信
   # 配置 fallback后默认启用 fallback-filter,geoip-code为 cn
   fallback: null
   # 用于direct出口域名解析的 DNS 服务器，如果不填则遵循nameserver-policy、nameserver和fallback的配置
   direct-nameserver:
     - 223.5.5.5
+    - 119.29.29.29
     - 223.6.6.6
+    - 182.254.116.116
   # 代理节点域名解析服务器，仅用于解析代理节点的域名，如果不填则遵循nameserver-policy、nameserver和fallback的配置
   proxy-server-nameserver: null
   # 指定域名查询的解析服务器，可使用 geosite, 优先于 nameserver/fallback 查询
