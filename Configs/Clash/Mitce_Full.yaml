@@ -230,7 +230,7 @@ profile:
   store-selected: true
   # 持久化 fake-ip
   # 储存 fakeip 映射表，域名再次发生连接时，使用原有映射地址
-  store-fake-ip: false
+  store-fake-ip: true
 
 # MARK: Hosts配置
 #
@@ -275,7 +275,7 @@ tun:
   # 自动设置全局路由，可以自动将全局流量路由进入 tun 网卡。
   auto-route: true
   # 最大传输单元
-  mtu: 9000
+  mtu: 1500
   # 自动配置 iptables 以重定向 TCP 连接。仅支持 Linux。带有 auto-redirect 的 auto-route 现在可以在路由器上按预期工作，无需干预。
   #auto-redirect: true
   # 是否启用严格的路由
@@ -383,7 +383,7 @@ dns:
   # 支持的缓存算法
   # lru: Least Recently Used, 默认值 就是“最近最少使用优先删除”，用来管理 DNS 缓存大小，保持内存可控，同时让常用域名快速解析。
   # arc: Adaptive Replacement Cache 自适应缓存
-  cache-algorithm: lru
+  cache-algorithm: arc
   # 是否开启 DoH 支持 HTTP/3，将并发尝试
   prefer-h3: false
   # 开启 DNS 服务器监听
