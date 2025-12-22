@@ -1,0 +1,336 @@
+payload:
+  # -----------------------------
+  # *（星号）不要删除，保证所有未知情况默认用 redir-host 兜底。
+  # -----------------------------
+  - '*'
+
+  # -----------------------------
+  # 必须保留（系统 / RFC / 标准）
+  # -----------------------------
+  - '*.lan'
+  - 'local'
+  - '*.local'
+  - '*.local.'
+  - 'localhost.*'
+  - '*.localhost'
+  - '*.localdomain'
+  - 'home.arpa'
+
+  # -----------------------------
+  # 设备发现 / 局域网（跨系统）
+  # -----------------------------
+  - 'captive.apple.com'
+  - 'device.apple.com'
+  - 'bonjour.apple.com'
+  - '*.airplay.local'
+  - '*.airport.local'
+  - '_services._dns-sd._udp.local'
+  - '_workstation._tcp.local'
+  - '*.home'
+  - '*.internal'
+  - '*.intranet'
+  - '*.private'
+  - '*.corp'
+  - '*.office'
+  - '*.company'
+  - '*.workgroup'
+
+  # -----------------------------
+  # 打印 / 扫描 / IoT
+  # -----------------------------
+  - 'printer'
+  - 'printer.*'
+  - '*.printer'
+  - '*.print'
+  - '*.scan'
+  - '*.scanner'
+
+  # -----------------------------
+  # NAS / 文件共享 / 媒体
+  # -----------------------------
+  - 'nas'
+  - 'nas.*'
+  - '*.nas'
+  - 'smb'
+  - 'smb.*'
+  - '*.smb'
+  - 'cifs'
+  - '*.cifs'
+  - 'samba'
+  - 'samba.*'
+  - '*.samba'
+  - 'fileserver'
+  - '*.fileserver'
+  - 'fileshare'
+  - '*.fileshare'
+  - 'mediaserver'
+  - '*.mediaserver'
+  - 'dlna'
+  - '*.dlna'
+
+  # -----------------------------
+  # Windows 内网 / 设备发现
+  # -----------------------------
+  - 'wpad'
+  - 'wpad.*'
+  - '*.wpad'
+  - 'nbns'
+  - 'nbns.*'
+  - '*.nbns'
+  - 'netbios'
+  - '*.netbios'
+  - 'workstation'
+  - '*.workstation'
+  - 'ms-home'
+  - '*.ms-home'
+  - 'winbox'
+  - '*.winbox'
+
+  # -----------------------------
+  # Linux / Unix（Avahi / mDNS）
+  # -----------------------------
+  - 'avahi'
+  - 'avahi.*'
+  - '*.avahi'
+  - 'linux'
+  - '*.linux'
+  - 'unix'
+  - '*.unix'
+
+  # -----------------------------
+  # Android / Google Cast / ADB
+  # -----------------------------
+  - 'android'
+  - 'android.*'
+  - '*.android'
+  - 'chromecast'
+  - 'chromecast.*'
+  - '*.chromecast'
+  - '_googlecast._tcp.local'
+  - '_adb._tcp.local'
+  - '_adb-tls-connect._tcp.local'
+
+  # -----------------------------
+  # 网络设备 / 网关 / 虚拟化
+  # -----------------------------
+  - 'router'
+  - 'router.*'
+  - 'gateway'
+  - 'gw'
+  - 'ap'
+  - '*.vm'
+  - '*.vm.local'
+  - '*.dev'
+
+  # -----------------------------
+  # 内网 / 路由器 / NAS（厂商）
+  # -----------------------------
+  - 'routerlogin.*'
+  - 'tplogin.*'
+  - '*.routerlogin.net'
+  - '*.tplinklogin.net'
+  - 'miwifi.com'
+  - '*.miwifi.com'
+  - 'tendawifi.com'
+  - '*.tendawifi.com'
+  - '*.asusrouter.com'
+  - 'fritz.box'
+  - '*.fritz.box'
+  - 'synology.*'
+
+  # 路由器 / AP
+  - 'openwrt'
+  - 'openwrt.lan'
+  - 'lede'
+  - 'lede.lan'
+  - '*.openwrt.org'
+  - '*.lede-project.org'
+  - 'mikrotik'
+  - 'routeros'
+  - '*.mikrotik.com'
+  - 'unifi'
+  - '*.ui.com'
+  - '*.ubnt.com'
+  - '*.unifi.ui.com'
+  - 'netgear'
+  - '*.netgear.com'
+  - 'routerlogin.net'
+  - 'linksys'
+  - '*.linksys.com'
+  - 'dlink'
+  - '*.dlink.com'
+  - 'draytek'
+  - '*.draytek.com'
+  - 'fortigate'
+  - '*.fortinet.com'
+  - 'ruckus'
+  - '*.ruckuswireless.com'
+  - 'aruba'
+  - '*.arubanetworks.com'
+  - 'hikvision'
+  - '*.hikvision.com'
+  - 'ezviz'
+  - '*.ezvizlife.com'
+
+  # NAS / 存储
+  - 'qnap'
+  - '*.qnap.com'
+  - '*.qnapcloud.com'
+  - 'asustor'
+  - '*.asustor.com'
+  - 'truenas'
+  - '*.truenas.com'
+  - '*.freenas.org'
+  - 'wdmycloud'
+  - '*.wdmycloud.com'
+  - '*.westerndigital.com'
+  - 'seagate'
+  - '*.seagate.com'
+  - 'buffalo'
+  - '*.buffalotech.com'
+
+  # -----------------------------
+  # 时间同步 / 网络探测
+  # -----------------------------
+  - 'time.*'
+  - 'ntp.*'
+  - '*.ntp.org'
+  - 'pool.ntp.org'
+  - 'time-ios.apple.com'
+  - 'time1.*.com'
+  - 'time2.*.com'
+  - 'time3.*.com'
+  - 'time4.*.com'
+  - 'time5.*.com'
+  - 'time6.*.com'
+  - 'time7.*.com'
+  - 'connectivitycheck.*'
+  - 'msftconnecttest.com'
+  - '*.msftconnecttest.com'
+  - 'msftncsi.com'
+  - '*.msftncsi.com'
+  - 'nmcheck.gnome.org'
+  - 'detectportal.firefox.com'
+
+  # -----------------------------
+  # 视频会议（国外）
+  # -----------------------------
+  - '*.zoom.us'
+  - '*.zoomgov.com'
+  - '*.webex.com'
+  - '*.cisco.com'
+  - '*.gotomeeting.com'
+  - '*.gotowebinar.com'
+  - '*.gototraining.com'
+  - '*.bluejeans.com'
+  - '*.whereby.com'
+  - '*.meet.google.com'
+  - '*.googlemeet.com'
+  - '*.ringcentral.com'
+  - '*.ringcentralvideo.com'
+  - '*.8x8.com'
+
+  # -----------------------------
+  # 视频会议（国内）
+  # -----------------------------
+  - '*.tencentmeeting.com'
+  - '*.voovmeeting.com'
+  - '*.meeting.tencent.com'
+  - '*.welink.huawei.com'
+  - '*.dingding.com'
+  - '*.dingtalk.com'
+  - '*.feishu.cn'
+  - '*.lark.cn'
+  - '*.zoom.cn'
+  - '*.263.net'
+
+  # -----------------------------
+  # 语音 / VoIP（国外）
+  # -----------------------------
+  - '*.whatsapp.net'
+  - '*.whatsapp.com'
+  - '*.signal.org'
+  - '*.telegram.org'
+  - '*.telegram.me'
+  - '*.viber.com'
+  - '*.line.me'
+  - '*.discord.com'
+  - '*.discord.gg'
+  - '*.slack.com'
+  - '*.skype.com'
+  - '*.teams.microsoft.com'
+
+  # -----------------------------
+  # 语音 / VoIP（国内）
+  # -----------------------------
+  - '*.qq.com'
+  - '*.tencent.com'
+  - '*.wechat.com'
+  - '*.weixin.qq.com'
+  - '*.yy.com'
+  - '*.duowan.com'
+  - '*.netease.com'
+  - '*.cc.163.com'
+
+  # -----------------------------
+  # WebRTC / STUN / TURN
+  # -----------------------------
+  - 'stun.l.google.com'
+  - 'stun1.l.google.com'
+  - 'stun2.l.google.com'
+  - 'stun3.l.google.com'
+  - 'stun4.l.google.com'
+  - 'stun.services.mozilla.com'
+  - 'stun.stunprotocol.org'
+  - 'stun.sipgate.net'
+  - 'stun.ekiga.net'
+  - 'stun.voiparound.com'
+  - 'stun.voipbuster.com'
+  - 'stun.voipstunt.com'
+  - 'stun.counterpath.com'
+  - 'stun.ideasip.com'
+  - '*.turn.cloudflare.com'
+  - '*.rtc.cloudflare.com'
+  - '*.webrtc.org'
+  - '*.rtc.microsoft.com'
+  - '*.voice.google.com'
+  - '+.stun.*.*'
+  - '+.stun.*.*.*'
+  - '+.stun.*.*.*.*'
+  - '+.stun.*.*.*.*.*'
+
+  # -----------------------------
+  # 容器（Docker / Kubernetes / OrbStack）
+  # -----------------------------
+  - '*.docker.com'
+  - '*.docker.io'
+  - 'registry-1.docker.io'
+  - '*.dockerusercontent.com'
+  - '*.dockeredge.com'
+  - '*.quay.io'
+  - '*.gcr.io'
+  - '*.ghcr.io'
+  - '*.registry.gitlab.com'
+  - 'registry.k8s.io'
+  - '*.k8s.io'
+  - '*.kubernetes.io'
+  - '*.minikube.local'
+  - '*.kind.sigs.k8s.io'
+  - '*.helm.sh'
+  - '*.krew.sh'
+  - '*.svc'
+  - '*.svc.cluster.local'
+  - '*.pod'
+  - '*.container'
+  - '*.orb.local'
+  - '*.k8s.orb.local'
+  - '*.machine.orb.local'
+  - '*.orb.internal'
+  - '*.orb.docker'
+
+  # -----------------------------
+  # 特殊 / RFC 保留
+  # -----------------------------
+  - '*.test'
+  - '*.example'
+  - '*.invalid'
