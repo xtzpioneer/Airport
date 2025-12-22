@@ -323,6 +323,7 @@ payload:
   - '*.pod'
   - '*.container'
   - '*.orb.local'
+  - '*.*.orb.local'
   - '*.k8s.orb.local'
   - '*.machine.orb.local'
   - '*.orb.internal'
