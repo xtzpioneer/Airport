@@ -1,43 +1,59 @@
 payload:
-  # -----------------------------
-  # *（星号）不要删除，保证所有未知情况默认用 redir-host 兜底。
-  # -----------------------------
+  # ==================================================
+  # 0. 全局兜底（必须保留）
+  # --------------------------------------------------
+  # 确保所有未知 / 未命中的域名默认使用 redir-host，
+  # 否则 fake-ip 机制在边界情况下会失效
+  # ==================================================
   - '*'
 
-  # -----------------------------
-  # 必须保留（系统 / RFC / 标准）
-  # -----------------------------
-  - '*.lan'
-  - 'local'
-  - '*.local'
-  - '*.local.'
+
+  # ==================================================
+  # 1. RFC / 系统保留域（DNS 层必须真实解析）
+  # --------------------------------------------------
+  # 这些域名不应生成 fake-ip，否则会导致系统异常
+  # ==================================================
+  - 'localhost'
   - 'localhost.*'
   - '*.localhost'
+  - 'local'
+  - '*.local'
+  - '*.*.local'
+  - '*.local.'
   - '*.localdomain'
   - 'home.arpa'
+  - 'internal'     
+  - '*.internal'       
+  - '*.lan'
+  - '*.*.lan'
 
-  # -----------------------------
-  # 设备发现 / 局域网（跨系统）
-  # -----------------------------
+
+  # ==================================================
+  # 2. mDNS / DNS-SD / 设备发现（跨系统核心）
+  # --------------------------------------------------
+  # Apple / Linux / Android / IoT 设备发现依赖
+  # ==================================================
   - 'captive.apple.com'
   - 'device.apple.com'
   - 'bonjour.apple.com'
+
+  # AirPlay / Airport
   - '*.airplay.local'
   - '*.airport.local'
+
+  # DNS-SD / SRV（必须直连，fake-ip 无意义）
   - '_services._dns-sd._udp.local'
   - '_workstation._tcp.local'
-  - '*.home'
-  - '*.internal'
-  - '*.intranet'
-  - '*.private'
-  - '*.corp'
-  - '*.office'
-  - '*.company'
-  - '*.workgroup'
+  - '_googlecast._tcp.local'
+  - '_adb._tcp.local'
+  - '_adb-tls-connect._tcp.local'
+  - 'homeassistant.local'  
+  - '*.home-assistant.io'    
 
-  # -----------------------------
-  # 打印 / 扫描 / IoT
-  # -----------------------------
+
+  # ==================================================
+  # 3. 打印 / 扫描 / IoT（典型局域网主机名）
+  # ==================================================
   - 'printer'
   - 'printer.*'
   - '*.printer'
@@ -45,12 +61,14 @@ payload:
   - '*.scan'
   - '*.scanner'
 
-  # -----------------------------
-  # NAS / 文件共享 / 媒体
-  # -----------------------------
+
+  # ==================================================
+  # 4. NAS / 文件共享 / 媒体服务（通用命名）
+  # ==================================================
   - 'nas'
   - 'nas.*'
   - '*.nas'
+
   - 'smb'
   - 'smb.*'
   - '*.smb'
@@ -59,6 +77,7 @@ payload:
   - 'samba'
   - 'samba.*'
   - '*.samba'
+
   - 'fileserver'
   - '*.fileserver'
   - 'fileshare'
@@ -68,17 +87,23 @@ payload:
   - 'dlna'
   - '*.dlna'
 
-  # -----------------------------
-  # Windows 内网 / 设备发现
-  # -----------------------------
+
+  # ==================================================
+  # 5. Windows 内网 / 设备发现
+  # --------------------------------------------------
+  # NetBIOS / WPAD / Windows 设备互相发现
+  # ==================================================
   - 'wpad'
   - 'wpad.*'
   - '*.wpad'
+
   - 'nbns'
   - 'nbns.*'
   - '*.nbns'
+
   - 'netbios'
   - '*.netbios'
+
   - 'workstation'
   - '*.workstation'
   - 'ms-home'
@@ -86,9 +111,10 @@ payload:
   - 'winbox'
   - '*.winbox'
 
-  # -----------------------------
-  # Linux / Unix（Avahi / mDNS）
-  # -----------------------------
+
+  # ==================================================
+  # 6. Linux / Unix / Avahi（mDNS 实现）
+  # ==================================================
   - 'avahi'
   - 'avahi.*'
   - '*.avahi'
@@ -97,22 +123,21 @@ payload:
   - 'unix'
   - '*.unix'
 
-  # -----------------------------
-  # Android / Google Cast / ADB
-  # -----------------------------
+
+  # ==================================================
+  # 7. Android / Google Cast / ADB（设备发现）
+  # ==================================================
   - 'android'
   - 'android.*'
   - '*.android'
   - 'chromecast'
   - 'chromecast.*'
   - '*.chromecast'
-  - '_googlecast._tcp.local'
-  - '_adb._tcp.local'
-  - '_adb-tls-connect._tcp.local'
 
-  # -----------------------------
-  # 网络设备 / 网关 / 虚拟化
-  # -----------------------------
+
+  # ==================================================
+  # 8. 网络设备 / 网关 / 虚拟化
+  # ==================================================
   - 'router'
   - 'router.*'
   - 'gateway'
@@ -122,13 +147,17 @@ payload:
   - '*.vm.local'
   - '*.dev'
 
-  # -----------------------------
-  # 内网 / 路由器 / NAS（厂商）
-  # -----------------------------
+
+  # ==================================================
+  # 9. 路由器 / AP / 网络设备（厂商）
+  # ==================================================
   - 'routerlogin.*'
   - 'tplogin.*'
   - '*.routerlogin.net'
   - '*.tplinklogin.net'
+  - 'tplinkwifi.net'        
+  - 'tplinkrepeater.net'  
+
   - 'miwifi.com'
   - '*.miwifi.com'
   - 'tendawifi.com'
@@ -136,15 +165,14 @@ payload:
   - '*.asusrouter.com'
   - 'fritz.box'
   - '*.fritz.box'
-  - 'synology.*'
 
-  # 路由器 / AP
   - 'openwrt'
   - 'openwrt.lan'
   - 'lede'
   - 'lede.lan'
   - '*.openwrt.org'
   - '*.lede-project.org'
+
   - 'mikrotik'
   - 'routeros'
   - '*.mikrotik.com'
@@ -152,9 +180,9 @@ payload:
   - '*.ui.com'
   - '*.ubnt.com'
   - '*.unifi.ui.com'
+
   - 'netgear'
   - '*.netgear.com'
-  - 'routerlogin.net'
   - 'linksys'
   - '*.linksys.com'
   - 'dlink'
@@ -167,43 +195,54 @@ payload:
   - '*.ruckuswireless.com'
   - 'aruba'
   - '*.arubanetworks.com'
+
   - 'hikvision'
   - '*.hikvision.com'
   - 'ezviz'
   - '*.ezvizlife.com'
 
-  # NAS / 存储
+
+  # ==================================================
+  # 10. NAS / 存储（厂商）
+  # ==================================================
+  - 'synology'
+  - 'synology.*'
+  - '*.synology.me'
+  - '*.direct.quickconnect.to' 
+
   - 'qnap'
   - '*.qnap.com'
   - '*.qnapcloud.com'
+  - '*.myqnapcloud.com'
+
   - 'asustor'
   - '*.asustor.com'
+  - '*.asustorportal.com'
+
   - 'truenas'
   - '*.truenas.com'
   - '*.freenas.org'
+
   - 'wdmycloud'
   - '*.wdmycloud.com'
   - '*.westerndigital.com'
+
   - 'seagate'
   - '*.seagate.com'
+
   - 'buffalo'
   - '*.buffalotech.com'
 
-  # -----------------------------
-  # 时间同步 / 网络探测
-  # -----------------------------
+
+  # ==================================================
+  # 11. 时间同步 / 网络探测（系统级）
+  # ==================================================
   - 'time.*'
   - 'ntp.*'
   - '*.ntp.org'
   - 'pool.ntp.org'
   - 'time-ios.apple.com'
-  - 'time1.*.com'
-  - 'time2.*.com'
-  - 'time3.*.com'
-  - 'time4.*.com'
-  - 'time5.*.com'
-  - 'time6.*.com'
-  - 'time7.*.com'
+
   - 'connectivitycheck.*'
   - 'msftconnecttest.com'
   - '*.msftconnecttest.com'
@@ -212,9 +251,10 @@ payload:
   - 'nmcheck.gnome.org'
   - 'detectportal.firefox.com'
 
-  # -----------------------------
-  # 视频会议（国外）
-  # -----------------------------
+
+  # ==================================================
+  # 12. 视频会议（国外）
+  # ==================================================
   - '*.zoom.us'
   - '*.zoomgov.com'
   - '*.webex.com'
@@ -230,12 +270,13 @@ payload:
   - '*.ringcentralvideo.com'
   - '*.8x8.com'
 
-  # -----------------------------
-  # 视频会议（国内）
-  # -----------------------------
+
+  # ==================================================
+  # 13. 视频会议（国内）
+  # ==================================================
   - '*.tencentmeeting.com'
-  - '*.voovmeeting.com'
   - '*.meeting.tencent.com'
+  - '*.voovmeeting.com'
   - '*.welink.huawei.com'
   - '*.dingding.com'
   - '*.dingtalk.com'
@@ -244,9 +285,10 @@ payload:
   - '*.zoom.cn'
   - '*.263.net'
 
-  # -----------------------------
-  # 语音 / VoIP（国外）
-  # -----------------------------
+
+  # ==================================================
+  # 14. 语音 / IM / VoIP
+  # ==================================================
   - '*.whatsapp.net'
   - '*.whatsapp.com'
   - '*.signal.org'
@@ -260,9 +302,6 @@ payload:
   - '*.skype.com'
   - '*.teams.microsoft.com'
 
-  # -----------------------------
-  # 语音 / VoIP（国内）
-  # -----------------------------
   - '*.qq.com'
   - '*.tencent.com'
   - '*.wechat.com'
@@ -272,9 +311,12 @@ payload:
   - '*.netease.com'
   - '*.cc.163.com'
 
-  # -----------------------------
-  # WebRTC / STUN / TURN
-  # -----------------------------
+
+  # ==================================================
+  # 15. WebRTC / STUN / TURN（允许 +.）
+  # --------------------------------------------------
+  # 此类服务强依赖真实 IP，不宜 fake-ip
+  # ==================================================
   - 'stun.l.google.com'
   - 'stun1.l.google.com'
   - 'stun2.l.google.com'
@@ -289,19 +331,19 @@ payload:
   - 'stun.voipstunt.com'
   - 'stun.counterpath.com'
   - 'stun.ideasip.com'
+
   - '*.turn.cloudflare.com'
   - '*.rtc.cloudflare.com'
   - '*.webrtc.org'
   - '*.rtc.microsoft.com'
   - '*.voice.google.com'
-  - '+.stun.*.*'
-  - '+.stun.*.*.*'
-  - '+.stun.*.*.*.*'
-  - '+.stun.*.*.*.*.*'
+  - '+.stun.*'
+  - 'stun?.*'             
 
-  # -----------------------------
-  # 容器（Docker / Kubernetes / OrbStack）
-  # -----------------------------
+
+  # ==================================================
+  # 16. 容器 / Docker / Kubernetes / OrbStack / Colima
+  # ==================================================
   - '*.docker.com'
   - '*.docker.io'
   - 'registry-1.docker.io'
@@ -311,27 +353,37 @@ payload:
   - '*.gcr.io'
   - '*.ghcr.io'
   - '*.registry.gitlab.com'
+
   - 'registry.k8s.io'
   - '*.k8s.io'
   - '*.kubernetes.io'
-  - '*.minikube.local'
-  - '*.kind.sigs.k8s.io'
   - '*.helm.sh'
   - '*.krew.sh'
-  - '*.svc'
+
+  # Kubernetes 内部服务（显式多级）
   - '*.svc.cluster.local'
-  - '*.pod'
-  - '*.container'
+  - '*.*.svc.cluster.local'
+  - '*.*.*.svc.cluster.local'
+
+  # 容器与开发环境（Docker / OrbStack / Colima）
+  - 'docker.internal'        
+  - 'host.docker.internal'   
+  - 'gateway.docker.internal'
+  - 'colima.local'          
+  - '*.colima.local'         
   - '*.orb.local'
   - '*.*.orb.local'
+  - '*.*.*.orb.local'
+  - 'host.orb.internal'      
+  - '*.orb.internal'         
   - '*.k8s.orb.local'
   - '*.machine.orb.local'
-  - '*.orb.internal'
   - '*.orb.docker'
 
-  # -----------------------------
-  # 特殊 / RFC 保留
-  # -----------------------------
+
+  # ==================================================
+  # 17. 特殊 / RFC 测试保留域
+  # ==================================================
   - '*.test'
   - '*.example'
   - '*.invalid'
