@@ -17,6 +17,7 @@
 #
 # Geo提供商：https://github.com/MetaCubeX/meta-rules-dat
 # Geo提供商：https://github.com/P3TERX/GeoLite.mmdb
+# Geo提供商：https://github.com/Loyalsoldier
 #
 # 图标提供商：https://github.com/Koolson/Qure.git
 #
@@ -34,12 +35,13 @@
 # 自动测速：支持
 # 故障转移（全节点+地区节点）：支持
 # 负载均衡（全节点+地区节点 散列+轮询）：支持
-# 兜底代理：支持
+# 漏网之鱼：支持
+# 兜底分流：支持
 # 微软分流：支持
 # 苹果分流：支持
 # 谷歌分流：支持
-# 国际媒体分流：支持
-# 国际互联分流：支持
+# 国外媒体分流：支持
+# 国外服务分流：支持
 # 人工智能分流：支持
 # 奈飞视频分流：支持
 # YouTube视频分流：支持
@@ -49,450 +51,155 @@
 # Emby视频分流：支持
 # Spotify音乐分流：支持
 # 游戏服务分流：支持
-# 国际抖音分流：支持
+# 国外抖音分流：支持
 # 网络测速分流：支持
 # 区分地区：支持
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2025/12/10
+# 更新时间：2026/1/16
 
-# MARK: 端口配置
-#
-# HTTP(S) 和 SOCKS 代理混合端口
-mixed-port: 7890
-# HTTP(S) 代理服务器端口
-port: 7891
-# SOCKS5 代理端口
-socks-port: 7892
-# 透明代理端口，用于 Linux 和 MacOS
-redir-port: 7893
-# 适用于 Linux 的透明代理服务器端口（TProxy TCP 和 TProxy UDP）
-tproxy-port: 7894
+# MARK: 远程订阅设置
+# 1. url 里填写自己的订阅链接，多个订阅链接时名称不能重复。
+# 2. 请使用 Clash 类型订阅链接填入引号""内使用。
+# 3. 或可使用通用订阅链接通过 Sub-Store 进行订阅转换(用于 Stash)。
+proxy-providers:
+  mitce:
+    type: http
+    url: 你的订阅链接
+    path: ./proxy-providers/mitce.yaml
+    interval: 86400
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 300
+      timeout: 5000
+    override:
+      udp: true
+      up: 'Mbps'
+      down: 'Mbps'
+      additional-prefix: '[Mitce]'
 
-# MARK: 局域网配置
-#
-# 允许局域网连接
-allow-lan: true
-# 绑定 IP 地址，仅作用于 allow-lan 为 true，'*'表示所有地址
-bind-address: "*"
-# http,socks 入口的验证用户名，密码
-authentication:
-  #- "admin:12345678"
-# 设置跳过验证的 IP 段
-skip-auth-prefixes:
-  - 127.0.0.1/8
-  - ::1/128
-# 允许连接的 IP 地址段，仅作用于 allow-lan 为 true, 默认值为 0.0.0.0/0 和::/0
-lan-allowed-ips:
-  - 0.0.0.0/0
-  - ::/0
-# 禁止连接的 IP 地址段，黑名单优先级高于白名单，默认值为空
-lan-disallowed-ips:
-  #- 192.168.x.x/32
-
-# MARK: 进程匹配模式配置
-#
-#  - always, 开启，强制匹配所有进程
-#  - strict, 默认，由 mihomo 判断是否开启
-#  - off, 不匹配进程，推荐在路由器上使用此模式
-find-process-mode: strict
-
-# MARK: 运行模式配置
-#
-# rule 规则匹配
-# global 全局代理 (需要在 GLOBAL 策略组选择代理/策略)
-# direct 全局直连
-# 此项拥有默认值，默认为rule模式
+# MARK: 通用设置
 mode: rule
-
-# MARK: GEOIP数据模式配置
-#
-# Geodata Url
-geox-url:
-  geoip: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat"
-  geosite: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
-  mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country-lite.mmdb"
-  asn: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb"
-# 更改 geoip 使用文件，mmdb 或者 dat，可选 true/false,true为 dat，此项有默认值 false
-geodata-mode: true
-# 是否自动更新 geodata
-geo-auto-update: false
-# 更新间隔，单位：小时
-geo-update-interval: 48
-# 可选的加载模式如下
-# standard：标准加载器
-# memconservative：专为内存受限 (小内存) 设备优化的加载器 (默认值)
-geodata-loader: memconservative
-
-# MARK: 自定全局 UA
-#
-# 自定义外部资源下载时使用的的 UA，默认为 clash.meta
-global-ua: clash.meta
-
-# MARK: 日志配置
-#
-# 日志等级 silent/error/warning/info/debug
+port: 7890
+socks-port: 7891
+mixed-port: 7892
+redir-port: 7893
+tproxy-port: 7894
+ipv6: true
+allow-lan: true
+bind-address: '*'
+tcp-concurrent: true
+unified-delay: false
+find-process-mode: strict
+global-client-fingerprint: chrome
+profile:
+  store-selected: true
+  store-fake-ip: false
 log-level: silent
 
-# MARK: IPV6配置
-#
-# 开启 IPv6 总开关，关闭阻断所有 IPv6 链接和屏蔽 DNS 请求 AAAA 记录
-# 是否允许内核接受 IPv6 流量
-# 可选值 true/false,默认为 true
-ipv6: true
+# MARK: TCP保活设置
+disable-keep-alive: false
+keep-alive-idle: 30
+keep-alive-interval: 10
 
-# MARK: ETag支持
-#
-# 外部资源下载的 ETag 支持，默认为 true
-etag-support: true
+# MARK: GEO设置
+geox-url:
+  geoip: https://gh-proxy.org/https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
+  geosite: https://gh-proxy.org/https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
+  mmdb: https://gh-proxy.org/https://raw.githubusercontent.com/Loyalsoldier/geoip/release/GeoLite2-Country.mmdb
+  asn: https://gh-proxy.org/https://raw.githubusercontent.com/Loyalsoldier/geoip/release/GeoLite2-ASN.mmdb
+geodata-mode: true
+geo-auto-update: false
+geo-update-interval: 24
+geodata-loader: memconservative
 
-# MARK: WEB UI配置
-#
-# 目录，使用 http://{{external-controller}}/ui/ui-name 访问
-# 官方 WEB UI：https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
-# 推荐 WEB UI: https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip
-external-ui: ./ui
-external-ui-name: "zashboard"
-external-ui-url: "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip"
-# API HTTP 监听地址
+# MARK: 仪表板设置
 external-controller: :9090
-# API HTTPS 监听地址，需要配置 tls 部分配置文件
-external-controller-tls: :9443
-# API 的访问密钥
-secret: "12345678"
-# API CORS 标头配置
-external-controller-cors:
-  allow-origins:
-    - "*"
-  allow-private-network: true
-# 从Unix socket访问api接口不会验证secret， 如果开启请自行保证安全问题
-#external-controller-unix: mihomo.sock
-# 从Windows namedpipe访问api接口不会验证secret， 如果开启请自行保证安全问题
-#external-controller-pipe: \\.\pipe\mihomo
-# 在 RESTful API 端口上开启 DOH 服务器
-# 该URL不会验证secret， 如果开启请自行保证安全问题
-#external-doh-server: /dns-query
+external-ui: ./ui
+external-ui-name: metacubexd
+external-ui-url: https://gh-proxy.org/https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
+secret: 12345678
 
-# MARK: TCP 并发配置
-#
-# TCP 并发连接所有 IP, 将使用最快握手的 TCP
-tcp-concurrent: false
-
-# MARK: 延迟配置
-#
-# 开启统一延迟时，会计算 RTT，以消除连接握手等带来的不同类型节点的延迟差异
-# 可选值 true/false
-unified-delay: false
-
-# MARK: TLS
-#
-# 目前仅用于 API 的 https
-#tls:
-  #certificate: string # 证书 PEM 格式，或者 证书的路径
-  #private-key: string # 证书对应的私钥 PEM 格式，或者私钥路径
-
-# MARK: TLS 指纹配置
-#
-# 全局 TLS 指纹，优先低于 proxy 内的 client-fingerprint。
-# 目前支持开启 TLS 传输的 TCP/grpc/WS/HTTP , 支持协议有 VLESS,Vmess 和 trojan.
-# 可选：chrome, firefox, safari, ios, android, edge, 360, qq, random, 若选择 random, 则按 Cloudflare Radar 数据按概率生成一个现代浏览器指纹。
-global-client-fingerprint: chrome
-
-# MARK: 路由标记
-#
-# 为 Linux 下的出站连接提供默认流量标记
-#routing-mark: 6666
-
-# MARK: 实验性配置
-#
-#experimental:
-  #quic-go-disable-gso: false
-  #quic-go-disable-ecn: false
-  #dialer-ip4p-convert: false
-
-# MARK: TCP Keep Alive 配置
-#
-# 修改此项以减少移动设备耗电问题
-# TCP Keep Alive 包的间隔，单位为秒
-#keep-alive-interval: 15
-# TCP Keep Alive 的最大空闲时间
-#keep-alive-idle: 15
-# 禁用 TCP Keep Alive，在 Amdroid 默认为 true
-#disable-keep-alive: false
-
-# MARK: 持久化配置
-#
-# 缓存信息
-profile:
-  # 存储 select 选择记录
-  # 储存 API 对策略组的选择，以供下次启动时使用
-  store-selected: true
-  # 持久化 fake-ip
-  # 储存 fakeip 映射表，域名再次发生连接时，使用原有映射地址
-  store-fake-ip: true
-
-# MARK: Hosts配置
-#
-# 类似于 /etc/hosts, 仅支持配置单个 IP
-#hosts:
-  #localhost: 127.0.0.1
-
-# MARK: 设置出口网卡
-#
-# 注意：‘interface-name:’ 与 tun 中的 'auto-detect-interface: true' 冲突，需设将 tun 中的设置成 ‘auto-detect-interface: false’
-#interface-name: en0
-
-# MARK: TUN配置
-#
-# 虚拟网卡
-tun:
-  # 是否开启
-  enable: false
-  # tun 模式堆栈，如无使用问题，建议使用 mixed栈，默认 gvisor
-  # 可用值：system/gvisor/mixed
-  # system 使用系统协议栈，可以提供更稳定/全面的 tun 体验，且占用相对其他堆栈更低
-  # gvisor 通过在用户空间中实现网络协议栈，可以提供更高的安全性和隔离性，同时可以避免操作系统内核和用户空间之间的切换，从而在特定情况下具有更好的网络处理性能
-  # mixed 混合堆栈，tcp 使用 system栈，udp 使用 gvisor栈，使用体验可能相对更好
-  #
-  # 如果打开了防火墙，则无法使用 system 和 mixed 协议栈，通过以下方式放行内核：
-  # Windows: 设置 -> Windows 安全中心 -> 允许应用通过防火墙 -> 选中内核
-  # MacOS: 一般无需配置，防火墙默认放行签名软件，如果遇到开启防火墙无法使用的情况，可以尝试放行：系统设置 -> 网络 -> 防火墙 -> 选项 -> 添加 mihomo app
-  # Linux: 一般无需配置，防火墙默认不拦截应用，如果遇到开启防火墙无法使用的情况，可以尝试放行 TUN 网卡出站流量（假设 TUN 网卡为 Mihomo）: sudo iptables -A OUTPUT -o Mihomo -j ACCEPT
-  stack: system
-  # DNS 劫持，将匹配到的连接导入内部 DNS 模块
-  # 传统DNS 53 可DNS劫持 隐私保护级别:低
-  # DoH 443 防止DNS劫持 隐私保护级别:高
-  # DoT 853 防止DNS劫持 隐私保护级别:中
-  # DoQ 784 防止DNS劫持 隐私保护级别:高
-  dns-hijack:
-    - "any:53"
-    - "tcp://any:53"
-  # 指定 tun 网卡名称，MacOS 设备只能使用 utun 开头的网卡名
-  device: utun1024
-  # 自动选择流量出口接口，多出口网卡同时连接的设备建议手动指定出口网卡
-  auto-detect-interface: true
-  # 自动设置全局路由，可以自动将全局流量路由进入 tun 网卡。
-  auto-route: true
-  # 最大传输单元
-  mtu: 1500
-  # 自动配置 iptables 以重定向 TCP 连接。仅支持 Linux。带有 auto-redirect 的 auto-route 现在可以在路由器上按预期工作，无需干预。
-  #auto-redirect: true
-  # 是否启用严格的路由
-  # 启用 auto-route 时执行严格的路由规则
-  # 在 Linux 中:
-  # 让不支持的网络无法到达
-  # 将所有连接路由到 tun
-  # 它可以防止地址泄漏，并使 DNS 劫持在 Android 上工作。
-  # 在 Windows 中:
-  # 添加防火墙规则以阻止 Windows 的 普通多宿主 DNS 解析行为 造成的 DNS 泄露
-  # 它可能会使某些应用程序（如 VirtualBox）在某些情况下无法正常工作。
-  strict-route: false
-  # 启用独立于端点的 NAT
-  endpoint-independent-nat: true
-  # 启用 auto-route 时排除自定义网段
-  route-exclude-address:
-    # IPv4 本地网络保留
-    - 0.0.0.0/8
-    # IPv4 私有网段 (A 类)              
-    - 10.0.0.0/8
-    # IPv4 运营商 NAT 地址 (CGNAT)             
-    - 100.64.0.0/10
-    # IPv4 本地回环 (localhost)          
-    - 127.0.0.0/8
-    # IPv4 链路本地 (无 DHCP)            
-    - 169.254.0.0/16
-    # IPv4 私有网段 (B 类)         
-    - 172.16.0.0/12
-    # IPv4 IANA 保留地址          
-    - 192.0.0.0/24
-    # IPv4 文档示例网段           
-    - 192.0.2.0/24
-    # IPv4 私有网段 (C 类)           
-    - 192.168.0.0/16
-    # 保留 FakeIP 网段 
-    # IPv4 网络性能测试网段 (RFC2544)
-    #- 198.18.0.0/15
-    # IPv4 文档示例网段          
-    - 198.51.100.0/24
-    # IPv4 文档示例网段       
-    - 203.0.113.0/24
-    # IPv4 多播地址         
-    - 224.0.0.0/4
-    # IPv4 SSDP 多播 (UPnP)           
-    - 239.255.255.250/32
-    # IPv4 广播地址     
-    - 255.255.255.255/32
-    # IPv6 回环地址
-    - ::1/128
-    # IPv6 未指定地址               
-    - ::/128
-    # IPv6 唯一本地地址 (ULA)
-    - fc00::/7               
-    # IPv6 链路本地地址                
-    - fe80::/10
-    # IPv6 多播地址             
-    - ff00::/8
-    # IPv6 文档与测试网段          
-    - 2001:db8::/32          
-  
-# MARK: 域名嗅探配置
-#
-# 域名嗅探
-sniffer:
-  # 是否启用 sniffer
-  enable: false
-  # 对 redir-host 类型识别的流量进行强制嗅探
-  force-dns-mapping: true
-  # 对所有未获取到域名的流量进行强制嗅探
-  parse-pure-ip: true
-  # 是否使用嗅探结果作为实际访问，默认为 true
-  override-destination: false
-  # 需要嗅探的协议设置，仅支持 HTTP/TLS/QUIC
-  # ports: 端口范围
-  # override-destination: 覆盖全局override-destination设置
-  sniff:
-    HTTP:
-      ports: [0-65535]
-      override-destination: false
-    TLS:
-      ports: [0-65535]
-      override-destination: false
-    QUIC:
-      ports: [0-65535]
-      override-destination: false
-  # 强制进行嗅探的域名列表，使用域名通配
-  force-domain:
-    #- "+.v2ex.com"
-  # 跳过嗅探的域名列表，使用域名通配
-  skip-domain:
-    #- "Mijia Cloud"
-  # 跳过嗅探的来源 IP 段列表
-  skip-src-address:
-    #- 192.168.x.x/32
-  # 跳过嗅探的目标 IP 段列表
-  skip-dst-address:
-    #- 192.168.x.x/32
-
-# MARK: DNS配置
-#
-# DNS
+# MARK: DNS设置
 dns:
-  # 关闭将使用系统 DNS
   enable: true
-  # 支持的缓存算法
-  # lru: Least Recently Used, 默认值 就是“最近最少使用优先删除”，用来管理 DNS 缓存大小，保持内存可控，同时让常用域名快速解析。
-  # arc: Adaptive Replacement Cache 自适应缓存
-  cache-algorithm: arc
-  # 是否开启 DoH 支持 HTTP/3，将并发尝试
-  prefer-h3: false
-  # 开启 DNS 服务器监听
-  listen: :9053
-  # false 将返回 AAAA 的空结果
   ipv6: true
-  # 配置fake-ip-filter的匹配模式，可选 blacklist/whitelist
-  # 默认为blacklist，即如果匹配成功不返回fake-ip
-  # 可设置为whitelist，即只有匹配成功才返回fake-ip
-  fake-ip-filter-mode: blacklist
-  # 是否查询系统 hosts，默认 true
-  use-system-hosts: false
-  # 是否回应配置中的 hosts，默认 true
-  use-hosts: true
-  # 配置后面的nameserver、fallback和nameserver-policy向dns服务器的连接过程是否遵守遵守rules规则
-  # 如果为false（默认值）则这三部分的dns服务器在未特别指定的情况下会直连
-  # 如果为true，将会按照rules的规则匹配链接方式（走代理或直连），如果有特别指定则任然以指定值为准
-  # 仅当proxy-server-nameserver非空时可以开启此选项, 强烈不建议和prefer-h3一起使用
-  # 此外，这三者配置中的dns服务器如果出现域名会采用default-nameserver配置项解析，也请确保正确配置default-nameserver
-  respect-rules: false
-  # 用于解析 nameserver，fallback 以及其他 DNS 服务器配置的，DNS 服务域名
-  # 只能使用纯 IP 地址，可使用加密 DNS
-  # system 从系统配置中附加 DNS 服务器。如果未找到，它将打印错误日志并跳过。
+  listen: :1053
+  enhanced-mode: redir-host # redir-host/fake-ip
+  fake-ip-filter:
+    - 'geosite:private,connectivity-check'
+    - 'rule-set:direct-private-domain,direct-lan-classical'
+    - 'rule-set:fake-ip-filter-juewuy'
   default-nameserver:
     - 223.5.5.5
-    - 119.29.29.29
-    - 223.6.6.6
-    - 182.254.116.116
-  # 默认的域名解析服务器
   nameserver:
-    - 1.1.1.1
-    - 8.8.8.8
-    - 1.0.0.1
-    - 8.8.4.4
-  # 后备域名解析服务器，一般情况下使用境外 DNS, 保证结果可信
-  # 配置 fallback后默认启用 fallback-filter,geoip-code为 cn
-  fallback: null
-  # 用于direct出口域名解析的 DNS 服务器，如果不填则遵循nameserver-policy、nameserver和fallback的配置
+    - '8.8.8.8#代理'
+  proxy-server-nameserver:
+    - '223.5.5.5#直连'
   direct-nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
-    - 223.6.6.6
-    - 182.254.116.116
-  # 代理节点域名解析服务器，仅用于解析代理节点的域名，如果不填则遵循nameserver-policy、nameserver和fallback的配置
-  proxy-server-nameserver: null
-  # 指定域名查询的解析服务器，可使用 geosite, 优先于 nameserver/fallback 查询
-  # 键支持域名通配
-  # 值支持字符串/数组
-  nameserver-policy: null
-  # 是否遵循nameserver-policy，默认为不遵守，仅当direct-nameserver不为空时生效
-  direct-nameserver-follow-policy: false
-  # 可选值 fake-ip/redir-host，默认redir-host
-  enhanced-mode: redir-host
-  # fake-ip 池，默认为 198.18.0.1/16
-  fake-ip-range: 198.18.0.1/16
-  # fake-ip6 池，默认为 fdfe:dcba:9876::1/64
-  fake-ip-range6: fdfe:dcba:9876::1/64
-  # fakeip 过滤，以下地址不会下发 fakeip 映射用于连接
-  # 值支持域名通配以及引入域名集合
-  # - rule-set:fakeip-filter fakeip-filter 为 rule-providers 中的名为 fakeip-filter 规则订阅
-  # 且 behavior 必须为 domain/classical，当为 classical 时仅会生效域名类规则
-  fake-ip-filter: null
-    #- rule-set:fake-ip-filter-domain
-    #- rule-set:direct-private-domain
-    #- rule-set:direct-lan-classical
-    #- rule-set:ntp-service-classical
-    #- rule-set:stun-service-classical
-  # 配置fakeip查询返回的TTL，非必要情况下请勿修改
-  #fake-ip-ttl: 1
-  # 后备域名解析服务器筛选，满足条件的将使用 fallback结果或只使用 fallback解析
-  fallback-filter: null
-    # 是否启用 geoip 判断
-    #geoip: true
-    # 可选值为 国家缩写，默认值为 CN
-    # 除了 geoip-code 配置的国家 IP, 其他的 IP 结果会被视为污染
-    # geoip-code 配置的国家的结果会直接采用，否则将采用 fallback结果
-    #geoip-code: CN
-    # 可选值为对于的 geosite 内包含的集合
-    # geosite 列表的内容被视为已污染，匹配到 geosite 的域名，将只使用 fallback解析，不去使用 nameserver
-    #geosite:
-    #- gfw
-    #- geolocation-!cn
-    # 这些网段的结果会被视为污染，nameserver解析出这些结果时将会采用 fallback的解析结果
-    #ipcidr:
-    #- 240.0.0.0/4
-    # 这些域名被视为已污染，匹配到这些域名，会直接使用 fallback解析，不去使用 nameserver
-    #domain:
-    #- "+.google.com"
-    #- "+.github.com"
-    #- "+.youtube.com"
-    
-# MARK: NTP
-#
-# 自动同步时间以防止时间不准导致无法正常联网
+    - '223.5.5.5#直连'
+
+# MARK: NTP设置
 ntp:
-  # 是否启用 NTP 服务
-  enable: false
-  # 是否同步至系统时间，需要 root、管理员模式运行。
+  enable: true
   write-to-system: false
-  # NTP 服务地址，默认 time.apple.com
   server: time.apple.com
-  # NTP 服务端口，默认 123
   port: 123
-  # 同步时间间隔，单位（分），默认同步间隔为 30 分
   interval: 30
 
-# MARK: 策略组锚点
-#
-# 节点选择（默认节点：自动选择）
+# MARK: TUN设置
+tun:
+  enable: false
+  stack: system # system/gvisor/mixed
+  auto-route: true
+  auto-detect-interface: true
+  dns-hijack:
+    - any:53
+    - tcp://any:53
+  device: utun1024
+  mtu: 16384
+  strict-route: false
+  endpoint-independent-nat: true
+
+# MARK: 域名嗅探设置
+sniffer:
+  enable: false
+  force-dns-mapping: true
+  parse-pure-ip: true
+  override-destination: false
+  sniff:
+    HTTP:
+      ports:
+        - 80
+        - 8080-8880
+      override-destination: true
+    TLS:
+      ports:
+        - 443
+        - 8443
+      override-destination: false
+    QUIC:
+      ports:
+        - 443
+        - 8443
+      override-destination: false
+  skip-src-address:
+    - 192.168.0.0/16
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - fc00::/7
+    - fe80::/10
+  skip-dst-address:
+    - 192.168.0.0/16
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - fc00::/7
+    - fe80::/10
+
+# MARK: 锚点设置
+# 代理选择
 proxie-select: &proxie-select
   type: select
   proxies:
@@ -506,36 +213,21 @@ proxie-select: &proxie-select
     - 负载均衡轮询
     - 地区负载均衡散列
     - 地区负载均衡轮询
-    - 香港节点
-    - 台湾节点
-    - 日本节点
-    - 韩国节点
-    - 新加坡节点
-    - 美国节点
-    - 德国节点
-    - 澳大利亚节点
-    - 英国节点
-    - 印度节点
-
-# 区域选择 (默认节点：香港节点)
-region-select: &region-select
-  proxies:
-    - 香港节点
-    - 台湾节点
-    - 日本节点
-    - 韩国节点
-    - 新加坡节点
-    - 美国节点
-    - 德国节点
-    - 澳大利亚节点
-    - 英国节点
-    - 印度节点
-
-# 默认选择 (默认节点：节点选择)
+    - 香港
+    - 台湾
+    - 日本
+    - 韩国
+    - 新加坡
+    - 美国
+    - 德国
+    - 澳大利亚
+    - 英国
+    - 印度
+# 默认选择
 default-select: &default-select
   type: select
   proxies:
-    - 节点选择
+    - 代理
     - 自动选择
     - 手动选择
     - 自动选择地区
@@ -546,24 +238,36 @@ default-select: &default-select
     - 负载均衡轮询
     - 地区负载均衡散列
     - 地区负载均衡轮询
-    - 香港节点
-    - 台湾节点
-    - 日本节点
-    - 韩国节点
-    - 新加坡节点
-    - 美国节点
-    - 德国节点
-    - 澳大利亚节点
-    - 英国节点
-    - 印度节点
+    - 香港
+    - 台湾
+    - 日本
+    - 韩国
+    - 新加坡
+    - 美国
+    - 德国
+    - 澳大利亚
+    - 英国
+    - 印度
     - 直连
-
-# 国内选择（默认节点：直连）
+# 区域选择
+region-select: &region-select
+  proxies:
+    - 香港
+    - 台湾
+    - 日本
+    - 韩国
+    - 新加坡
+    - 美国
+    - 德国
+    - 澳大利亚
+    - 英国
+    - 印度
+# 国内选择
 cns-select: &cns-select
   type: select
   proxies:
     - 直连
-    - 节点选择
+    - 代理
     - 自动选择
     - 手动选择
     - 自动选择地区
@@ -574,22 +278,21 @@ cns-select: &cns-select
     - 负载均衡轮询
     - 地区负载均衡散列
     - 地区负载均衡轮询
-    - 香港节点
-    - 台湾节点
-    - 日本节点
-    - 韩国节点
-    - 新加坡节点
-    - 美国节点
-    - 德国节点
-    - 澳大利亚节点
-    - 英国节点
-    - 印度节点
-
-# 全球选择（默认节点：节点选择）
+    - 香港
+    - 台湾
+    - 日本
+    - 韩国
+    - 新加坡
+    - 美国
+    - 德国
+    - 澳大利亚
+    - 英国
+    - 印度
+# 全球选择
 globe-select: &globe-select
   type: select
   proxies:
-    - 节点选择
+    - 代理
     - 自动选择
     - 手动选择
     - 自动选择地区
@@ -600,24 +303,24 @@ globe-select: &globe-select
     - 负载均衡轮询
     - 地区负载均衡散列
     - 地区负载均衡轮询
-    - 香港节点
-    - 台湾节点
-    - 日本节点
-    - 韩国节点
-    - 新加坡节点
-    - 美国节点
-    - 德国节点
-    - 澳大利亚节点
-    - 英国节点
-    - 印度节点
+    - 香港
+    - 台湾
+    - 日本
+    - 韩国
+    - 新加坡
+    - 美国
+    - 德国
+    - 澳大利亚
+    - 英国
+    - 印度
 
-# 应用进程选择（默认节点：绕过）
+# 应用进程选择
 applications-process-select: &applications-process-select
   type: select
   proxies:
     - 绕过
     - 直连
-    - 节点选择
+    - 代理
     - 自动选择
     - 手动选择
     - 自动选择地区
@@ -628,24 +331,24 @@ applications-process-select: &applications-process-select
     - 负载均衡轮询
     - 地区负载均衡散列
     - 地区负载均衡轮询
-    - 香港节点
-    - 台湾节点
-    - 日本节点
-    - 韩国节点
-    - 新加坡节点
-    - 美国节点
-    - 德国节点
-    - 澳大利亚节点
-    - 英国节点
-    - 印度节点
+    - 香港
+    - 台湾
+    - 日本
+    - 韩国
+    - 新加坡
+    - 美国
+    - 德国
+    - 澳大利亚
+    - 英国
+    - 印度
 
-# 苹果服务选择（默认节点：苹果服务）
+# 苹果服务选择
 apple-service-select: &apple-service-select
   type: select
   proxies:
     - 苹果服务
     - 直连
-    - 节点选择
+    - 代理
     - 自动选择
     - 手动选择
     - 自动选择地区
@@ -656,24 +359,23 @@ apple-service-select: &apple-service-select
     - 负载均衡轮询
     - 地区负载均衡散列
     - 地区负载均衡轮询
-    - 香港节点
-    - 台湾节点
-    - 日本节点
-    - 韩国节点
-    - 新加坡节点
-    - 美国节点
-    - 德国节点
-    - 澳大利亚节点
-    - 英国节点
-    - 印度节点
-
-# 微软服务选择（默认节点：微软服务）
+    - 香港
+    - 台湾
+    - 日本
+    - 韩国
+    - 新加坡
+    - 美国
+    - 德国
+    - 澳大利亚
+    - 英国
+    - 印度
+# 微软服务选择
 microsoft-service-select: &microsoft-service-select
   type: select
   proxies:
     - 微软服务
     - 直连
-    - 节点选择
+    - 代理
     - 自动选择
     - 手动选择
     - 自动选择地区
@@ -684,23 +386,22 @@ microsoft-service-select: &microsoft-service-select
     - 负载均衡轮询
     - 地区负载均衡散列
     - 地区负载均衡轮询
-    - 香港节点
-    - 台湾节点
-    - 日本节点
-    - 韩国节点
-    - 新加坡节点
-    - 美国节点
-    - 德国节点
-    - 澳大利亚节点
-    - 英国节点
-    - 印度节点
-
-# 谷歌服务选择（默认节点：谷歌服务）
+    - 香港
+    - 台湾
+    - 日本
+    - 韩国
+    - 新加坡
+    - 美国
+    - 德国
+    - 澳大利亚
+    - 英国
+    - 印度
+# 谷歌服务选择
 google-service-select: &google-service-select
   type: select
   proxies:
     - 谷歌服务
-    - 节点选择
+    - 代理
     - 自动选择
     - 手动选择
     - 自动选择地区
@@ -711,985 +412,762 @@ google-service-select: &google-service-select
     - 负载均衡轮询
     - 地区负载均衡散列
     - 地区负载均衡轮询
-    - 香港节点
-    - 台湾节点
-    - 日本节点
-    - 韩国节点
-    - 新加坡节点
-    - 美国节点
-    - 德国节点
-    - 澳大利亚节点
-    - 英国节点
-    - 印度节点
+    - 香港
+    - 台湾
+    - 日本
+    - 韩国
+    - 新加坡
+    - 美国
+    - 德国
+    - 澳大利亚
+    - 英国
+    - 印度
 
-# MARK: 订阅更新和延迟测试锚点
-#
-# interval：健康检查间隔，如不为 0 则启用定时测试，单位为秒
-# tolerance：节点切换容差，单位 ms
-# lazy：懒惰状态，默认为true,未选择到当前策略组时，不进行测试
-# timeout：健康检查超时时间，单位为毫秒
-# max-failed-times：最大失败次数，超过则触发一次强制健康检查，默认 5
-# disable-udp：禁用该策略组的UDP
-# include-all：引入所有出站代理以及代理集合，顺序将按照名称排序（引入不包含策略组,可在proxies引入其他策略组）
-# include-all-proxies：引入所有出站代理，顺序将按照名称排序（引入不包含策略组,可在proxies引入其他策略组）
-# include-all-providers：引入所有代理集合，顺序将按照名称排序（会使引入代理集合失效）
-# filter：筛选满足关键词或正则表达式的节点，可以使用 ` 区分多个正则表达式（仅作用于引入代理集合以及引入所有出站代理）
-# exclude-filter：排除满足关键词或正则表达式的节点，可以使用 ` 区分多个正则表达式
-# hidden：在 api 返回hidden状态，以隐藏该策略组展示 (需要使用 api 的前端适配)
-# icon：在 api 返回icon所输入的字符串，以在该策略组显示 (需要使用 api 的前端适配)
-
-# 节点集合 测试连通性以及延迟
-p: &p
-  type: http
-  interval: 43200
-  health-check:
-    enable: true
-    url: "http://cp.cloudflare.com/generate_204"
-    interval: 300
-    timeout: 5000
-    lazy: true
-    expected-status: 204
-
-# 自动选择 测试连通性以及延迟
+# 自动选择
 url-test: &url-test
   type: url-test
   interval: 300
-  lazy: true
-  url: "http://cp.cloudflare.com/generate_204"
-  disable-udp: false
   timeout: 5000
   max-failed-times: 5
-  hidden: true
+  url: http://www.gstatic.com/generate_204
+  disable-udp: false
   include-all-providers: true
-
-# 回退/转移/故障转移 测试连通性以及延迟
+  hidden: true
+# 回退/转移/故障转移
 fallabck: &fallabck
   type: fallback
   interval: 300
-  lazy: true
-  url: "http://cp.cloudflare.com/generate_204"
-  disable-udp: false
   timeout: 5000
   max-failed-times: 5
+  url: http://www.gstatic.com/generate_204
+  disable-udp: false
   hidden: false
-
-# 负载均衡-散列 测试连通性以及延迟
+# 负载均衡-散列
 load-balance-ch: &load-balance-ch
   type: load-balance
   interval: 300
-  lazy: true
-  url: "http://cp.cloudflare.com/generate_204"
-  disable-udp: false
-  strategy: consistent-hashing
   timeout: 5000
   max-failed-times: 5
+  url: http://www.gstatic.com/generate_204
+  disable-udp: false
+  strategy: consistent-hashing
   hidden: true
-
-# 负载均衡-轮询 测试连通性以及延迟
+# 负载均衡-轮询
 load-balance-rr: &load-balance-rr
   type: load-balance
   interval: 300
-  lazy: true
-  url: "http://cp.cloudflare.com/generate_204"
-  disable-udp: false
-  strategy: round-robin
   timeout: 5000
   max-failed-times: 5
+  url: http://www.gstatic.com/generate_204
+  disable-udp: false
+  strategy: round-robin
   hidden: true
 
-# MARK: 规则行为锚点
-#
+# 规则行为
 rule-anchor:
   ip: &ip
     type: http
-    interval: 43200
+    interval: 86400
     behavior: ipcidr
-
   domain: &domain
     type: http
-    interval: 43200
+    interval: 86400
     behavior: domain
-
   classical: &classical
     type: http
-    interval: 43200
+    interval: 86400
     behavior: classical
 
-# MARK: 远程订阅配置
-#
-# 1. url 里填写自己的订阅链接，多个订阅链接时名称不能重复。
-# 2. 请使用 Clash 类型订阅链接填入引号""内使用。
-# 3. 或可使用通用订阅链接通过 Sub-Store 进行订阅转换(用于 Stash)。
-proxy-providers:
-  Mitce:
-    <<: *p
-    path: ./proxy-providers/mitce.yaml
-    url: ""
-    # override 覆写节点内容，以下为支持的字段
-    override:
-      # 跳过证书验证，仅适用于使用 tls 的协议
-      #skip-cert-verify: true
-      # 是否允许 UDP 通过代理，默认为 false
-      #udp: true
-      # 上传和下载带宽，以默认以 Mbps 为单位
-      #down: "50 Mbps"
-      #up: "10 Mbps"
-      # 指定当前 proxies 通过 dialer-proxy 建立网络连接，值可以为策略组/出站代理的 name
-      #dialer-proxy: proxy
-      # 指定节点绑定的接口，从此接口发起连接
-      #interface-name: en0
-      # 节点发起连接时附加的路由标记
-      #routing-mark: 1000
-      # 代理软件出站使用的 ip 版本，如果不是 direct，则会影响 server 为域名时使用的 ip 地址
-      # 可选：dual/ipv4/ipv6/ipv4-prefer/ipv6-prefer ,默认使用 dual
-      # ipv4: 仅使用 IPv4
-      # ipv6: 仅使用 IPv6
-      # ipv4-prefer: 优先使用 IPv4，对于 TCP 会进行双栈解析，并发链接但是优先使用 IPv4 链接，UDP 则为双栈解析，获取结果中的第一个 IPv4
-      # ipv6-prefer:优先使用 IPv6，对于 TCP 会进行双栈解析，并发链接但是优先使用 IPv6 链接，UDP 则为双栈解析，获取结果中的第一个 IPv6
-      #ip-version: ipv4-prefer
-      # 为节点名称添加固定前缀
-      #additional-prefix: "[A]"
-      # 为节点名称添加固定后缀
-      #additional-suffix: "TEST"
-      # 对节点名称内容进行替换，支持正则表达式，pattern 为替换内容，target 为替换目标
-      #proxy-name:
-      #- pattern: "test"
-      #target: "TEST"
-      #- pattern: "IPLC-(.*?)倍"
-      #target: "IPLC X $1"
+# 筛选条件
+filter-hk: &filter-hk 香港|深港|沪港|京港|港|(?i)HK|(?i)Hong Kong|🇭🇰
+filter-tw: &filter-tw 台湾|台北|台中|台|新北|彰化|(?i)Taiwan|(?i)TW|🇨🇳
+filter-jp: &filter-jp 日本|川日|东京|大阪|泉日|埼玉|沪日|深日|京日|苏日|沪日|上日|广日|[^-]日|(?i)JP|(?i)Japan|(?i)Tokyo|🇯🇵
+filter-sg: &filter-sg 新加坡|狮城|沪新|京新|深新|杭新|广新|(?i)SG|(?i)Singapore|🇸🇬
+filter-kr: &filter-kr 韩国|首尔|韩|韓|春川|KR|Korea|korea|KOR|🇰🇷
+filter-us: &filter-us 美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|(?i)USA|America|america|(?i)US|(?i)United States|🇺🇲
+filter-de: &filter-de 德国|德意志|柏林|慕尼黑|法兰克福|汉堡|杜塞尔多夫|[^-]德|(?i)DE|(?i)Germany|🇩🇪
+filter-au: &filter-au 悉尼|墨尔本|布里斯班|珀斯|阿德莱德|霍巴特|堪培拉|达尔文|(?i)AU|(?i)Australia|(?i)澳大利亚|🇦🇺
+filter-gb: &filter-gb 伦敦|曼彻斯特|伯明翰|利物浦|爱丁堡|格拉斯哥|布里斯托|纽卡斯尔|威尔士|英格兰|苏格兰|(?i)UK|(?i)GB|(?i)United Kingdom|(?i)英国|🇬🇧
+filter-in: &filter-in 新德里|孟买|班加罗尔|海得拉巴|艾哈迈达巴德|钦奈|卡尔各答|浦那|(?i)IN|(?i)India|(?i)印度|🇮🇳
 
-# MARK: 筛选条件锚点
-#
-filter-hk: &filter-hk "香港|深港|沪港|京港|港|(?i)HK|(?i)Hong Kong|🇭🇰"
-filter-tw: &filter-tw "台湾|台北|台中|台|新北|彰化|(?i)Taiwan|(?i)TW|🇨🇳"
-filter-jp: &filter-jp "日本|川日|东京|大阪|泉日|埼玉|沪日|深日|京日|苏日|沪日|上日|广日|[^-]日|(?i)JP|(?i)Japan|(?i)Tokyo|🇯🇵"
-filter-sg: &filter-sg "新加坡|狮城|沪新|京新|深新|杭新|广新|(?i)SG|(?i)Singapore|🇸🇬"
-filter-kr: &filter-kr "韩国|首尔|韩|韓|春川|KR|Korea|korea|KOR|🇰🇷"
-filter-us: &filter-us "美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|(?i)USA|America|america|(?i)US|(?i)United States|🇺🇲"
-filter-de: &filter-de "德国|德意志|柏林|慕尼黑|法兰克福|汉堡|杜塞尔多夫|[^-]德|(?i)DE|(?i)Germany|🇩🇪"
-filter-au: &filter-au "悉尼|墨尔本|布里斯班|珀斯|阿德莱德|霍巴特|堪培拉|达尔文|(?i)AU|(?i)Australia|(?i)澳大利亚|🇦🇺"
-filter-gb: &filter-gb "伦敦|曼彻斯特|伯明翰|利物浦|爱丁堡|格拉斯哥|布里斯托|纽卡斯尔|威尔士|英格兰|苏格兰|(?i)UK|(?i)GB|(?i)United Kingdom|(?i)英国|🇬🇧"
-filter-in: &filter-in "新德里|孟买|班加罗尔|海得拉巴|艾哈迈达巴德|钦奈|卡尔各答|浦那|(?i)IN|(?i)India|(?i)印度|🇮🇳"
-
-# MARK: 定义代理组配置
-#
+# MARK: 代理组设置
 proxy-groups:
-  # 手动选择
-  - name: 节点选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Proxy.png"
+  # 代理选择
+  - name: 代理
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Proxy.png
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    timeout: 5000
+    max-failed-times: 5
     <<: *proxie-select
-
   - name: 手动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Static.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Static.png
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    timeout: 5000
+    max-failed-times: 5
     type: select
     include-all-providers: true
-
   - name: 手动选择地区
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Static.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Static.png
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    timeout: 5000
+    max-failed-times: 5
     type: select
     <<: *region-select
-
-  # 回退/转移/故障转移
+    
+  # 回退/故障转移
   - name: 故障转移
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available_1.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available_1.png
     include-all-providers: true
     <<: *fallabck
-
   - name: 地区故障转移
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available_1.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available_1.png
     <<:
       - *fallabck
       - *region-select
 
   # 苹果服务
   - name: 苹果服务
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple.png
     <<: *cns-select
-    
   - name: 苹果系统更新
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_Update.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_Update.png
     <<: *apple-service-select
-
   - name: 苹果音乐
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_Music.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_Music.png
     <<: *apple-service-select
-
   - name: iCloud
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/iCloud.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/iCloud.png
     <<: *apple-service-select
-
   - name: AppStore
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/App_Store.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/App_Store.png
     <<: *apple-service-select
-
   - name: 苹果邮件
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Mail.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Mail.png
     <<: *apple-service-select
-    
   - name: 苹果账户
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_2.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Apple_2.png
     <<: *apple-service-select
-    
   - name: 苹果开发
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/TestFlight.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/TestFlight.png
     <<: *apple-service-select
 
   # 微软服务
   - name: 微软服务
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Microsoft.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Microsoft.png
     <<: *cns-select
-
   - name: 微软必应
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Windows_11.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Windows_11.png
     <<: *microsoft-service-select
-
   - name: OneDrive
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/OneDrive.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/OneDrive.png
     <<: *microsoft-service-select
-
   - name: GitHub
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/GitHub.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/GitHub.png
     <<: *globe-select
-
   - name: Copilot
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Copilot.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Copilot.png
     <<: *globe-select
 
   # 谷歌服务
   - name: 谷歌服务
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Google_Search.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Google_Search.png
     <<: *globe-select
-
   - name: YouTube视频
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/YouTube.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/YouTube.png
     <<: *google-service-select
-
   - name: YouTube音乐
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/YouTube_Music.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/YouTube_Music.png
     <<: *google-service-select
 
   # Telegram
   - name: Telegram
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Telegram_X.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Telegram_X.png
     <<: *globe-select
 
   # Discord
   - name: Discord
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Discord.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Discord.png
     <<: *globe-select
 
   # 奈飞视频
   - name: 奈飞视频
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Netflix.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Netflix.png
     <<: *globe-select
     include-all-providers: true
 
   # Emby视频
   - name: Emby视频
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Emby.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Emby.png
     <<: *default-select
 
   # 人工智能
   - name: OpenAI
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Bot.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Bot.png
     <<: *globe-select
     include-all-providers: true
 
-  # 国际抖音
-  - name: 国际抖音
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/TikTok.png"
+  # 国外抖音
+  - name: 国外抖音
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/TikTok.png
     <<: *globe-select
     include-all-providers: true
 
   # Spotify音乐
   - name: Spotify音乐
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Spotify.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Spotify.png
     <<: *globe-select
 
-  # 国际媒体
-  - name: 国际媒体
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/ForeignMedia.png"
+  # 国外媒体
+  - name: 国外媒体
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/ForeignMedia.png
     <<: *globe-select
 
-  # 国际互联
-  - name: 国际互联
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Global.png"
+  # 国外服务
+  - name: 国外服务
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Global.png
     <<: *globe-select
-
-  # 国内互联
-  - name: 国内互联
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
-    type: select
-    proxies: [直连, 香港节点, 台湾节点]
 
   # 游戏服务
   - name: 游戏服务
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Game.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Game.png
     <<: *default-select
 
   # 测速测试
-  - name: 国际测速
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Speedtest.png"
+  - name: 国外测速
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Speedtest.png
     <<: *default-select
 
-  # 代理进程
-  #- name: 代理进程
-    #icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Quantumult_X.png"
-    #<<: *applications-process-select
-
-  # 下载进程
-  #- name: 下载进程
-    #icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Download.png"
-    #<<: *applications-process-select
-
-  # 地区/区域
-  - name: 香港节点
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png"
+  # 地区
+  - name: 香港
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png
     type: select
     proxies: [香港自动选择, 香港负载均衡散列, 香港负载均衡轮询]
     include-all-providers: true
     filter: *filter-hk
-
-  - name: 台湾节点
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
+  - name: 台湾
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png
     type: select
     proxies: [台湾自动选择, 台湾负载均衡散列, 台湾负载均衡轮询]
     include-all-providers: true
     filter: *filter-tw
-
-  - name: 日本节点
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png"
+  - name: 日本
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png
     type: select
     proxies: [日本自动选择, 日本负载均衡散列, 日本负载均衡轮询]
     include-all-providers: true
     filter: *filter-jp
-
-  - name: 新加坡节点
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png"
+  - name: 新加坡
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png
     type: select
     proxies: [新加坡自动选择, 新加坡载均衡散列, 新加坡载均衡轮询]
     include-all-providers: true
     filter: *filter-sg
-
-  - name: 韩国节点
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png"
+  - name: 韩国
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png
     type: select
     proxies: [韩国自动选择, 韩国载均衡散列, 韩国载均衡轮询]
     include-all-providers: true
     filter: *filter-kr
-
-  - name: 美国节点
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png"
+  - name: 美国
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png
     type: select
     proxies: [美国自动选择, 美国载均衡散列, 美国载均衡轮询]
     include-all-providers: true
     filter: *filter-us
-
-  - name: 德国节点
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png"
+  - name: 德国
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png
     type: select
     proxies: [德国自动选择, 德国载均衡散列, 德国载均衡轮询]
     filter: *filter-de
     include-all-providers: true
-
-  - name: 澳大利亚节点
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png"
+  - name: 澳大利亚
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png
     type: select
     proxies: [澳大利亚自动选择, 澳大利亚载均衡散列, 澳大利亚载均衡轮询]
     filter: *filter-au
     include-all-providers: true
-
-  - name: 英国节点
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png"
+  - name: 英国
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png
     type: select
     proxies: [英国自动选择, 英国载均衡散列, 英国载均衡轮询]
     filter: *filter-gb
     include-all-providers: true
-
-  - name: 印度节点
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png"
+  - name: 印度
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png
     type: select
     proxies: [印度自动选择, 印度载均衡散列, 印度载均衡轮询]
     filter: *filter-in
     include-all-providers: true
 
   # 兜底
-  - name: 漏网之鱼
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Final.png"
+  - name: 兜底
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Final.png
     <<: *default-select
 
-  # 自动化
+  # 自动
   - name: 自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Auto.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Auto.png
     <<: *url-test
-
   - name: 自动选择地区
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Auto.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Auto.png
     type: url-test
     interval: 300
-    lazy: true
-    url: "http://cp.cloudflare.com/generate_204"
-    disable-udp: false
     timeout: 5000
     max-failed-times: 5
+    url: http://www.gstatic.com/generate_204
+    disable-udp: false
     hidden: true
     <<: *region-select
-
   - name: 香港自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png
     <<: *url-test
     filter: *filter-hk
-
   - name: 台湾自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png
     <<: *url-test
     filter: *filter-tw
-
   - name: 日本自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png
     <<: *url-test
     filter: *filter-jp
-
   - name: 新加坡自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png
     <<: *url-test
     filter: *filter-sg
-
   - name: 韩国自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png
     <<: *url-test
     filter: *filter-kr
-
   - name: 美国自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png
     <<: *url-test
     filter: *filter-us
-
   - name: 德国自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png
     <<: *url-test
     filter: *filter-de
-
   - name: 澳大利亚自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png
     <<: *url-test
     filter: *filter-au
-
   - name: 英国自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png
     <<: *url-test
     filter: *filter-gb
-
   - name: 印度自动选择
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png
     <<: *url-test
     filter: *filter-in
 
   # 负载均衡
   - name: 负载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available.png
     include-all-providers: true
     <<: *load-balance-ch
-
   - name: 负载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available.png
     include-all-providers: true
     <<: *load-balance-rr
-
   - name: 地区负载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available.png
     <<:
       - *load-balance-ch
       - *region-select
-
   - name: 地区负载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Available.png
     <<:
       - *load-balance-rr
       - *region-select
-
   - name: 香港负载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png
     include-all-providers: true
     <<: *load-balance-ch
     filter: *filter-hk
-
   - name: 香港负载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png
     include-all-providers: true
     <<: *load-balance-rr
     filter: *filter-hk
-
   - name: 台湾负载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png
     include-all-providers: true
     <<: *load-balance-ch
     filter: *filter-tw
-
   - name: 台湾负载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png
     include-all-providers: true
     <<: *load-balance-rr
     filter: *filter-tw
-
   - name: 日本负载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png
     include-all-providers: true
     <<: *load-balance-ch
     filter: *filter-jp
-
   - name: 日本负载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png
     include-all-providers: true
     <<: *load-balance-rr
     filter: *filter-jp
-
   - name: 新加坡载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png
     include-all-providers: true
     <<: *load-balance-ch
     filter: *filter-sg
-
   - name: 新加坡载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png
     include-all-providers: true
     <<: *load-balance-rr
     filter: *filter-sg
-
   - name: 韩国载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png
     include-all-providers: true
     <<: *load-balance-ch
     filter: *filter-kr
-
   - name: 韩国载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png
     include-all-providers: true
     <<: *load-balance-rr
     filter: *filter-kr
-
   - name: 美国载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png
     include-all-providers: true
     <<: *load-balance-ch
     filter: *filter-us
-
   - name: 美国载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png
     include-all-providers: true
     <<: *load-balance-rr
     filter: *filter-us
-
   - name: 德国载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png
     include-all-providers: true
     <<: *load-balance-ch
     filter: *filter-de
-
   - name: 德国载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png
     include-all-providers: true
     <<: *load-balance-rr
     filter: *filter-de
-
   - name: 澳大利亚载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png
     include-all-providers: true
     <<: *load-balance-ch
     filter: *filter-au
-
   - name: 澳大利亚载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png
     include-all-providers: true
     <<: *load-balance-rr
     filter: *filter-au
-
   - name: 英国载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png
     include-all-providers: true
     <<: *load-balance-ch
     filter: *filter-gb
-
   - name: 英国载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png
     include-all-providers: true
     <<: *load-balance-rr
     filter: *filter-gb
-
   - name: 印度载均衡散列
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png
     include-all-providers: true
     <<: *load-balance-ch
     filter: *filter-in
-
   - name: 印度载均衡轮询
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png
     include-all-providers: true
     <<: *load-balance-rr
     filter: *filter-in
 
-  # 内置策略
+  # 内置
   - name: 直连
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Direct.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Direct.png
     type: select
     udp: true
     hidden: true
     proxies: [DIRECT]
-
   - name: 拒绝
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Reject.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Reject.png
     type: select
     hidden: true
     proxies: [REJECT]
-
   - name: 绕过
-    icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Bypass.png"
+    icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Bypass.png
     type: select
     hidden: true
     proxies: [PASS]
 
-# MARK: 规则集配置
-#
+# MARK: 规则集设置
 rule-providers:
   # 苹果服务
   apple-service-classical:
     <<: *classical
     path: ./rule-providers/apple-service-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Apple/Apple_Classical.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Apple/Apple_Classical.yaml
   apple-service-domain:
     <<: *domain
     path: ./rule-providers/apple-service-domain.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Apple/Apple_Domain.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Apple/Apple_Domain.yaml
   apple-account-classical:
     <<: *classical
     path: ./rule-providers/apple-account-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/AppleID/AppleID.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/AppleID/AppleID.yaml
   apple-system-ota-classical:
     <<: *classical
     path: ./rule-providers/apple-system-ota-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/SystemOTA/SystemOTA.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/SystemOTA/SystemOTA.yaml
   apple-music-classical:
     <<: *classical
     path: ./rule-providers/apple-music-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/AppleMusic/AppleMusic.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/AppleMusic/AppleMusic.yaml
   apple-icloud-classical:
     <<: *classical
     path: ./rule-providers/apple-icloud-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/iCloud/iCloud.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/iCloud/iCloud.yaml
   apple-app-store-classical:
     <<: *classical
     path: ./rule-providers/apple-app-store-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/AppStore/AppStore.yaml"
-    
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/AppStore/AppStore.yaml
   apple-mail-classical:
     <<: *classical
     path: ./rule-providers/apple-mail-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/AppleMail/AppleMail.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/AppleMail/AppleMail.yaml
   apple-developer-classical:
     <<: *classical
     path: ./rule-providers/apple-developer-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/AppleDev/AppleDev.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/AppleDev/AppleDev.yaml
   apple-beats-classical:
     <<: *classical
     path: ./rule-providers/apple-beats-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Beats/Beats.yaml"
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Beats/Beats.yaml
 
   # 微软服务
   microsoft-service-classical:
     <<: *classical
     path: ./rule-providers/microsoft-service-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Microsoft/Microsoft.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Microsoft/Microsoft.yaml
   microsoft-github-classical:
     <<: *classical
     path: ./rule-providers/microsoft-github-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/GitHub/GitHub.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/GitHub/GitHub.yaml
   microsoft-onedrive-classical:
     <<: *classical
     path: ./rule-providers/microsoft-onedrive-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/OneDrive/OneDrive.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/OneDrive/OneDrive.yaml
   microsoft-bing-classical:
     <<: *classical
     path: ./rule-providers/microsoft-bing-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Bing/Bing.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Bing/Bing.yaml
   microsoft-copilot-classical:
     <<: *classical
     path: ./rule-providers/microsoft-copilot-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Copilot/Copilot.yaml"
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Copilot/Copilot.yaml
 
   # 谷歌服务
   google-service-classical:
     <<: *classical
     path: ./rule-providers/google-service-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Google/Google.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Google/Google.yaml
   google-youtube-classical:
     <<: *classical
     path: ./rule-providers/google-youtube-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/YouTube/YouTube.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/YouTube/YouTube.yaml
   google-youtube-music-classical:
     <<: *classical
     path: ./rule-providers/google-youtube-music-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/YouTubeMusic/YouTubeMusic.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/YouTubeMusic/YouTubeMusic.yaml
   google-chromecast-classical:
     <<: *classical
     path: ./rule-providers/google-chromecast-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Chromecast/Chromecast.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Chromecast/Chromecast.yaml
   google-fcm-classical:
     <<: *classical
     path: ./rule-providers/google-fcm-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/GoogleFCM/GoogleFCM.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/GoogleFCM/GoogleFCM.yaml
   google-bard-ai-classical:
     <<: *classical
     path: ./rule-providers/google-bard-ai-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/BardAI/BardAI.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/BardAI/BardAI.yaml
   google-gemini-classical:
     <<: *classical
     path: ./rule-providers/google-gemini-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Gemini/Gemini.yaml"
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Gemini/Gemini.yaml
 
   # Telegram
   telegram-classical:
     <<: *classical
     path: ./rule-providers/telegram-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Telegram/Telegram.yaml"
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Telegram/Telegram.yaml
 
   # Discord
   discord-classical:
     <<: *classical
     path: ./rule-providers/discord-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Discord/Discord.yaml"
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Discord/Discord.yaml
 
   # 奈飞视频
   netflix-classical:
     <<: *classical
     path: ./rule-providers/netflix-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Netflix/Netflix_Classical.yaml"
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Netflix/Netflix_Classical.yaml
 
   # Emby视频
   emby-classical:
     <<: *classical
     path: ./rule-providers/emby-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Emby/Emby.yaml"
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Emby/Emby.yaml
 
   # 人工智能
   open-ai-classical:
     <<: *classical
     path: ./rule-providers/open-ai-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/OpenAI/OpenAI.yaml"
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/OpenAI/OpenAI.yaml
 
-  # 国际抖音
+  # 国外抖音
   tiktok-classical:
     <<: *classical
     path: ./rule-providers/tiktok-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/TikTok/TikTok.yaml"
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/TikTok/TikTok.yaml
 
   # Spotify音乐
   spotify-classical:
     <<: *classical
     path: ./rule-providers/spotify-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Spotify/Spotify.yaml"
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Spotify/Spotify.yaml
 
-  # 国际媒体
+  # 国外媒体
   globe-media-domain:
     <<: *domain
     path: ./rule-providers/globe-media-domain.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/GlobalMedia/GlobalMedia_Domain.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/GlobalMedia/GlobalMedia_Domain.yaml
   globe-media-classical:
     <<: *classical
     path: ./rule-providers/globe-media-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/GlobalMedia/GlobalMedia_Classical.yaml"
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/GlobalMedia/GlobalMedia_Classical.yaml
 
-  # 国际互联
+  # 国外服务
   globe-classical:
     <<: *classical
     path: ./rule-providers/globe-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Global/Global_Classical.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Global/Global_Classical.yaml
   globe-domain:
     <<: *domain
     path: ./rule-providers/globe-domain.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Global/Global_Domain.yaml"
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Global/Global_Domain.yaml
 
   # 游戏服务
   game-classical:
     <<: *classical
     path: ./rule-providers/game-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Game/Game.yaml"
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Game/Game.yaml
 
-  # 国际云计算
+  # 国外云计算
   globe-cloud-classical:
     <<: *classical
     path: ./rule-providers/globe-cloud-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Cloud/CloudGlobal/CloudGlobal.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Cloud/CloudGlobal/CloudGlobal.yaml
   globe-cloud-ip:
     <<: *ip
     path: ./rule-providers/globe-cloud-ip.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Cloud/CloudGlobal/CloudGlobal_IP.yaml"
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Cloud/CloudGlobal/CloudGlobal_IP.yaml
 
-  # 国际测速
+  # 国外测速
   globe-speedtest-classical:
     <<: *classical
     path: ./rule-providers/globe-speedtest-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Speedtest/Speedtest.yaml"
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Speedtest/Speedtest.yaml
 
   # 直连
   direct-china-max-no-media-domain:
     <<: *domain
     path: ./rule-providers/direct-china-max-no-media-domain.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaMaxNoMedia/ChinaMaxNoMedia_Domain.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaMaxNoMedia/ChinaMaxNoMedia_Domain.yaml
   direct-china-max-no-media-ip:
     <<: *ip
     path: ./rule-providers/direct-china-max-no-media-ip.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaMaxNoMedia/ChinaMaxNoMedia_IP.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaMaxNoMedia/ChinaMaxNoMedia_IP.yaml
   direct-china-max-no-media-classical:
     <<: *classical
     path: ./rule-providers/direct-china-max-no-media-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaMaxNoMedia/ChinaMaxNoMedia.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaMaxNoMedia/ChinaMaxNoMedia.yaml
   direct-china-media-classical:
     <<: *classical
     path: ./rule-providers/direct-china-media-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaMedia/ChinaMedia.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaMedia/ChinaMedia.yaml
   direct-china-neteasemusic-media-classical:
     <<: *classical
     path: ./rule-providers/direct-china-neteasemusic-media-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/NetEaseMusic/NetEaseMusic.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/NetEaseMusic/NetEaseMusic.yaml
   direct-china-youku-media-classical:
     <<: *classical
     path: ./rule-providers/direct-china-youku-media-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Youku/Youku.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Youku/Youku.yaml
   direct-china-tencentvideo-media-classical:
     <<: *classical
     path: ./rule-providers/direct-china-tencentvideo-media-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/TencentVideo/TencentVideo.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/TencentVideo/TencentVideo.yaml
   direct-china-iqiyi-media-classical:
     <<: *classical
     path: ./rule-providers/direct-china-iqiyi-media-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/iQIYI/iQIYI.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/iQIYI/iQIYI.yaml
   direct-china-douyu-media-classical:
     <<: *classical
     path: ./rule-providers/direct-china-douyu-media-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Douyu/Douyu.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Douyu/Douyu.yaml
   direct-china-himalaya-media-classical:
     <<: *classical
     path: ./rule-providers/direct-china-himalaya-media-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Himalaya/Himalaya.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Himalaya/Himalaya.yaml
   direct-china-douyin-media-classical:
     <<: *classical
     path: ./rule-providers/direct-china-douyin-media-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/DouYin/DouYin.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/DouYin/DouYin.yaml
   direct-china-zhanqi-media-classical:
     <<: *classical
     path: ./rule-providers/direct-china-zhanqi-media-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/zhanqi/zhanqi.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/zhanqi/zhanqi.yaml
   direct-china-51nod-media-classical:
     <<: *classical
     path: ./rule-providers/direct-china-51nod-media-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/51nod/51nod.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/51nod/51nod.yaml
   direct-lan-classical:
     <<: *classical
     path: ./rule-providers/direct-lan-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Lan/Lan.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Lan/Lan.yaml
   direct-private-domain:
     <<: *domain
     path: ./rule-providers/direct-private-domain.yaml
-    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt
   direct-cloud-classical:
     <<: *classical
     path: ./rule-providers/direct-cloud-classical.yaml
-    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Cloud/CloudCN/CloudCN.yaml"
-
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Cloud/CloudCN/CloudCN.yaml
   direct-domain-replenish-domain:
     <<: *domain
     path: ./rule-providers/direct-domain-replenish-domain.yaml
-    url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/Direct_Domain_Replenish.yaml"
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/Direct_Domain_Replenish.yaml
 
-  # 应用进程
-  #direct-applications-process-classical:
-    #<<: *classical
-    #path: ./rule-providers/direct-applications-process-classical.yaml
-    #url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/Direct_Applications_Classical.yaml"
+  # FakeIPFilter
+  fake-ip-filter-juewuy:
+    type: http
+    interval: 86400
+    behavior: classical
+    format: text
+    path: ./rule-providers/fake-ip-filter-juewuy
+    url: https://gh-proxy.org/https://github.com/juewuy/ShellCrash/blob/dev/public/fake_ip_filter.list
 
-  #direct-applications-process-replenish-classical:
-    #<<: *classical
-    #path: ./rule-providers/direct-applications-process-replenish-classical.yaml
-    #url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/Direct_Applications_Replenish_Classical.yaml"
-
-  #applications-process-download-classical:
-    #<<: *classical
-    #path: ./rule-providers/applications-process-download-classical.yaml
-    #url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Download/Download.yaml"
-
-  # FakeIP Filter
-  #fake-ip-filter-domain:
-    #<<: *domain
-    #path: ./rule-providers/fake-ip-filter-domain.yaml
-    #url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/Fake_IP_Filter_Domain.yaml"
-    
-  #ntp-service-classical:
-    #<<: *classical
-    #path: ./rule-providers/ntp-service-classical.yaml
-    #url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/NTPService/NTPService.yaml"
-
-  #stun-service-classical:
-    #<<: *classical
-    #path: ./rule-providers/stun-service-classical.yaml
-    #url: "https://raw.githubusercontent.com/xtzpioneer/Airport/refs/heads/main/Rules/Clash/STUN_Service_Classical.yaml"
-    
-# MARK: 分流规则配置
-#
-# 注意：规则自上而下匹配，所以规则顺序直接影响分流效果。
-# 注意：规则自上而下匹配，所以规则顺序直接影响分流效果。
-# 注意：规则自上而下匹配，所以规则顺序直接影响分流效果。
-#
-# 首先，请注意，把所有非IP类规则写在 IP类规则之前，这是最没有问题的！
-# 避免 DNS 污染和 DNS 泄漏最有效的办法就是永远不在本地进行 DNS 解析。
-# 而 Mihomo 能且只能通过 Fake IP 和域名规则匹配的方式 可以实现非直连域名 一定不在本地本机进行任何 DNS 解析。
-# 在 Mihomo 中，规则自上而下匹配，只有当遇到 IP 类规则（如 IP-CIDR、IP-CIDR6、GEOIP 和 IP-ASN）时才会发起 DNS 解析。
-# 因此，在 Mihomo 中，将会触发 DNS 解析的规则放在域名和 URL 匹配规则后面非常重要。
-
+# MARK: 规则设置
 rules:
   # 私有直连
-  - RULE-SET,direct-lan-classical,直连
   - RULE-SET,direct-private-domain,直连
-
-  # 应用进程
-  #- RULE-SET,direct-applications-process-classical,代理进程
-  #- RULE-SET,direct-applications-process-replenish-classical,代理进程
-  #- RULE-SET,applications-process-download-classical,下载进程
+  - RULE-SET,direct-lan-classical,直连
+  
+  # GEO私有直连
+  - GEOIP,private,直连
+  - GEOSITE,private,直连
 
   # 苹果服务
   - RULE-SET,apple-mail-classical,苹果邮件
@@ -1734,8 +1212,8 @@ rules:
   # 人工智能
   - RULE-SET,open-ai-classical,OpenAI
 
-  # 国际抖音
-  - RULE-SET,tiktok-classical,国际抖音
+  # 国外抖音
+  - RULE-SET,tiktok-classical,国外抖音
 
   # Spotify音乐
   - RULE-SET,spotify-classical,Spotify音乐
@@ -1743,37 +1221,44 @@ rules:
   # 游戏服务
   - RULE-SET,game-classical,游戏服务
 
-  # 国际测速
-  - RULE-SET,globe-speedtest-classical,国际测速
+  # 国外测速
+  - RULE-SET,globe-speedtest-classical,国外测速
 
-  # 国际媒体
-  - RULE-SET,globe-media-domain,国际媒体
-  - RULE-SET,globe-media-classical,国际媒体
+  # 国外媒体
+  - RULE-SET,globe-media-domain,国外媒体
+  - RULE-SET,globe-media-classical,国外媒体
 
-  # 国际互联
-  - RULE-SET,globe-domain,国际互联
-  - RULE-SET,globe-classical,国际互联
+  # 国外服务
+  - RULE-SET,globe-domain,国外服务
+  - RULE-SET,globe-classical,国外服务
 
-  # 国际云计算
-  - RULE-SET,globe-cloud-classical,国际互联
-  - RULE-SET,globe-cloud-ip,国际互联
+  # 国外云计算
+  - RULE-SET,globe-cloud-classical,国外服务
+  - RULE-SET,globe-cloud-ip,国外服务
 
-  # 国内互联
-  - RULE-SET,direct-china-neteasemusic-media-classical,国内互联
-  - RULE-SET,direct-china-youku-media-classical,国内互联
-  - RULE-SET,direct-china-tencentvideo-media-classical,国内互联
-  - RULE-SET,direct-china-iqiyi-media-classical,国内互联
-  - RULE-SET,direct-china-douyu-media-classical,国内互联
-  - RULE-SET,direct-china-himalaya-media-classical,国内互联
-  - RULE-SET,direct-china-douyin-media-classical,国内互联
-  - RULE-SET,direct-china-zhanqi-media-classical,国内互联
-  - RULE-SET,direct-china-51nod-media-classical,国内互联
-  - RULE-SET,direct-china-media-classical,国内互联
-  - RULE-SET,direct-china-max-no-media-domain,国内互联
-  - RULE-SET,direct-china-max-no-media-classical,国内互联
-  - RULE-SET,direct-china-max-no-media-ip,国内互联
-  - RULE-SET,direct-cloud-classical,国内互联
-  - RULE-SET,direct-domain-replenish-domain,国内互联
-  
+  # GEO国外服务
+  - GEOSITE,geolocation-!cn,国外服务
+
+  # 直连
+  - RULE-SET,direct-china-neteasemusic-media-classical,直连
+  - RULE-SET,direct-china-youku-media-classical,直连
+  - RULE-SET,direct-china-tencentvideo-media-classical,直连
+  - RULE-SET,direct-china-iqiyi-media-classical,直连
+  - RULE-SET,direct-china-douyu-media-classical,直连
+  - RULE-SET,direct-china-himalaya-media-classical,直连
+  - RULE-SET,direct-china-douyin-media-classical,直连
+  - RULE-SET,direct-china-zhanqi-media-classical,直连
+  - RULE-SET,direct-china-51nod-media-classical,直连
+  - RULE-SET,direct-china-media-classical,直连
+  - RULE-SET,direct-china-max-no-media-domain,直连
+  - RULE-SET,direct-china-max-no-media-classical,直连
+  - RULE-SET,direct-china-max-no-media-ip,直连
+  - RULE-SET,direct-cloud-classical,直连
+  - RULE-SET,direct-domain-replenish-domain,直连
+
+  # GEO直连
+  - GEOSITE,cn,直连
+  - GEOIP,cn,直连
+
   # 兜底
-  - MATCH,漏网之鱼
+  - MATCH,兜底
