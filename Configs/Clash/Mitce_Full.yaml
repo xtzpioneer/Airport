@@ -57,11 +57,11 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2026/1/16
+# 更新时间：2026/1/29
 
 # MARK: 远程订阅设置
 # 1. url 里填写自己的订阅链接，多个订阅链接时名称不能重复。
-# 2. 请使用 Clash 类型订阅链接填入引号""内使用。
+# 2. 请使用 Clash 类型订阅链接填入url内使用。
 # 3. 或可使用通用订阅链接通过 Sub-Store 进行订阅转换(用于 Stash)。
 proxy-providers:
   mitce:
@@ -69,6 +69,8 @@ proxy-providers:
     url: 你的订阅链接
     path: ./proxy-providers/mitce.yaml
     interval: 86400
+    proxy: DIRECT
+    size-limit: 0
     health-check:
       enable: true
       url: http://www.gstatic.com/generate_204
@@ -93,11 +95,10 @@ bind-address: '*'
 tcp-concurrent: true
 unified-delay: false
 find-process-mode: strict
-global-client-fingerprint: chrome
 profile:
   store-selected: true
   store-fake-ip: false
-log-level: silent
+log-level: error
 
 # MARK: TCP保活设置
 disable-keep-alive: false
@@ -136,10 +137,13 @@ dns:
     - 223.5.5.5
   nameserver:
     - '8.8.8.8#代理'
+    - '8.8.4.4#代理'
   proxy-server-nameserver:
     - '223.5.5.5#直连'
+    - '223.6.6.6#直连'
   direct-nameserver:
     - '223.5.5.5#直连'
+    - '223.6.6.6#直连'
 
 # MARK: NTP设置
 ntp:
@@ -152,14 +156,14 @@ ntp:
 # MARK: TUN设置
 tun:
   enable: false
-  stack: system # system/gvisor/mixed
+  stack: gvisor # system/gvisor/mixed
   auto-route: true
   auto-detect-interface: true
   dns-hijack:
     - any:53
     - tcp://any:53
   device: utun1024
-  mtu: 16384
+  mtu: 1280
   strict-route: false
   endpoint-independent-nat: true
 
@@ -197,6 +201,12 @@ sniffer:
     - 172.16.0.0/12
     - fc00::/7
     - fe80::/10
+
+# MARK: 直连设置
+proxies:
+- name: direct
+  type: direct
+  udp: true
 
 # MARK: 锚点设置
 # 代理选择
@@ -429,8 +439,8 @@ url-test: &url-test
   interval: 300
   timeout: 5000
   max-failed-times: 5
-  url: http://www.gstatic.com/generate_204
   disable-udp: false
+  url: http://www.gstatic.com/generate_204
   include-all-providers: true
   hidden: true
 # 回退/转移/故障转移
@@ -439,8 +449,8 @@ fallabck: &fallabck
   interval: 300
   timeout: 5000
   max-failed-times: 5
-  url: http://www.gstatic.com/generate_204
   disable-udp: false
+  url: http://www.gstatic.com/generate_204
   hidden: false
 # 负载均衡-散列
 load-balance-ch: &load-balance-ch
@@ -448,8 +458,8 @@ load-balance-ch: &load-balance-ch
   interval: 300
   timeout: 5000
   max-failed-times: 5
-  url: http://www.gstatic.com/generate_204
   disable-udp: false
+  url: http://www.gstatic.com/generate_204
   strategy: consistent-hashing
   hidden: true
 # 负载均衡-轮询
@@ -458,8 +468,8 @@ load-balance-rr: &load-balance-rr
   interval: 300
   timeout: 5000
   max-failed-times: 5
-  url: http://www.gstatic.com/generate_204
   disable-udp: false
+  url: http://www.gstatic.com/generate_204
   strategy: round-robin
   hidden: true
 
@@ -495,25 +505,18 @@ proxy-groups:
   # 代理选择
   - name: 代理
     icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Proxy.png
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    timeout: 5000
-    max-failed-times: 5
     <<: *proxie-select
   - name: 手动选择
     icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Static.png
-    url: http://www.gstatic.com/generate_204
+    type: select
     interval: 300
     timeout: 5000
     max-failed-times: 5
-    type: select
+    disable-udp: false
+    url: http://www.gstatic.com/generate_204
     include-all-providers: true
   - name: 手动选择地区
     icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Static.png
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    timeout: 5000
-    max-failed-times: 5
     type: select
     <<: *region-select
     
@@ -644,60 +647,110 @@ proxy-groups:
   - name: 香港
     icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Hong_Kong.png
     type: select
+    interval: 300
+    timeout: 5000
+    max-failed-times: 5
+    disable-udp: false
+    url: http://www.gstatic.com/generate_204
     proxies: [香港自动选择, 香港负载均衡散列, 香港负载均衡轮询]
     include-all-providers: true
     filter: *filter-hk
   - name: 台湾
     icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/China.png
     type: select
+    interval: 300
+    timeout: 5000
+    max-failed-times: 5
+    disable-udp: false
+    url: http://www.gstatic.com/generate_204
     proxies: [台湾自动选择, 台湾负载均衡散列, 台湾负载均衡轮询]
     include-all-providers: true
     filter: *filter-tw
   - name: 日本
     icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Japan.png
     type: select
+    interval: 300
+    timeout: 5000
+    max-failed-times: 5
+    disable-udp: false
+    url: http://www.gstatic.com/generate_204
     proxies: [日本自动选择, 日本负载均衡散列, 日本负载均衡轮询]
     include-all-providers: true
     filter: *filter-jp
   - name: 新加坡
     icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Singapore.png
     type: select
+    interval: 300
+    timeout: 5000
+    max-failed-times: 5
+    disable-udp: false
+    url: http://www.gstatic.com/generate_204
     proxies: [新加坡自动选择, 新加坡载均衡散列, 新加坡载均衡轮询]
     include-all-providers: true
     filter: *filter-sg
   - name: 韩国
     icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Korea.png
     type: select
+    interval: 300
+    timeout: 5000
+    max-failed-times: 5
+    disable-udp: false
+    url: http://www.gstatic.com/generate_204
     proxies: [韩国自动选择, 韩国载均衡散列, 韩国载均衡轮询]
     include-all-providers: true
     filter: *filter-kr
   - name: 美国
     icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_States.png
     type: select
+    interval: 300
+    timeout: 5000
+    max-failed-times: 5
+    disable-udp: false
+    url: http://www.gstatic.com/generate_204
     proxies: [美国自动选择, 美国载均衡散列, 美国载均衡轮询]
     include-all-providers: true
     filter: *filter-us
   - name: 德国
     icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Germany.png
     type: select
+    interval: 300
+    timeout: 5000
+    max-failed-times: 5
+    disable-udp: false
+    url: http://www.gstatic.com/generate_204
     proxies: [德国自动选择, 德国载均衡散列, 德国载均衡轮询]
     filter: *filter-de
     include-all-providers: true
   - name: 澳大利亚
     icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Australia.png
     type: select
+    interval: 300
+    timeout: 5000
+    max-failed-times: 5
+    disable-udp: false
+    url: http://www.gstatic.com/generate_204
     proxies: [澳大利亚自动选择, 澳大利亚载均衡散列, 澳大利亚载均衡轮询]
     filter: *filter-au
     include-all-providers: true
   - name: 英国
     icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/United_Kingdom.png
     type: select
+    interval: 300
+    timeout: 5000
+    max-failed-times: 5
+    disable-udp: false
+    url: http://www.gstatic.com/generate_204
     proxies: [英国自动选择, 英国载均衡散列, 英国载均衡轮询]
     filter: *filter-gb
     include-all-providers: true
   - name: 印度
     icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/India.png
     type: select
+    interval: 300
+    timeout: 5000
+    max-failed-times: 5
+    disable-udp: false
+    url: http://www.gstatic.com/generate_204
     proxies: [印度自动选择, 印度载均衡散列, 印度载均衡轮询]
     filter: *filter-in
     include-all-providers: true
@@ -717,8 +770,8 @@ proxy-groups:
     interval: 300
     timeout: 5000
     max-failed-times: 5
-    url: http://www.gstatic.com/generate_204
     disable-udp: false
+    url: http://www.gstatic.com/generate_204
     hidden: true
     <<: *region-select
   - name: 香港自动选择
@@ -886,7 +939,11 @@ proxy-groups:
   - name: 直连
     icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Direct.png
     type: select
-    udp: true
+    interval: 300
+    timeout: 5000
+    max-failed-times: 5
+    disable-udp: false
+    url: http://www.gstatic.com/generate_204
     hidden: true
     proxies: [DIRECT]
   - name: 拒绝
