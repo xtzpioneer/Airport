@@ -57,7 +57,7 @@
 # 手动选择地区地区：支持
 # 自动选择地区地区：支持
 #
-# 更新时间：2026/1/29
+# 更新时间：2026/1/30
 
 # MARK: 远程订阅设置
 # 1. url 里填写自己的订阅链接，多个订阅链接时名称不能重复。
@@ -73,7 +73,7 @@ proxy-providers:
     size-limit: 0
     health-check:
       enable: true
-      url: http://www.gstatic.com/generate_204
+      url: http://cp.cloudflare.com/generate_204
       interval: 300
       timeout: 5000
     override:
@@ -136,8 +136,8 @@ dns:
   default-nameserver:
     - 223.5.5.5
   nameserver:
-    - '8.8.8.8#代理'
-    - '8.8.4.4#代理'
+    - '1.1.1.1#代理'
+    - '1.0.0.1#代理'
   proxy-server-nameserver:
     - '223.5.5.5#直连'
     - '223.6.6.6#直连'
@@ -440,7 +440,7 @@ url-test: &url-test
   timeout: 5000
   max-failed-times: 5
   disable-udp: false
-  url: http://www.gstatic.com/generate_204
+  url: http://cp.cloudflare.com/generate_204
   include-all-providers: true
   hidden: true
 # 回退/转移/故障转移
@@ -450,7 +450,7 @@ fallabck: &fallabck
   timeout: 5000
   max-failed-times: 5
   disable-udp: false
-  url: http://www.gstatic.com/generate_204
+  url: http://cp.cloudflare.com/generate_204
   hidden: false
 # 负载均衡-散列
 load-balance-ch: &load-balance-ch
@@ -459,7 +459,7 @@ load-balance-ch: &load-balance-ch
   timeout: 5000
   max-failed-times: 5
   disable-udp: false
-  url: http://www.gstatic.com/generate_204
+  url: http://cp.cloudflare.com/generate_204
   strategy: consistent-hashing
   hidden: true
 # 负载均衡-轮询
@@ -469,7 +469,7 @@ load-balance-rr: &load-balance-rr
   timeout: 5000
   max-failed-times: 5
   disable-udp: false
-  url: http://www.gstatic.com/generate_204
+  url: http://cp.cloudflare.com/generate_204
   strategy: round-robin
   hidden: true
 
@@ -513,7 +513,7 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 5
     disable-udp: false
-    url: http://www.gstatic.com/generate_204
+    url: http://cp.cloudflare.com/generate_204
     include-all-providers: true
   - name: 手动选择地区
     icon: https://gh-proxy.org/https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Color/Static.png
@@ -651,7 +651,7 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 5
     disable-udp: false
-    url: http://www.gstatic.com/generate_204
+    url: http://cp.cloudflare.com/generate_204
     proxies: [香港自动选择, 香港负载均衡散列, 香港负载均衡轮询]
     include-all-providers: true
     filter: *filter-hk
@@ -662,7 +662,7 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 5
     disable-udp: false
-    url: http://www.gstatic.com/generate_204
+    url: http://cp.cloudflare.com/generate_204
     proxies: [台湾自动选择, 台湾负载均衡散列, 台湾负载均衡轮询]
     include-all-providers: true
     filter: *filter-tw
@@ -673,7 +673,7 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 5
     disable-udp: false
-    url: http://www.gstatic.com/generate_204
+    url: http://cp.cloudflare.com/generate_204
     proxies: [日本自动选择, 日本负载均衡散列, 日本负载均衡轮询]
     include-all-providers: true
     filter: *filter-jp
@@ -684,7 +684,7 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 5
     disable-udp: false
-    url: http://www.gstatic.com/generate_204
+    url: http://cp.cloudflare.com/generate_204
     proxies: [新加坡自动选择, 新加坡载均衡散列, 新加坡载均衡轮询]
     include-all-providers: true
     filter: *filter-sg
@@ -695,7 +695,7 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 5
     disable-udp: false
-    url: http://www.gstatic.com/generate_204
+    url: http://cp.cloudflare.com/generate_204
     proxies: [韩国自动选择, 韩国载均衡散列, 韩国载均衡轮询]
     include-all-providers: true
     filter: *filter-kr
@@ -706,7 +706,7 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 5
     disable-udp: false
-    url: http://www.gstatic.com/generate_204
+    url: http://cp.cloudflare.com/generate_204
     proxies: [美国自动选择, 美国载均衡散列, 美国载均衡轮询]
     include-all-providers: true
     filter: *filter-us
@@ -717,7 +717,7 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 5
     disable-udp: false
-    url: http://www.gstatic.com/generate_204
+    url: http://cp.cloudflare.com/generate_204
     proxies: [德国自动选择, 德国载均衡散列, 德国载均衡轮询]
     filter: *filter-de
     include-all-providers: true
@@ -728,7 +728,7 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 5
     disable-udp: false
-    url: http://www.gstatic.com/generate_204
+    url: http://cp.cloudflare.com/generate_204
     proxies: [澳大利亚自动选择, 澳大利亚载均衡散列, 澳大利亚载均衡轮询]
     filter: *filter-au
     include-all-providers: true
@@ -739,7 +739,7 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 5
     disable-udp: false
-    url: http://www.gstatic.com/generate_204
+    url: http://cp.cloudflare.com/generate_204
     proxies: [英国自动选择, 英国载均衡散列, 英国载均衡轮询]
     filter: *filter-gb
     include-all-providers: true
@@ -750,7 +750,7 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 5
     disable-udp: false
-    url: http://www.gstatic.com/generate_204
+    url: http://cp.cloudflare.com/generate_204
     proxies: [印度自动选择, 印度载均衡散列, 印度载均衡轮询]
     filter: *filter-in
     include-all-providers: true
@@ -771,7 +771,7 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 5
     disable-udp: false
-    url: http://www.gstatic.com/generate_204
+    url: http://cp.cloudflare.com/generate_204
     hidden: true
     <<: *region-select
   - name: 香港自动选择
@@ -943,7 +943,7 @@ proxy-groups:
     timeout: 5000
     max-failed-times: 5
     disable-udp: false
-    url: http://www.gstatic.com/generate_204
+    url: http://cp.cloudflare.com/generate_204
     hidden: true
     proxies: [DIRECT]
   - name: 拒绝
